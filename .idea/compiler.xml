@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ing-sw-2020-Vecchio-Urbinati-Venier" />
         <module name="GC18" />
       </profile>
     </annotationProcessing>
