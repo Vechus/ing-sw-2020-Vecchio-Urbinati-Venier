@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.util.Vector2;
 
+/*
+* TODO: Check utility of this class
+*/
 public class Move {
     Vector2 initPos;
     Vector2 finPos;
