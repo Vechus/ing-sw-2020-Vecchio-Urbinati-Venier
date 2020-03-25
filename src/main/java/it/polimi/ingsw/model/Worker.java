@@ -3,8 +3,13 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.util.Vector2;
 
 public class Worker {
-    Vector2 position;
-    Player owner;
+    private Vector2 position;
+    private Player owner;
+
+    public Worker(Player owner){
+        this.position = new Vector2(-1, -1);
+        this.owner = owner;
+    }
 
     public Worker(Vector2 position, Player owner) {
         this.position = position;

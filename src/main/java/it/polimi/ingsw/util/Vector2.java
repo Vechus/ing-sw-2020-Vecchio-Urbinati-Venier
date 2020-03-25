@@ -2,14 +2,40 @@ package it.polimi.ingsw.util;
 
 import java.util.Objects;
 
-public class Vector2 {
+public class Vector2 implements Cloneable{
     private int x;
     private int y;
 
 
+    public Vector2() {
+        this.x = -1;
+        this.y = -1;
+    }
+
     public Vector2(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void set(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Vector2 add(Vector2 v) {
+        return new Vector2(this.getX() + v.getX(), this.getY() + v.getY());
+    }
+
+    public Vector2 add(int x, int y) {
+        return new Vector2(this.getX() + x, this.getY() + y);
+    }
+
+    public Vector2 sub(Vector2 v) {
+        return new Vector2(this.getX() - v.getX(), this.getY() - v.getY());
+    }
+
+    public Vector2 sub(int x, int y) {
+        return new Vector2(this.getX() - x, this.getY() - y);
     }
 
     public int getX() {
@@ -26,6 +52,10 @@ public class Vector2 {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     @Override
