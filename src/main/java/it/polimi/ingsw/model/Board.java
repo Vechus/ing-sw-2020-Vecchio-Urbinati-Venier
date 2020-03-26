@@ -16,9 +16,10 @@ public class Board {
                 state[i][j] = new Building();
     }
 
-    //TODO: possible bad practice to expose reference to internal state object
+    // TODO: possible bad practice to expose reference to internal state object
+    // TODO: manage invalid arguments
     public Building getCell(Vector2 pos){
-        return state[pos.x][pos.y];
+        return state[pos.getX()][pos.getY()];
     }
 
     /*

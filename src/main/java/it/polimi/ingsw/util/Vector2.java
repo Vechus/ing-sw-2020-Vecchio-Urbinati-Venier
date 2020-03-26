@@ -26,16 +26,8 @@ public class Vector2 implements Cloneable{
         return new Vector2(this.getX() + v.getX(), this.getY() + v.getY());
     }
 
-    public Vector2 add(int x, int y) {
-        return new Vector2(this.getX() + x, this.getY() + y);
-    }
-
     public Vector2 sub(Vector2 v) {
         return new Vector2(this.getX() - v.getX(), this.getY() - v.getY());
-    }
-
-    public Vector2 sub(int x, int y) {
-        return new Vector2(this.getX() - x, this.getY() - y);
     }
 
     public int getX() {

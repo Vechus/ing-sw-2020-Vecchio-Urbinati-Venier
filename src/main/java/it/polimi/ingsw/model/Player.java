@@ -4,23 +4,26 @@ import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.Vector2;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private int numOfWorkers;
-    private ArrayList<Worker> workers;
+    private List<Worker> workers;
     private God playerGod;
     private boolean isSpectator;
     private boolean isFinished;
+    private Board board;
 
 
-    public Player(int numOfWorkers, God god) {
+    public Player(int numOfWorkers, God god, Board board) {
         this.numOfWorkers = numOfWorkers;
         this.playerGod = god;
         this.isSpectator = false;
         this.isFinished = false;
-        workers = new ArrayList<Worker>();
+        this.board = board;
+        this.workers = new ArrayList<>();
         for(int i = 0; i < this.numOfWorkers; i++) {
-            workers.add(new Worker(this));
+            this.workers.add(new Worker(this));
         }
     }
 
@@ -32,16 +35,18 @@ public class Player {
     For each Worker of this player, check if any move is possible
      */
     public boolean checkLoseCondition() {
-        Vector2 pos;
-        Worker w;
-        boolean out;
-        for(int i = 0; i < this.numOfWorkers; i ++) {
-            w = workers.get(i);
+        Vector2 pos, posDelta;
+        int workerHeight;
+        for(Worker w : this.workers) {
             pos = w.getPosition();
+            workerHeight = this.board.getCell(pos).getHeight();
             // iterate around the worker
             for(int x = -1; x <= 1; x++) {
                 for(int y = -1; y <= 1; y++) {
-                    if(this.playerGod.move(w, new Move(pos, pos.add(x, y)))) return false;
+                    posDelta = pos.add(new Vector2(x, y));
+                    if(this.getPlayerGod().move(w, new Move(pos,
+                            posDelta,
+                            this.board.getCell(posDelta).getHeight() - workerHeight))) return false;
                 }
             }
         }
@@ -50,7 +55,7 @@ public class Player {
 
     public void doAction(Worker worker, Vector2 pos) {
         // check if the move is allowed, else throw an exception
-        if(this.playerGod.move(worker, new Move(worker.getPosition(), pos))) {
+        if(this.getPlayerGod().move(worker, new Move(worker.getPosition(), pos))) {
             worker.setPosition(pos);
         } else {
             // throw new InvalidMoveException;
