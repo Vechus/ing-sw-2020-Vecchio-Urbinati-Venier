@@ -7,12 +7,12 @@ import it.polimi.ingsw.model.Worker;
 public class AthenaEffect extends OpponentEffect {
 
     public AthenaEffect(Player owner){
-        super(owner);
+        super(owner, false);
     }
 
     @Override
     public boolean checkOpponentMove(Worker w, Move m) {
-        if(w.owner == this.owner || !this.active) return true;
-        return m.heightDiff <= 0;
+        if(w.getOwner() == this.owner || !this.active) return true;
+        return m.getHeightDiff() <= 0;
     }
 }

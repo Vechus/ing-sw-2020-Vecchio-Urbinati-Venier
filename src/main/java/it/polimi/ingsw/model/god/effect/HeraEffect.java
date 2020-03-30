@@ -8,13 +8,13 @@ import it.polimi.ingsw.util.Vector2;
 public class HeraEffect extends OpponentEffect {
 
     public HeraEffect(Player owner) {
-        super(owner);
+        super(owner, true);
     }
 
     @Override
     public boolean checkOpponentWinCondition(Worker w, Move m) {
-        if(w.owner == this.owner || !this.active) return true;
-        Vector2 finPos = m.finPos;
-        return finPos.x != 0 && finPos.x != 4 && finPos.y != 0 && finPos.y != 4;
+        if(w.getOwner() == this.owner || !this.active) return true;
+        Vector2 finPos = m.getFinPos();
+        return finPos.getX() != 0 && finPos.getX() != 4 && finPos.getY() != 0 && finPos.getY() != 4;
     }
 }

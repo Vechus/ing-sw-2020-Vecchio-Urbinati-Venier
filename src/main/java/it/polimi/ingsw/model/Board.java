@@ -8,27 +8,46 @@ import java.util.List;
 
 public class Board {
     private Building[][] state = new Building[5][5];
+    private Worker[][] workers = new Worker[5][5];
     private List<OpponentEffect> effects = new ArrayList<OpponentEffect>();
 
     public Board(){
         for(int i=0;i<5;i++)
             for(int j=0;j<5;j++)
                 state[i][j] = new Building();
+        for(int i=0;i<5;i++)
+            for(int j=0;j<5;j++)
+                workers[i][j] = null;
     }
 
-    // TODO: possible bad practice to expose reference to internal state object
-    // TODO: manage invalid arguments
-    public Building getCell(Vector2 pos){
-        return state[pos.getX()][pos.getY()];
+    public int getHeight(Vector2 pos){
+        return state[pos.getX()][pos.getY()].getHeight();
     }
 
-    /*
-    * TODO: Discuss about setCell
-    */
+    public void setHeight(Vector2 pos, int height){
+        state[pos.getX()][pos.getY()].setHeight(height);
+    }
 
-    /*
-     * TODO: discuss getWorker
-     */
+    public boolean isComplete(Vector2 pos){
+        return state[pos.getX()][pos.getY()].isComplete();
+    }
+
+    public void setComplete(Vector2 pos, boolean complete){
+        state[pos.getX()][pos.getY()].setComplete(complete);
+    }
+
+    public void placeWorker(Worker w, Vector2 pos){
+        workers[pos.getX()][pos.getY()] = w;
+    }
+
+    public Worker getWorker(Vector2 pos){
+        return workers[pos.getX()][pos.getY()];
+    }
+
+    public void moveWorker(Worker w, Move m){
+        workers[m.getInitPos().getX()][m.getInitPos().getY()] = null;
+        workers[m.getFinPos().getX()][m.getFinPos().getY()] = w;
+    }
 
     public void addEffect(OpponentEffect e){
         effects.add(e);
