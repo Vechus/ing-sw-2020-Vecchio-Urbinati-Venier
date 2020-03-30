@@ -22,9 +22,9 @@ public class God {
 
     public  boolean callMoveOrBuild (Worker worker, Vector2 pos){
         if(this.hasMoved){
-            build(worker, pos);
+            if(!build(worker, pos)) return false;
         }else{
-            move(worker, pos);
+            if(!move(worker, pos)) return false;
         }
         return true;
     }
@@ -35,8 +35,10 @@ public class God {
         Vector2 currPos= worker.getPosition();
         int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(finPos);
         Move move= new Move(currPos, finPos, heightDiff);
-        if(!this.isWorkersMoveValid(worker, move))
+
+        if(!this.isWorkersMoveValid(worker, move)) {
             return false;
+        }
 
         this.board.moveWorker(worker, move);
         worker.setPosition(finPos);
