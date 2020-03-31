@@ -69,9 +69,12 @@ public class Player {
      * @param worker Worker to do the action with
      * @param pos Vector2 position to move into
      */
+    // TODO: discuss movement: not robust structure for movement
     public void doAction(Worker worker, Vector2 pos) {
         // check if the move is allowed, else throw an exception
-        if(this.getPlayerGod().move(worker, new Move(worker.getPosition(), pos))) {
+        Vector2 workerPos = worker.getPosition();
+        int workerHeight = this.board.getCell(workerPos).getHeight();
+        if(this.getPlayerGod().move(worker, new Move(workerPos, pos, this.board.getCell(pos).getHeight() - workerHeight))) {
             worker.setPosition(pos);
         } else {
             // throw new InvalidMoveException;
