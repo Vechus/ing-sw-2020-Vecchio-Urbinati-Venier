@@ -10,6 +10,7 @@ public class God {
     protected Board board;
     protected  Player player;
     protected boolean hasMoved;
+    protected boolean hasFinishedTurn;
 
     public boolean hasPlayerWon(Move move){
         if (this.board.getHeight (move.getFinPos()) == 3){
@@ -22,11 +23,17 @@ public class God {
 
     public  boolean callMoveOrBuild (Worker worker, Vector2 pos){
         if(this.hasMoved){
-            if(!build(worker, pos)) return false;
+            if(build(worker, pos)) {
+                hasFinishedTurn=true;
+                return true;
+            }
         }else{
-            if(!move(worker, pos)) return false;
+            if(move(worker, pos)) {
+                this.hasMoved=true;
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 
 
@@ -42,6 +49,8 @@ public class God {
 
         this.board.moveWorker(worker, move);
         worker.setPosition(finPos);
+
+
         return true;
     }
 
