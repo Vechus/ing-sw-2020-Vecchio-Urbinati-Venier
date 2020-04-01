@@ -34,6 +34,14 @@ public class Player {
     }
 
     /**
+     * Begin a new turn, initialising all parameters.
+     */
+    public void beginNewTurn() {
+        this.isFinished = false;
+        this.playerGod.beginNewTurn();
+    }
+
+    /**
      * Checks Player win condition, by returning whether God's win condition is met
      * @return hasPlayerWon boolean: 1 if Player has won, 0 else
      */
@@ -46,18 +54,13 @@ public class Player {
      * @return hasPlayerLost boolean: 1 if Player has lost, 0 else
      */
     public boolean checkLoseCondition() {
-        Vector2 pos, posDelta;
-        int workerHeight;
+        Vector2 posDelta;
         for(Worker w : this.workers) {
-            pos = w.getPosition();
-            workerHeight = this.board.getCell(pos).getHeight();
             // iterate around the worker
             for(int x = -1; x <= 1; x++) {
                 for(int y = -1; y <= 1; y++) {
-                    posDelta = pos.add(new Vector2(x, y));
-                    if(this.getPlayerGod().move(w, new Action(pos,
-                            posDelta,
-                            this.board.getCell(posDelta).getHeight() - workerHeight))) return false;
+                    posDelta = w.getPosition().add(new Vector2(x, y));
+                    if(this.getPlayerGod().isWorkersMoveValid(new Action(w, posDelta, Action.ActionType.MOVE))) return false;
                 }
             }
         }
@@ -66,20 +69,10 @@ public class Player {
 
     /**
      * Tries a move, if it's allowed then it executes it, if not -(throws InvalidMoveException)- prints a message
-     * @param worker Worker to do the action with
-     * @param pos Vector2 position to move into
+     * @param action Action target action
      */
-    // TODO: discuss movement: not robust structure for movement
-    public void doAction(Worker worker, Vector2 pos) {
-        // check if the move is allowed, else throw an exception
-        Vector2 workerPos = worker.getPosition();
-        int workerHeight = this.board.getCell(workerPos).getHeight();
-        if(this.getPlayerGod().move(worker, new Action(workerPos, pos, this.board.getCell(pos).getHeight() - workerHeight))) {
-            worker.setPosition(pos);
-        } else {
-            // throw new InvalidMoveException;
-            System.out.println("*** Invalid move ***");
-        }
+    public boolean doAction(Action action) {
+        return this.playerGod.callMoveOrBuild(action);
     }
 
     /**
