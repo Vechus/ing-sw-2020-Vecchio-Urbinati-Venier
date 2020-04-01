@@ -55,7 +55,7 @@ public class Player {
             for(int x = -1; x <= 1; x++) {
                 for(int y = -1; y <= 1; y++) {
                     posDelta = pos.add(new Vector2(x, y));
-                    if(this.getPlayerGod().move(w, new Move(pos,
+                    if(this.getPlayerGod().move(w, new Action(pos,
                             posDelta,
                             this.board.getCell(posDelta).getHeight() - workerHeight))) return false;
                 }
@@ -74,7 +74,7 @@ public class Player {
         // check if the move is allowed, else throw an exception
         Vector2 workerPos = worker.getPosition();
         int workerHeight = this.board.getCell(workerPos).getHeight();
-        if(this.getPlayerGod().move(worker, new Move(workerPos, pos, this.board.getCell(pos).getHeight() - workerHeight))) {
+        if(this.getPlayerGod().move(worker, new Action(workerPos, pos, this.board.getCell(pos).getHeight() - workerHeight))) {
             worker.setPosition(pos);
         } else {
             // throw new InvalidMoveException;
