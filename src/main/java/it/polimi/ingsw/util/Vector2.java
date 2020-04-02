@@ -90,11 +90,6 @@ public class Vector2 implements Cloneable{
     }
 
     @Override
-    /**
-     * equals: returns true if argument's coordinates are the same as this
-     * @param o object to check
-     * @return result
-     */
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Vector2)) return false;
@@ -104,19 +99,11 @@ public class Vector2 implements Cloneable{
     }
 
     @Override
-    /**
-     * hashes the vector
-     * @return hash value
-     */
     public int hashCode() {
         return Objects.hash(getX(), getY());
     }
 
     @Override
-    /**
-     * converts this to string, format "Vector2{x=[value], y=[value]}"
-     * @return vector converted to string
-     */
     public String toString() {
         return "Vector2{" +
                 "x=" + x +
