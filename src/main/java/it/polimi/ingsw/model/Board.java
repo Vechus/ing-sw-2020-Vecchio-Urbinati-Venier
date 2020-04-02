@@ -44,9 +44,9 @@ public class Board {
         return workers[pos.getX()][pos.getY()];
     }
 
-    public void moveWorker(Worker w, Move m){
-        workers[m.getInitPos().getX()][m.getInitPos().getY()] = null;
-        workers[m.getFinPos().getX()][m.getFinPos().getY()] = w;
+    public void moveWorker(Action action){
+        workers[action.getWorkerPos().getX()][action.getWorkerPos().getY()] = null;
+        workers[action.getTargetPos().getX()][action.getTargetPos().getY()] = action.getWorker();
     }
 
     public void addEffect(OpponentEffect e){

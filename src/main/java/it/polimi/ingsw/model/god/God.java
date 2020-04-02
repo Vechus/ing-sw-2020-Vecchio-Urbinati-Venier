@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.god;
 
+import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Move;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
@@ -12,8 +12,9 @@ public class God {
     protected boolean hasMoved;
     protected boolean hasFinishedTurn;
 
-    public boolean hasPlayerWon(Move move){
-        if (this.board.getHeight (move.getFinPos()) == 3){
+
+    public boolean hasPlayerWon(Action action){
+        if (this.board.getHeight (action.getWorkerPos()) == 3){
             return true;
         }else{
             return false;
@@ -21,14 +22,14 @@ public class God {
     }
 
 
-    public  boolean callMoveOrBuild (Worker worker, Vector2 pos){
+    public  boolean callMoveOrBuild (Action action){
         if(this.hasMoved){
-            if(build(worker, pos)) {
+            if(build(action)) {
                 hasFinishedTurn=true;
                 return true;
             }
         }else{
-            if(move(worker, pos)) {
+            if(move(action)) {
                 this.hasMoved=true;
                 return true;
             }
@@ -37,30 +38,30 @@ public class God {
     }
 
 
-    public boolean move(Worker worker, Vector2 finPos){
+    public boolean move(Action action) {
 
-        Vector2 currPos= worker.getPosition();
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(finPos);
-        Move move= new Move(currPos, finPos, heightDiff);
+        Vector2 currPos= action.getWorker().getPosition();
+        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
+        //action will be built probably in model
 
-        if(!this.isWorkersMoveValid(worker, move)) {
+        if(!this.isWorkersMoveValid(action)) {
             return false;
         }
 
-        this.board.moveWorker(worker, move);
-        worker.setPosition(finPos);
+        this.board.moveWorker(action);
+        action.getWorker().setPosition(action.getTargetPos());
 
 
         return true;
     }
 
-    public boolean isWorkersMoveValid (Worker worker, Move move){
-        Vector2 currPos= move.getInitPos();
-        Vector2 nextPos= move.getFinPos();
+    public boolean isWorkersMoveValid (Action action){
+        Vector2 currPos= action.getWorkerPos();
+        Vector2 nextPos= action.getTargetPos();
 
-        int heightDiff = move.getHeightDiff();
+        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
 
-        if (this.board.getWorker(move.getFinPos()) != null){
+        if (this.board.getWorker(action.getTargetPos()) != null){
             return false;
         }
 
@@ -87,9 +88,10 @@ public class God {
         return true;
     }
 
-    public boolean build (Worker worker, Vector2 pos){
-        if(isBuildValid(worker, pos)) {
-            this.board.setHeight(pos, board.getHeight(pos) + 1);
+    public boolean build (Action action){
+
+        if(isBuildValid(action)) {
+            this.board.setHeight(action.getTargetPos(), board.getHeight(action.getTargetPos()) + 1);
             return true;
         }else{
             return false;
@@ -97,7 +99,8 @@ public class God {
 
     }
 
-    public boolean isBuildValid(Worker worker, Vector2 pos){
+    public boolean isBuildValid(Action action){
+        Vector2 pos=action.getTargetPos();
         if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
             return false;
         }
@@ -114,12 +117,16 @@ public class God {
            return false;
        }
 
-       if(worker.getPosition().getX() - pos.getX()>1 || worker.getPosition().getY()-pos.getY()>1){
+       if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
            return false;
        }
 
        return true;
     }
 
+
+    void beginNewTurn(){
+
+    }
 
 }
