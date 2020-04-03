@@ -16,7 +16,7 @@ public class Action {
          import it.polimi.ingsw.model.Action
          Action.ActionType foo = Action.ActionType.BUILD;
      */
-    public enum ActionType {BUILD, MOVE};
+    public enum ActionType {BUILD, MOVE, BUILD_DOME};
 
 
     /**

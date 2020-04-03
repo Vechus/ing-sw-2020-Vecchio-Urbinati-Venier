@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private int numOfWorkers;
     private List<Worker> workers;
     private God playerGod;
     private boolean isSpectator;
@@ -17,18 +16,16 @@ public class Player {
 
     /**
      * Constructs a Player given number of its Workers, its God and the Board
-     * @param numOfWorkers number of workers
      * @param god God that the Player will be playing for the match
      * @param board Board that the Player will play onto
      */
-    public Player(int numOfWorkers, God god, Board board) {
-        this.numOfWorkers = numOfWorkers;
+    public Player(God god, Board board) {
         this.playerGod = god;
         this.isSpectator = false;
         this.isFinished = false;
         this.board = board;
         this.workers = new ArrayList<>();
-        for(int i = 0; i < this.numOfWorkers; i++) {
+        for(int i = 0; i < 2; i++) {
             this.workers.add(new Worker(this));
         }
     }
@@ -91,22 +88,6 @@ public class Player {
      */
     public void setWorker(int idx, Worker w) {
         this.workers.set(idx, w);
-    }
-
-    /**
-     * Get number of this Player's workers
-     * @return this.numOfWorkers int number of this Player's workers
-     */
-    public int getNumOfWorkers() {
-        return this.numOfWorkers;
-    }
-
-    /**
-     * Set number of this Player's workers
-     * @param numOfWorkers int number of workers to set
-     */
-    public void setNumOfWorkers(int numOfWorkers) {
-        this.numOfWorkers = numOfWorkers;
     }
 
     /**
