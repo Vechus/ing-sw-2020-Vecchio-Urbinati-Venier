@@ -36,8 +36,10 @@ public class God {
                     hasFinishedTurn=true;
                     return true;
                 }else if(action.getType()==Action.ActionType.BUILD_DOME){
-                    hasFinishedTurn=true;
-                    return true;
+                    if(buildDome(action)) {
+                        hasFinishedTurn = true;
+                        return true;
+                    }
                 }
             }
         }else if (action.getType()==Action.ActionType.MOVE){
@@ -172,10 +174,10 @@ public class God {
         if(this.board.getHeight(action.getTargetPos())<3){
             return false;
         }
-
-
         return true;
     }
+
+
     void beginNewTurn(){
 
     }

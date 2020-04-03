@@ -7,7 +7,8 @@ import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 
 public class Artemis extends God {
-    protected int counterArtemisMoves=0;
+    private int counterArtemisMoves=0;
+    private Vector2 initialPos;
 
     public Artemis(Board board, Player player) {
         super(board, player);
@@ -17,6 +18,7 @@ public class Artemis extends God {
     @Override
     public boolean chooseAction (Action action){
         if(counterArtemisMoves==0 && action.getType()==Action.ActionType.MOVE){
+            initialPos=action.getWorkerPos();
             if (move(action)) {
                 counterArtemisMoves++;
                 return true;
@@ -59,6 +61,45 @@ public class Artemis extends God {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean isWorkersMoveValid (Action action){
+        Vector2 currPos= action.getWorkerPos();
+        Vector2 nextPos= action.getTargetPos();
+
+        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
+
+        if (this.board.getWorker(action.getTargetPos()) != null){
+            return false;
+        }
+
+        if(heightDiff>1){
+            return false;
+        }
+
+        if(this.board.isComplete(nextPos)){
+            return false;
+        }
+
+        if (nextPos.getX()>=5 || nextPos.getY()>=5 || nextPos.getX()<0 || nextPos.getY()<0){
+            return false;
+        }
+
+        if(nextPos.equals(currPos) ){
+            return false;
+        }
+
+        if(Math.abs(nextPos.getX()-currPos.getX()) >1  || Math.abs(nextPos.getY()-currPos.getY()) >1){
+            return false;
+        }
+
+        //check added for Artemis power
+        if(counterArtemisMoves==1 && nextPos.equals(initialPos)){
+            return false;
+        }
+
+        return true;
     }
 
 }
