@@ -13,6 +13,20 @@ public class Player {
     private boolean isFinished;
     private Board board;
 
+    /**
+     * Constructor for player without any parameter
+     * USE ONLY FOR TESTING PURPOSE
+     */
+    public Player() {
+        this.playerGod = new God();
+        this.isSpectator = false;
+        this.isFinished = false;
+        this.board = new Board();
+        this.workers = new ArrayList<>();
+        for(int i = 0; i < 2; i++) {
+            this.workers.add(new Worker(this));
+        }
+    }
 
     /**
      * Constructs a Player given number of its Workers, its God and the Board

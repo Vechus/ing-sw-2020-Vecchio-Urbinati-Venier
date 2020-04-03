@@ -14,10 +14,8 @@ public class Model {
 
     /**
      * Instantiates a new Model.
-     *
-     * @param numberOfPlayers the number of players.
      */
-    public Model(int numberOfPlayers) {
+    public Model() {
         this.board = new Board();
         this.players = new ArrayList<>();
     }
