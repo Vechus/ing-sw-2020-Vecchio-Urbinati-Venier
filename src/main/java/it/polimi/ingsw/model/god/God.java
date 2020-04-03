@@ -9,8 +9,15 @@ import it.polimi.ingsw.util.Vector2;
 public class God {
     protected Board board;
     protected  Player player;
-    protected boolean hasMoved;
-    protected boolean hasFinishedTurn;
+    protected boolean hasMoved= false;
+    protected boolean hasFinishedTurn=false;
+
+    public God(Board board, Player player){
+        this.board=board;
+        this.player=player;
+    }
+
+    public boolean getHasFinishedTurn(){return hasFinishedTurn;}
 
 
     public boolean hasPlayerWon(Action action){
@@ -24,14 +31,16 @@ public class God {
 
     public  boolean chooseAction (Action action){
         if(this.hasMoved ){
-            if(build(action)) {
-                if(action.getType()==Action.ActionType.BUILD){
+            if(action.getType()==Action.ActionType.BUILD){
+                if(build(action)) {
+                    hasFinishedTurn=true;
+                    return true;
+                }else if(action.getType()==Action.ActionType.BUILD_DOME){
                     hasFinishedTurn=true;
                     return true;
                 }
-
             }
-        }else{
+        }else if (action.getType()==Action.ActionType.MOVE){
             if(move(action)) {
                 this.hasMoved=true;
                 return true;
@@ -104,6 +113,8 @@ public class God {
 
     public boolean isBuildValid(Action action){
         Vector2 pos=action.getTargetPos();
+
+        //check if pos is within board
         if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
             return false;
         }
@@ -116,7 +127,11 @@ public class God {
        if(this.board.isComplete(pos)){
            return false;
        }
+       if (this.board.getHeight(pos)>=3){
+           return false;
+       }
 
+       //check worker is building within their range
        if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
            return false;
        }
@@ -128,19 +143,37 @@ public class God {
         if (!isBuildDomeValide(action)){
             return false;
         }else{
-            this.board.setHeight(action.getTargetPos(), board.getHeight(action.getTargetPos()) + 1);
             this.board.setComplete(action.getTargetPos(), true);
             return true;
         }
     }
 
     public boolean isBuildDomeValide(Action action){
-        if(this.board.getHeight(action.getTargetPos())<3){
+
+        //check if pos is within board
+        if(action.getTargetPos().getY()>=5 || action.getTargetPos().getX()>=5 || action.getTargetPos().getY()<0 || action.getTargetPos().getX()<0){
             return false;
         }
+        //check if targeted pos doesn't have any other worker
+        if (this.board.getWorker(action.getTargetPos()) != null){
+            return false;
+        }
+
+
         if(this.board.isComplete(action.getTargetPos())){
             return false;
         }
+
+        //check worker is building within their range
+        if(action.getWorker().getPosition().getX() - action.getTargetPos().getX()>1 || action.getWorker().getPosition().getY()-action.getTargetPos().getY()>1){
+            return false;
+        }
+
+        if(this.board.getHeight(action.getTargetPos())<3){
+            return false;
+        }
+
+
         return true;
     }
     void beginNewTurn(){
