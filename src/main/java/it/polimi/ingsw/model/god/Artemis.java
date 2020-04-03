@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.god;
 
+import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 
@@ -8,25 +9,25 @@ public class Artemis extends God {
 
 
     @Override
-    public boolean callMoveOrBuild (Worker worker, Vector2 pos){
+    public boolean chooseAction (Action action){
         if(counterArtemisMoves==0){
-            if (move(worker, pos)) {
+            if (move(action)) {
                 counterArtemisMoves++;
                 return true;
             }
         }
         if(counterArtemisMoves==1){
-            if(build(worker, pos)){
+            if(build(action)){
                 hasFinishedTurn=true;
                 return true;
             }
-            if(move(worker, pos)) {
+            if(move(action)) {
                 counterArtemisMoves++;
                 return true;
             }
         }
         if(counterArtemisMoves==2){
-            if(build(worker, pos)) {
+            if(build(action)) {
                 hasFinishedTurn=true;
                 return true;
             }

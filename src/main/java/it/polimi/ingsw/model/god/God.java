@@ -22,11 +22,14 @@ public class God {
     }
 
 
-    public  boolean callMoveOrBuild (Action action){
-        if(this.hasMoved){
+    public  boolean chooseAction (Action action){
+        if(this.hasMoved ){
             if(build(action)) {
-                hasFinishedTurn=true;
-                return true;
+                if(action.getType()==Action.ActionType.BUILD){
+                    hasFinishedTurn=true;
+                    return true;
+                }
+
             }
         }else{
             if(move(action)) {
@@ -104,15 +107,12 @@ public class God {
         if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
             return false;
         }
-
+        //check if targeted pos doesn't have any other worker
        if (this.board.getWorker(pos) != null){
            return false;
        }
 
-       if(this.board.getHeight(pos)==3){
-           return false;
-       }
-
+       
        if(this.board.isComplete(pos)){
            return false;
        }
@@ -124,7 +124,25 @@ public class God {
        return true;
     }
 
+    public boolean buildDome(Action action){
+        if (!isBuildDomeValide(action)){
+            return false;
+        }else{
+            this.board.setHeight(action.getTargetPos(), board.getHeight(action.getTargetPos()) + 1);
+            this.board.setComplete(action.getTargetPos(), true);
+            return true;
+        }
+    }
 
+    public boolean isBuildDomeValide(Action action){
+        if(this.board.getHeight(action.getTargetPos())<3){
+            return false;
+        }
+        if(this.board.isComplete(action.getTargetPos())){
+            return false;
+        }
+        return true;
+    }
     void beginNewTurn(){
 
     }
