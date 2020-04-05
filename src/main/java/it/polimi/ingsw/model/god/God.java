@@ -187,6 +187,17 @@ public class God {
     }
 
 
+    boolean checkwinCondition(Action action){
+        if (action.getTargetPos().getY()-action.getWorker().getPosition().getY()>0
+                && this.board.getHeight(action.getTargetPos())==3
+        ){
+            return true;
+        }
+        return false;
+    }
+
+
+
     void beginNewTurn(){
 
     }
