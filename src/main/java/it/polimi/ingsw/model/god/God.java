@@ -11,6 +11,7 @@ public class God {
     protected  Player player;
     protected boolean hasMoved= false;
     protected boolean hasFinishedTurn=false;
+    protected Worker chosenWorker;
 
 
     public God(Board board, Player player){
@@ -45,6 +46,7 @@ public class God {
             }
         }else if (action.getType()==Action.ActionType.MOVE) {
             if (move(action)) {
+                chosenWorker=action.getWorker();
                 this.hasMoved = true;
                 return true;
             }
@@ -138,6 +140,10 @@ public class God {
            return false;
        }
 
+
+       //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
+
        return true;
     }
 
@@ -174,6 +180,9 @@ public class God {
         if(this.board.getHeight(action.getTargetPos())<3){
             return false;
         }
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
+
         return true;
     }
 
