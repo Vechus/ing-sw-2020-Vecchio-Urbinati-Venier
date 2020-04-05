@@ -12,6 +12,7 @@ public class God {
     protected boolean hasMoved= false;
     protected boolean hasFinishedTurn=false;
 
+
     public God(Board board, Player player){
         this.board=board;
         this.player=player;
@@ -125,7 +126,6 @@ public class God {
            return false;
        }
 
-       
        if(this.board.isComplete(pos)){
            return false;
        }

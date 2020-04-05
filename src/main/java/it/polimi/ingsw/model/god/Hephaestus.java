@@ -3,11 +3,13 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 
 public class Hephaestus extends God {
-    Vector2 posFirstBuild;
-    int counterHephaestusBuilds = 0;
+    private Worker firstWorker;
+    private Vector2 posFirstBuild;
+    private int counterHephaestusBuilds = 0;
 
     public Hephaestus(Board board, Player player) {
         super(board, player);
@@ -19,6 +21,7 @@ public class Hephaestus extends God {
             if (counterHephaestusBuilds==0){
                 if (action.getType() == Action.ActionType.BUILD) {
                     if (build(action)) {
+                        firstWorker=action.getWorker();
                         posFirstBuild=action.getTargetPos();
                         counterHephaestusBuilds++;
                         return true;
@@ -79,6 +82,7 @@ public class Hephaestus extends God {
         if(counterHephaestusBuilds==1 && action.getTargetPos()!=posFirstBuild){
             return false;
         }
+        if (counterHephaestusBuilds==1 && !(firstWorker.equals(action.getWorker())) ){return false;}
 
         return true;
     }

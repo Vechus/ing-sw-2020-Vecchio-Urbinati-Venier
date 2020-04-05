@@ -9,7 +9,7 @@ import it.polimi.ingsw.util.Vector2;
 public class Artemis extends God {
     private int counterArtemisMoves=0;
     private Vector2 initialPos;
-
+    private  Worker firstWorker;
     public Artemis(Board board, Player player) {
         super(board, player);
     }
@@ -20,6 +20,7 @@ public class Artemis extends God {
         if(counterArtemisMoves==0 && action.getType()==Action.ActionType.MOVE){
             initialPos=action.getWorkerPos();
             if (move(action)) {
+                firstWorker= action.getWorker();
                 counterArtemisMoves++;
                 return true;
             }
@@ -96,6 +97,9 @@ public class Artemis extends God {
 
         //check added for Artemis power
         if(counterArtemisMoves==1 && nextPos.equals(initialPos)){
+            return false;
+        }
+        if(counterArtemisMoves==1&& !(firstWorker.equals(action.getWorker()))){
             return false;
         }
 

@@ -3,9 +3,11 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 
 public class Demeter extends God {
+    Worker firstWorker;
     private int counterDemeterBuild=0;
     private Vector2 posFirstBuild;
 
@@ -19,12 +21,14 @@ public class Demeter extends God {
             if(counterDemeterBuild==0){
                 if(action.getType()==Action.ActionType.BUILD){
                     if(build(action)) {
+                        firstWorker=action.getWorker();
                         posFirstBuild=action.getTargetPos();
                         counterDemeterBuild++;
                         return true;
                     }
                 }else if(action.getType()==Action.ActionType.BUILD_DOME){
                     if (buildDome(action)){
+                        firstWorker=action.getWorker();
                         counterDemeterBuild++;
                         return true;
                     }
@@ -83,6 +87,8 @@ public class Demeter extends God {
             return false;
         }
 
+        if(counterDemeterBuild==1 && !(action.getWorker().equals(firstWorker))  ){return false;}
+
         return true;
     }
 
@@ -115,6 +121,10 @@ public class Demeter extends God {
         if(counterDemeterBuild==1 && action.getTargetPos().equals(posFirstBuild)){
             return false;
         }
+
+        if(counterDemeterBuild==1 && !(action.getWorker().equals(firstWorker))  ){return false;}
+
+
         return true;
     }
 }
