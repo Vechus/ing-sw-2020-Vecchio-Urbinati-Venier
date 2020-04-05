@@ -51,6 +51,7 @@ public class Hestia extends God {
 
         }else if (action.getType()==Action.ActionType.MOVE) {
             if (move(action)) {
+                chosenWorker=action.getWorker();
                 this.hasMoved = true;
                 return true;
             }
@@ -84,6 +85,8 @@ public class Hestia extends God {
         if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
             return false;
         }
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
 
         if(counterHestiaBuilds==1 && (pos.getY()==4 || pos.getX()==4 || pos.getY()==0 || pos.getX()==0)){
             return false;
@@ -116,6 +119,8 @@ public class Hestia extends God {
         if(this.board.getHeight(action.getTargetPos())<3){
             return false;
         }
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
 
         if(counterHestiaBuilds==1 && (action.getTargetPos().getY()==4 || action.getTargetPos().getX()==4 || action.getTargetPos().getY()==0 || action.getTargetPos().getX()==0)){
             return false;

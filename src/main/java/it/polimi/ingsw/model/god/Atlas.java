@@ -30,6 +30,9 @@ public class Atlas extends God {
         if(action.getWorker().getPosition().getX() - action.getTargetPos().getX()>1 || action.getWorker().getPosition().getY()-action.getTargetPos().getY()>1){
             return false;
         }
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
+
 
         return true;
     }

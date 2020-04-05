@@ -30,6 +30,9 @@ public class Zeus extends God {
             return false;
         }
 
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
+
         //check worker is building within their range
         if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
             return false;

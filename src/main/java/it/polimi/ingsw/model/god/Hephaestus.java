@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 
 public class Hephaestus extends God {
-    private Worker firstWorker;
     private Vector2 posFirstBuild;
     private int counterHephaestusBuilds = 0;
 
@@ -21,7 +20,6 @@ public class Hephaestus extends God {
             if (counterHephaestusBuilds==0){
                 if (action.getType() == Action.ActionType.BUILD) {
                     if (build(action)) {
-                        firstWorker=action.getWorker();
                         posFirstBuild=action.getTargetPos();
                         counterHephaestusBuilds++;
                         return true;
@@ -45,6 +43,7 @@ public class Hephaestus extends God {
 
         } else if (action.getType() == Action.ActionType.MOVE) {
             if (move(action)) {
+                chosenWorker=action.getWorker();
                 this.hasMoved = true;
                 return true;
             }
@@ -82,8 +81,8 @@ public class Hephaestus extends God {
         if(counterHephaestusBuilds==1 && action.getTargetPos()!=posFirstBuild){
             return false;
         }
-        if (counterHephaestusBuilds==1 && !(firstWorker.equals(action.getWorker())) ){return false;}
-
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
         return true;
     }
 

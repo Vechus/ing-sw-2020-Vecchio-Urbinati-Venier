@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 
 public class Demeter extends God {
-    Worker firstWorker;
     private int counterDemeterBuild=0;
     private Vector2 posFirstBuild;
 
@@ -21,14 +20,13 @@ public class Demeter extends God {
             if(counterDemeterBuild==0){
                 if(action.getType()==Action.ActionType.BUILD){
                     if(build(action)) {
-                        firstWorker=action.getWorker();
+
                         posFirstBuild=action.getTargetPos();
                         counterDemeterBuild++;
                         return true;
                     }
                 }else if(action.getType()==Action.ActionType.BUILD_DOME){
                     if (buildDome(action)){
-                        firstWorker=action.getWorker();
                         counterDemeterBuild++;
                         return true;
                     }
@@ -49,6 +47,7 @@ public class Demeter extends God {
             }
         }else if (action.getType()==Action.ActionType.MOVE){
             if(move(action)) {
+                chosenWorker=action.getWorker();
                 this.hasMoved=true;
                 return true;
             }
@@ -87,7 +86,8 @@ public class Demeter extends God {
             return false;
         }
 
-        if(counterDemeterBuild==1 && !(action.getWorker().equals(firstWorker))  ){return false;}
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
 
         return true;
     }
@@ -121,9 +121,8 @@ public class Demeter extends God {
         if(counterDemeterBuild==1 && action.getTargetPos().equals(posFirstBuild)){
             return false;
         }
-
-        if(counterDemeterBuild==1 && !(action.getWorker().equals(firstWorker))  ){return false;}
-
+        //check the worker is the same that moved
+        if(!(chosenWorker.equals(action.getWorker()))){return false;}
 
         return true;
     }
