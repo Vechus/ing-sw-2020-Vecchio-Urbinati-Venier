@@ -22,12 +22,11 @@ public class Demeter extends God {
                         posFirstBuild=action.getTargetPos();
                         counterDemeterBuild++;
                         return true;
-                    }else if(action.getType()==Action.ActionType.BUILD_DOME){
-                        if (buildDome(action)){
-                            counterDemeterBuild++;
-                            return true;
-                        }
-
+                    }
+                }else if(action.getType()==Action.ActionType.BUILD_DOME){
+                    if (buildDome(action)){
+                        counterDemeterBuild++;
+                        return true;
                     }
                 }
             }
@@ -36,17 +35,14 @@ public class Demeter extends God {
                     if (build(action)) {
                         hasFinishedTurn = true;
                         return true;
-                    } else if (action.getType() == Action.ActionType.BUILD_DOME) {
-                        if (buildDome(action)){
-                            hasFinishedTurn = true;
-                            return true;
-                        }
-
+                    }
+                }else if (action.getType() == Action.ActionType.BUILD_DOME) {
+                    if (buildDome(action)){
+                        hasFinishedTurn = true;
+                        return true;
                     }
                 }
             }
-
-
         }else if (action.getType()==Action.ActionType.MOVE){
             if(move(action)) {
                 this.hasMoved=true;

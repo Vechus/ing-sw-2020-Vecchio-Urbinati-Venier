@@ -4,9 +4,10 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.god.effect.AthenaEffect;
 
-public class Athena extends God {
+/*public class Athena extends God {
 
     public Athena(Player player, Board board){
+        super();
         this.player = player;
         this.board = board;
 
@@ -17,4 +18,9 @@ public class Athena extends God {
     public void move(){
         // TODO: wait for implementation of superclass' move
     }
+
+
 }
+
+
+ */

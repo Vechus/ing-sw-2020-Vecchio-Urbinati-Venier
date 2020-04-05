@@ -35,16 +35,16 @@ public class God {
                 if(build(action)) {
                     hasFinishedTurn=true;
                     return true;
-                }else if(action.getType()==Action.ActionType.BUILD_DOME){
-                    if(buildDome(action)) {
-                        hasFinishedTurn = true;
-                        return true;
-                    }
+                }
+            }else if(action.getType()==Action.ActionType.BUILD_DOME){
+                if(buildDome(action)) {
+                    hasFinishedTurn = true;
+                    return true;
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE){
-            if(move(action)) {
-                this.hasMoved=true;
+        }else if (action.getType()==Action.ActionType.MOVE) {
+            if (move(action)) {
+                this.hasMoved = true;
                 return true;
             }
         }
@@ -120,7 +120,7 @@ public class God {
         if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
             return false;
         }
-        //check if targeted pos doesn't have any other worker
+        //check if targeted pos doesn't have any other worker. It also check that you don't build where your worker is.
        if (this.board.getWorker(pos) != null){
            return false;
        }
