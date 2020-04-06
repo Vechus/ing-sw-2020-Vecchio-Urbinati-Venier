@@ -187,8 +187,8 @@ public class God {
     }
 
 
-    boolean checkwinCondition(Action action){
-        if (action.getTargetPos().getY()-action.getWorker().getPosition().getY()>0
+    boolean checkWinCondition(Action action){
+        if (this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) >0
                 && this.board.getHeight(action.getTargetPos())==3
         ){
             return true;
