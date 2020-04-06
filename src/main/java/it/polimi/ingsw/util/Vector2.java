@@ -6,7 +6,6 @@ public class Vector2 implements Cloneable{
     private int x;
     private int y;
 
-
     /**
      * default constructor, sets coordinates to (-1, -1)
      */

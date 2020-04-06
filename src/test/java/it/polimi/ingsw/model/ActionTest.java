@@ -10,28 +10,36 @@ class ActionTest {
 
     @Test
     void getTargetWorker() {
-        final Worker worker = new Worker(new Player(new God(), new Board()));
+        final Board board = new Board();
+        final Player p = new Player(board);
+        final Worker worker = new Worker(p);
         final Action action = new Action(worker, new Vector2(0,4), Action.ActionType.MOVE);
-        assertTrue(worker.equals(action.getTargetWorker()));
+        assertEquals(worker, action.getWorker());
     }
 
     @Test
     void getWorkerPos() {
-        final Worker worker = new Worker(new Player(new God(), new Board()));
+        final Board board = new Board();
+        final Player p = new Player(board);
+        final Worker worker = new Worker(p);
         final Action action = new Action(worker, new Vector2(0,4), Action.ActionType.MOVE);
-        assertTrue(worker.getPosition().equals(action.getWorkerPos()));
+        assertEquals(worker.getPosition(), action.getWorkerPos());
     }
 
     @Test
     void getTargetPos() {
-        final Worker worker = new Worker(new Player(new God(), new Board()));
+        final Board board = new Board();
+        final Player p = new Player(board);
+        final Worker worker = new Worker(p);
         final Action action = new Action(worker, new Vector2(0,4), Action.ActionType.MOVE);
         assertEquals(new Vector2(0, 4), action.getTargetPos());
     }
 
     @Test
     void getType() {
-        final Worker worker = new Worker(new Player(new God(), new Board()));
+        final Board board = new Board();
+        final Player p = new Player(board);
+        final Worker worker = new Worker(p);
         final Action action = new Action(worker, new Vector2(0,3), Action.ActionType.MOVE);
         assertSame(Action.ActionType.MOVE, action.getType());
         assertNotSame(Action.ActionType.BUILD, action.getType());

@@ -93,7 +93,7 @@ public class Demeter extends God {
     }
 
     @Override
-    public boolean isBuildDomeValide(Action action){
+    public boolean isBuildDomeValid(Action action){
 
         //check if pos is within board
         if(action.getTargetPos().getY()>=5 || action.getTargetPos().getX()>=5 || action.getTargetPos().getY()<0 || action.getTargetPos().getX()<0){

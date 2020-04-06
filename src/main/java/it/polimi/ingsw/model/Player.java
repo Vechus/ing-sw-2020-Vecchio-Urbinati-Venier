@@ -18,10 +18,10 @@ public class Player {
      * USE ONLY FOR TESTING PURPOSE
      */
     public Player() {
-        this.playerGod = new God();
+        this.board = new Board();
+        this.playerGod = new God(this.board, this);
         this.isSpectator = false;
         this.isFinished = false;
-        this.board = new Board();
         this.workers = new ArrayList<>();
         for(int i = 0; i < 2; i++) {
             this.workers.add(new Worker(this));
@@ -44,6 +44,22 @@ public class Player {
         }
     }
 
+
+    /**
+     * Instantiates a new Player, given a board. Warning! You must set the God afterwards!
+     *
+     * @param board the board
+     */
+    public Player(Board board) {
+        this.isSpectator = false;
+        this.isFinished = false;
+        this.board = board;
+        this.workers = new ArrayList<>();
+        for(int i = 0; i < 2; i++) {
+            this.workers.add(new Worker(this));
+        }
+    }
+
     /**
      * Begin a new turn, initialising all parameters.
      */
@@ -56,8 +72,8 @@ public class Player {
      * Checks Player win condition, by returning whether God's win condition is met
      * @return hasPlayerWon boolean: 1 if Player has won, 0 else
      */
-    public boolean checkWinCondition() {
-        return this.playerGod.checkWinCondition();
+    public boolean checkWinCondition(Action action) {
+        return this.playerGod.checkWinCondition(action);
     }
 
     /**
@@ -83,7 +99,16 @@ public class Player {
      * @param action Action target action
      */
     public boolean doAction(Action action) {
-        return this.playerGod.callMoveOrBuild(action);
+        if(action.getType().equals(Action.ActionType.BUILD)) {
+            return this.playerGod.build(action);
+        } else if(action.getType().equals(Action.ActionType.BUILD_DOME)) {
+            return this.playerGod.buildDome(action);
+        } else if(action.getType().equals(Action.ActionType.MOVE)) {
+            return this.playerGod.move(action);
+        } else {
+            // throw InvalidMoveException
+            return false;
+        }
     }
 
     /**

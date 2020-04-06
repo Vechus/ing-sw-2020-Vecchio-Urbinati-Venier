@@ -91,4 +91,13 @@ public class Model {
     public int getNumberOfPlayers() {
         return players.size();
     }
+
+    /**
+     * Gets board.
+     *
+     * @return the board
+     */
+    public Board getBoard() {
+        return board;
+    }
 }

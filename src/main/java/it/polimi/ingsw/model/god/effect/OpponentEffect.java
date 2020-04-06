@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.god.effect;
 
-import it.polimi.ingsw.model.Move;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 
@@ -17,6 +16,7 @@ public class OpponentEffect {
         this.active = active;
     }
 
+    /* TODO: fix these
     public boolean checkOpponentMove(Worker w, Move m){
         return true;
     }
@@ -24,6 +24,7 @@ public class OpponentEffect {
     public boolean checkOpponentWinCondition(Worker w, Move m){
         return true;
     }
+     */
 
     public boolean checkOwner(Player p) {
         return p == this.owner;

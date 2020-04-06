@@ -11,7 +11,7 @@ public class Pan extends God {
     }
 
     @Override
-    boolean checkWinCondition(Action action){
+    public boolean checkWinCondition(Action action){
         if (this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) >0
                 && this.board.getHeight(action.getTargetPos())==3
         ){

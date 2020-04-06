@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.util.Vector2;
 
 public class Action {
-    private Worker Worker;
+    private Worker worker;
     private Vector2 workerPos;
     private Vector2 targetPos;
     private ActionType type;
@@ -25,10 +25,10 @@ public class Action {
      * @param targetPos Vector2 target position of the action
      * @param type ActionType [enum] type of action
      */
-    public Action(Worker Worker, Vector2 targetPos, ActionType type) {
-        this.Worker = Worker;
+    public Action(Worker worker, Vector2 targetPos, ActionType type) {
+        this.worker = worker;
         this.targetPos = targetPos;
-        this.workerPos = Worker.getPosition();
+        this.workerPos = worker.getPosition();
         this.type = type;
     }
 
@@ -37,7 +37,7 @@ public class Action {
      * @return Worker Worker target
      */
     public Worker getWorker() {
-        return Worker;
+        return worker;
     }
 
     /**

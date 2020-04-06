@@ -8,12 +8,15 @@ import it.polimi.ingsw.util.Vector2;
 
 public class God {
     protected Board board;
-    protected  Player player;
+    protected Player player;
     protected boolean hasMoved= false;
     protected boolean hasFinishedTurn=false;
     protected Worker chosenWorker;
 
 
+    public God(Board board) {
+        this.board = board;
+    }
     public God(Board board, Player player){
         this.board=board;
         this.player=player;
@@ -148,7 +151,7 @@ public class God {
     }
 
     public boolean buildDome(Action action){
-        if (!isBuildDomeValide(action)){
+        if (!isBuildDomeValid(action)){
             return false;
         }else{
             this.board.setComplete(action.getTargetPos(), true);
@@ -156,7 +159,7 @@ public class God {
         }
     }
 
-    public boolean isBuildDomeValide(Action action){
+    public boolean isBuildDomeValid(Action action){
 
         //check if pos is within board
         if(action.getTargetPos().getY()>=5 || action.getTargetPos().getX()>=5 || action.getTargetPos().getY()<0 || action.getTargetPos().getX()<0){
@@ -187,7 +190,7 @@ public class God {
     }
 
 
-    boolean checkWinCondition(Action action){
+    public boolean checkWinCondition(Action action){
         if (this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) >0
                 && this.board.getHeight(action.getTargetPos())==3
         ){
@@ -198,8 +201,12 @@ public class God {
 
 
 
-    void beginNewTurn(){
-
+    public void beginNewTurn(){
+        this.hasMoved = false;
+        this.hasFinishedTurn = false;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

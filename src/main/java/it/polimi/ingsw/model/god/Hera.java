@@ -6,10 +6,11 @@ import it.polimi.ingsw.model.god.effect.HeraEffect;
 
 public class Hera extends God {
 
-    public Hera(Player player, Board board){
+    public Hera(Board board, Player player){
+        super(board, player);
         this.player = player;
         this.board = board;
 
-        this.board.addEffect(new HeraEffect(this.player, true));
+        this.board.addEffect(new HeraEffect(this.player));
     }
 }
