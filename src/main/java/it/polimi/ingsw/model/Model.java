@@ -24,9 +24,12 @@ public class Model {
      * Add a new player.
      *
      * @param god the god.
+     *
+     * @return the index of the player
      */
-    public void addNewPlayer(God god) {
+    public int addNewPlayer(God god) {
         this.players.add(new Player(god, this.board));
+        return this.players.size()-1;
     }
 
     /**
@@ -58,10 +61,12 @@ public class Model {
      *
      * @param playerIndex the player index
      * @param action      the action
+     *
+     * @return was the action executed successfully
      */
-    public void executeAction(int playerIndex, Action action) {
+    public boolean executeAction(int playerIndex, Action action) {
         // possible usage of InvalidMoveException
-        players.get(playerIndex).doAction(action);
+        return players.get(playerIndex).doAction(action);
     }
 
     /**
