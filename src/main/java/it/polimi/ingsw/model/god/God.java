@@ -54,6 +54,11 @@ public class God {
                 return true;
             }
         }
+        else if(action.getType()==Action.ActionType.END_TURN){
+            if(endTurn(action)){
+
+            }
+        }
         return false;
     }
 
@@ -206,7 +211,19 @@ public class God {
         this.hasFinishedTurn = false;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+
+    public boolean endTurn(Action action){
+        if(!(isEndTurnValid(action))){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean isEndTurnValid(Action action){
+        if(!hasMoved){
+            return false;
+        }
     }
 }
+
