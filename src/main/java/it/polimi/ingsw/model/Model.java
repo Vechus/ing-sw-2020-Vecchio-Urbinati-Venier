@@ -2,15 +2,18 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.listeners.ModelChangeListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The type Model.
  */
 public class Model {
     private Board board;
-    private ArrayList<Player> players;
+    private List<Player> players;
+    private List<ModelChangeListener> listeners;
 
     /**
      * Instantiates a new Model.
@@ -19,6 +22,13 @@ public class Model {
         this.board = new Board();
         this.players = new ArrayList<>();
     }
+
+    /**
+     * Add a new ModelChangeListener
+     *
+     * @param listener the listener to add
+     */
+    public void addListener(ModelChangeListener listener){ listeners.add(listener); }
 
     /**
      * Add a new player.
@@ -66,7 +76,10 @@ public class Model {
      */
     public boolean executeAction(int playerIndex, Action action) {
         // possible usage of InvalidMoveException
-        return players.get(playerIndex).doAction(action);
+        boolean res = players.get(playerIndex).doAction(action);
+        for(ModelChangeListener listener : listeners)
+            listener.onModelChange(this);
+        return res;
     }
 
     /**
