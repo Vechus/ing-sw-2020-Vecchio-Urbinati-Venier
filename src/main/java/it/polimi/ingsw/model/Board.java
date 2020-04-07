@@ -54,7 +54,21 @@ public class Board {
     }
 
     public void setEffectActive(Player p, boolean active){
-        for(OpponentEffect e : effects)
+        for(OpponentEffect e : this.effects)
             if(e.checkOwner(p)) e.setActive(active);
+    }
+
+    public boolean isActionPermittedByEffects(Action a){
+        Player p = a.getWorker().getOwner();
+        for(OpponentEffect e : this.effects)
+            if(!e.checkOwner(p) && e.isActive() && !e.checkOpponentAction(a)) return false;
+        return true;
+    }
+
+    public boolean isWinPermittedByEffects(Action a){
+        Player p = a.getWorker().getOwner();
+        for(OpponentEffect e : this.effects)
+            if(!e.checkOwner(p) && e.isActive() && !e.checkOpponentWinCondition(a)) return false;
+        return true;
     }
 }

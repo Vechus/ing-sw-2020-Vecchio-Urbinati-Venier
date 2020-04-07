@@ -1,13 +1,16 @@
 package it.polimi.ingsw.model.god.effect;
 
+import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
 
 public class OpponentEffect {
     protected Player owner;
     protected boolean active;
+    protected Board board;
 
-    public OpponentEffect(Player owner, boolean initActive){
+    public OpponentEffect(Board board, Player owner, boolean initActive){
+        this.board = board;
         this.owner = owner;
         this.active = initActive;
     }
@@ -16,15 +19,15 @@ public class OpponentEffect {
         this.active = active;
     }
 
-    /* TODO: fix these
-    public boolean checkOpponentMove(Worker w, Move m){
+    public boolean isActive(){ return this.active; }
+
+    public boolean checkOpponentAction(Action a){
         return true;
     }
 
-    public boolean checkOpponentWinCondition(Worker w, Move m){
+    public boolean checkOpponentWinCondition(Action a){
         return true;
     }
-     */
 
     public boolean checkOwner(Player p) {
         return p == this.owner;
