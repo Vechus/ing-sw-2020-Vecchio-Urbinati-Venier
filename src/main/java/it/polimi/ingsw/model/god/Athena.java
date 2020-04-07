@@ -11,7 +11,7 @@ public class Athena extends God {
     public Athena(Player player, Board board){
         super(board, player);
 
-        this.board.addEffect(new AthenaEffect(this.player));
+        this.board.addEffect(new AthenaEffect(this.board, this.player));
     }
 
     @Override
