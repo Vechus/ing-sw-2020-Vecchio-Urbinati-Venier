@@ -97,19 +97,10 @@ public class Player {
     /**
      * Tries a move, if it's allowed then it executes it, if not -(throws InvalidMoveException)- prints a message
      * @param action Action target action
+     * @return boolean result: 1 if the action is valid
      */
-    //TODO: link to chooseAction in God
     public boolean doAction(Action action) {
-        if(action.getType().equals(Action.ActionType.BUILD)) {
-            return this.playerGod.build(action);
-        } else if(action.getType().equals(Action.ActionType.BUILD_DOME)) {
-            return this.playerGod.buildDome(action);
-        } else if(action.getType().equals(Action.ActionType.MOVE)) {
-            return this.playerGod.move(action);
-        } else {
-            // throw InvalidMoveException
-            return false;
-        }
+        return this.playerGod.chooseAction(action);
     }
 
     /**
