@@ -6,34 +6,77 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 
+/**
+ * The type God.
+ */
 public class God {
+    /**
+     * The Board.
+     */
     protected Board board;
+    /**
+     * The Player.
+     */
     protected Player player;
+    /**
+     * Has the player moved.
+     */
     protected boolean hasMoved= false;
+    /**
+     * Has the player finished turn.
+     */
     protected boolean hasFinishedTurn=false;
+    /**
+     * The Chosen worker.
+     */
     protected Worker chosenWorker;
 
 
+    /**
+     * Instantiates a new God.
+     *
+     * @param board the board.
+     */
     public God(Board board) {
         this.board = board;
     }
+
+    /**
+     * Instantiates a new God.
+     *
+     * @param board  the board
+     * @param player the player.
+     */
     public God(Board board, Player player){
         this.board=board;
         this.player=player;
     }
 
+    /**
+     * Get has finished turn boolean.
+     *
+     * @return the boolean.
+     */
     public boolean getHasFinishedTurn(){return hasFinishedTurn;}
 
 
+    /**
+     * Has player won boolean.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean hasPlayerWon(Action action){
-        if (this.board.getHeight (action.getWorkerPos()) == 3){
-            return true;
-        }else{
-            return false;
-        }
+        return this.board.getHeight(action.getWorkerPos()) == 3;
     }
 
 
+    /**
+     * Choose action. Given an Action this class calls the right function to execute.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public  boolean chooseAction (Action action){
         if(this.hasMoved ){
             if(action.getType()==Action.ActionType.BUILD){
@@ -58,10 +101,16 @@ public class God {
     }
 
 
+    /**
+     * Move a Worker. Returns True if the action has been correctly performed.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean move(Action action) {
 
-        Vector2 currPos= action.getWorker().getPosition();
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
+        // Vector2 currPos= action.getWorker().getPosition(); // unused variable
+        // int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos()); // unused variable
         //action will be built probably in model
 
         if(!this.isWorkersMoveValid(action)) {
@@ -75,6 +124,12 @@ public class God {
         return true;
     }
 
+    /**
+     * Is workers move valid boolean.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean isWorkersMoveValid (Action action){
         Vector2 currPos= action.getWorkerPos();
         Vector2 nextPos= action.getTargetPos();
@@ -108,6 +163,12 @@ public class God {
         return true;
     }
 
+    /**
+     * Build. Returns True if the action has been correctly performed.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean build (Action action){
 
         if(isBuildValid(action)) {
@@ -119,6 +180,12 @@ public class God {
 
     }
 
+    /**
+     * Is build valid boolean.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean isBuildValid(Action action){
         Vector2 pos=action.getTargetPos();
 
@@ -126,7 +193,7 @@ public class God {
         if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
             return false;
         }
-        //check if targeted pos doesn't have any other worker. It also check that you don't build where your worker is.
+        //check if targeted pos doesn't have any other worker. It also checks that you don't build where your worker is.
        if (this.board.getWorker(pos) != null){
            return false;
        }
@@ -145,11 +212,15 @@ public class God {
 
 
        //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
-
-       return true;
+        return chosenWorker.equals(action.getWorker());
     }
 
+    /**
+     * Build a dome. Returns True if the action has been correctly performed.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean buildDome(Action action){
         if (!isBuildDomeValid(action)){
             return false;
@@ -159,6 +230,12 @@ public class God {
         }
     }
 
+    /**
+     * Is build dome valid boolean.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean isBuildDomeValid(Action action){
 
         //check if pos is within board
@@ -184,28 +261,35 @@ public class God {
             return false;
         }
         //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
-
-        return true;
+        return chosenWorker.equals(action.getWorker());
     }
 
 
+    /**
+     * Check win condition. Returns True if the action performed is going to make the player win.
+     *
+     * @param action the action
+     * @return the boolean.
+     */
     public boolean checkWinCondition(Action action){
-        if (this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) >0
-                && this.board.getHeight(action.getTargetPos())==3
-        ){
-            return true;
-        }
-        return false;
+        return this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) > 0
+                && this.board.getHeight(action.getTargetPos()) == 3;
     }
 
 
-
+    /**
+     * Begin a new turn. Initializes all the attributes needed.
+     */
     public void beginNewTurn(){
         this.hasMoved = false;
         this.hasFinishedTurn = false;
     }
 
+    /**
+     * Sets player owner.
+     *
+     * @param player the player.
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
