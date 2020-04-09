@@ -16,12 +16,12 @@ public class Action {
          import it.polimi.ingsw.model.Action
          Action.ActionType foo = Action.ActionType.BUILD;
      */
-    public enum ActionType {BUILD, MOVE, BUILD_DOME};
+    public enum ActionType {BUILD, MOVE, BUILD_DOME}
 
 
     /**
      * Generate an Action object
-     * @param Worker Worker target
+     * @param worker Worker target
      * @param targetPos Vector2 target position of the action
      * @param type ActionType [enum] type of action
      */
