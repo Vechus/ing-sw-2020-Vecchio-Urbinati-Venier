@@ -13,36 +13,33 @@ public class Building {
     public Building(){}
 
     /**
-     * Get height int.
-     *
-     * @return the height
+     * Getter for height
+     * @return height of the building
      */
     public int getHeight(){
         return this.height;
     }
 
     /**
-     * Set height int.
-     *
-     * @param height the height of the building.
+     * Setter for height. Valid heights are 0 to 3.
+     * @param height new building height
      */
     public void setHeight(int height){
+        if(height < 0 || height > 3) return;
         this.height = height;
     }
 
     /**
-     * Is a complete building boolean.
-     *
-     * @return the boolean
+     * Getter for complete
+     * @return whether the building has a dome
      */
     public boolean isComplete(){
         return this.complete;
     }
 
     /**
-     * Set complete building boolean.
-     *
-     * @param complete boolean to set.
+     * Setter for complete
+     * @param complete bool
      */
     public void setComplete(boolean complete){
         this.complete = complete;
