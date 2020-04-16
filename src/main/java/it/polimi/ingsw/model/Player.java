@@ -12,6 +12,8 @@ public class Player {
     private boolean isSpectator;
     private boolean isFinished;
     private Board board;
+    private String playerName;
+    private String playerColor;
 
     /**
      * Constructor for player without any parameter
@@ -167,5 +169,37 @@ public class Player {
      */
     public void setFinished(boolean finished) {
         this.isFinished = finished;
+    }
+
+    /**
+     * Gets player name
+     * @return player name
+     */
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    /**
+     * Sets player name
+     * @param playerName player name
+     */
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    /**
+     * Gets player color
+     * @return player color
+     */
+    public String getPlayerColor() {
+        return playerColor;
+    }
+
+    /**
+     *  Sets player color
+     * @param playerColor player color
+     */
+    public void setPlayerColor(String playerColor) {
+        this.playerColor = playerColor;
     }
 }
