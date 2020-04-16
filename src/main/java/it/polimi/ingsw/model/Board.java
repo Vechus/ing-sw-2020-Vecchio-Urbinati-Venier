@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.effect.OpponentEffect;
+import it.polimi.ingsw.util.ConsoleColor;
 import it.polimi.ingsw.util.Vector2;
 
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class Board {
      */
     public void placeWorker(Worker w, Vector2 pos){
         workers[pos.getX()][pos.getY()] = w;
+        w.setPosition(pos);
     }
 
     /**
@@ -140,5 +142,26 @@ public class Board {
         for(OpponentEffect e : this.effects)
             if(!e.checkOwner(p) && e.isActive() && !e.checkOpponentWinCondition(a)) return false;
         return true;
+    }
+
+    public void print() {
+        String block = ConsoleColor.WHITE_BACKGROUND + ConsoleColor.WHITE_BOLD + "█" + ConsoleColor.RESET;
+        System.out.println("  " + block.repeat(21));
+        for(int i = 0; i < 5; i++) {
+            StringBuilder row = new StringBuilder("  " + block);
+            for(int j = 0; j < 5; j++) {
+                Vector2 pos = new Vector2(i,j);
+                Worker w = getWorker(pos);
+                if(w == null) {
+                    row.append(" ").append(getHeight(pos)).append(" ").append(block);
+                } else {
+                    row.append(" ").append(w.getOwner().getPlayerColor()).append(getHeight(pos)).append(ConsoleColor.RESET).append(" ").append(block);
+                }
+            }
+            System.out.println(("  " + block + " ").repeat(6));
+            System.out.println(row);
+            System.out.println(("  " + block + " ").repeat(6));
+            System.out.println("  " + block.repeat(21));
+        }
     }
 }
