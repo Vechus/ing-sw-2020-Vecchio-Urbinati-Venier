@@ -1,21 +1,20 @@
 package it.polimi.ingsw.model.god.effect;
 
+import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.Vector2;
 
 public class AthenaEffect extends OpponentEffect {
 
-    public AthenaEffect(Player owner){
-        super(owner, false);
+    public AthenaEffect(Board board, Player owner){
+        super(board, owner, false);
     }
 
-/* TODO: fix this
     @Override
-
-    public boolean checkOpponentMove(Worker w, Move m) {
-        if(w.getOwner() == this.owner || !this.active) return true;
-        return m.getHeightDiff() <= 0;
+    public boolean checkOpponentAction(Action a) {
+        Vector2 currPos= a.getWorker().getPosition();
+        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(a.getTargetPos());
+        return heightDiff <= 0;
     }
-
-     */
 }

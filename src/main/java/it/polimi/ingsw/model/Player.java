@@ -12,6 +12,8 @@ public class Player {
     private boolean isSpectator;
     private boolean isFinished;
     private Board board;
+    private String playerName;
+    private String playerColor;
 
     /**
      * Constructor for player without any parameter
@@ -97,18 +99,10 @@ public class Player {
     /**
      * Tries a move, if it's allowed then it executes it, if not -(throws InvalidMoveException)- prints a message
      * @param action Action target action
+     * @return boolean result: 1 if the action is valid
      */
     public boolean doAction(Action action) {
-        if(action.getType().equals(Action.ActionType.BUILD)) {
-            return this.playerGod.build(action);
-        } else if(action.getType().equals(Action.ActionType.BUILD_DOME)) {
-            return this.playerGod.buildDome(action);
-        } else if(action.getType().equals(Action.ActionType.MOVE)) {
-            return this.playerGod.move(action);
-        } else {
-            // throw InvalidMoveException
-            return false;
-        }
+        return this.playerGod.chooseAction(action);
     }
 
     /**
@@ -175,5 +169,37 @@ public class Player {
      */
     public void setFinished(boolean finished) {
         this.isFinished = finished;
+    }
+
+    /**
+     * Gets player name
+     * @return player name
+     */
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    /**
+     * Sets player name
+     * @param playerName player name
+     */
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    /**
+     * Gets player color
+     * @return player color
+     */
+    public String getPlayerColor() {
+        return playerColor;
+    }
+
+    /**
+     *  Sets player color
+     * @param playerColor player color
+     */
+    public void setPlayerColor(String playerColor) {
+        this.playerColor = playerColor;
     }
 }

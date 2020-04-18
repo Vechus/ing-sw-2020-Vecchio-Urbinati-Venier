@@ -8,9 +8,7 @@ public class Hera extends God {
 
     public Hera(Board board, Player player){
         super(board, player);
-        this.player = player;
-        this.board = board;
 
-        this.board.addEffect(new HeraEffect(this.player));
+        this.board.addEffect(new HeraEffect(this.board, this.player));
     }
 }
