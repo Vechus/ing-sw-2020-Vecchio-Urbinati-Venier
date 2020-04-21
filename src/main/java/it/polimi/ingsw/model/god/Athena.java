@@ -8,7 +8,7 @@ import it.polimi.ingsw.util.Vector2;
 
 public class Athena extends God {
 
-    public Athena(Player player, Board board){
+    public Athena(Board board, Player player){
         super(board, player);
 
         this.board.addEffect(new AthenaEffect(this.board, this.player));
