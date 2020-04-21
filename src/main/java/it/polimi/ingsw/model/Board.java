@@ -89,6 +89,13 @@ public class Board {
     }
 
     /**
+     * Set the worker at the desired location
+     * @param pos the position of the worker
+     * @param worker the worker to position
+     */
+    public void setWorker(Vector2 pos, Worker worker){ workers[pos.getX()][pos.getY()] = worker; }
+
+    /**
      * Move worker.
      *
      * @param action the action.
@@ -116,6 +123,17 @@ public class Board {
     public void setEffectActive(Player p, boolean active){
         for(OpponentEffect e : this.effects)
             if(e.checkOwner(p)) e.setActive(active);
+    }
+
+    /**
+     * Is the player's effect active?
+     * @param p player whose effect we're checking
+     * @return if the effect is active
+     */
+    public boolean isEffectActive(Player p){
+        for(OpponentEffect e : this.effects)
+            if(e.checkOwner(p)) return e.isActive();
+        return false;
     }
 
     /**

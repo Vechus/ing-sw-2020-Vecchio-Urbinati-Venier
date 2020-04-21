@@ -22,9 +22,10 @@ public class Athena extends God {
 
     @Override
     public boolean move(Action action){
-        boolean res = super.move(action);
         Vector2 currPos= action.getWorker().getPosition();
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
+        boolean res = super.move(action);
+        int heightDiff = this.board.getHeight(action.getTargetPos())-this.board.getHeight(currPos);
+        System.out.println("Athena moves: "+res+" height diff: "+heightDiff);
         if(res && heightDiff > 0)
             this.board.setEffectActive(this.player, true);
         return res;

@@ -14,7 +14,7 @@ public class AthenaEffect extends OpponentEffect {
     @Override
     public boolean checkOpponentAction(Action a) {
         Vector2 currPos= a.getWorker().getPosition();
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(a.getTargetPos());
+        int heightDiff = this.board.getHeight(a.getTargetPos())-this.board.getHeight(currPos);
         return heightDiff <= 0;
     }
 }
