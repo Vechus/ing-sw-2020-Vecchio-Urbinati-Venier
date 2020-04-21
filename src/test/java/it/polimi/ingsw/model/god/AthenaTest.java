@@ -25,7 +25,7 @@ public class AthenaTest {
     void setup(){
         board = new Board();
         player = new Player(board);
-        athena = new Athena(player, board);
+        athena = new Athena(board, player);
         player.setPlayerGod(athena);
         playerWorker = new Worker(pInitPos, player);
         board.setWorker(pInitPos, playerWorker);
@@ -50,6 +50,11 @@ public class AthenaTest {
     @Test
     void testNewTurn(){
         athena.beginNewTurn();
+        assertFalse(board.isEffectActive(player));
+    }
+
+    @Test
+    void testDefaultInactive(){
         assertFalse(board.isEffectActive(player));
     }
 }
