@@ -29,8 +29,8 @@ public class HeraEffectTest {
         hera = new Hera(board, player);
         player.setPlayerGod(hera);
         opponent = new Player(board);
-        oppWorker = new Worker(oppInitPos, opponent);
-        board.setWorker(oppInitPos, oppWorker);
+        oppWorker = new Worker(opponent);
+        board.placeWorker(oppWorker, oppInitPos);
 
         board.setHeight(borderPos, 3);
         board.setHeight(centerPos, 3);

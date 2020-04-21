@@ -27,8 +27,8 @@ public class AthenaTest {
         player = new Player(board);
         athena = new Athena(board, player);
         player.setPlayerGod(athena);
-        playerWorker = new Worker(pInitPos, player);
-        board.setWorker(pInitPos, playerWorker);
+        playerWorker = new Worker(player);
+        board.placeWorker(playerWorker, pInitPos);
 
         board.setHeight(highPos, 1);
     }
