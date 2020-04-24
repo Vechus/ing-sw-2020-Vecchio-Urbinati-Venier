@@ -89,6 +89,7 @@ public class Player {
             for(int x = -1; x <= 1; x++) {
                 for(int y = -1; y <= 1; y++) {
                     posDelta = w.getPosition().add(new Vector2(x, y));
+                    if(posDelta.getX() < 0 || posDelta.getY() < 0) continue;
                     if(this.getPlayerGod().isWorkersMoveValid(new Action(w, posDelta, Action.ActionType.MOVE))) return false;
                 }
             }
