@@ -2,8 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.Vector2;
-import it.polimi.ingsw.util.listeners.ModelChangeListener;
-import org.junit.jupiter.api.Assertions;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
