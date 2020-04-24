@@ -21,6 +21,7 @@ public class Model {
     public Model() {
         this.board = new Board();
         this.players = new ArrayList<>();
+        this.listeners = new ArrayList<>();
     }
 
     /**
