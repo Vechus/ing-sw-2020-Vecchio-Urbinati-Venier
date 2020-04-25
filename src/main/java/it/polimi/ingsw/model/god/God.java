@@ -60,16 +60,6 @@ public class God {
     public boolean getHasFinishedTurn(){return hasFinishedTurn;}
 
 
-    /**
-     * Has player won boolean.
-     *
-     * @param action the action
-     * @return the boolean.
-     */
-    public boolean hasPlayerWon(Action action){
-        return this.board.getHeight(action.getWorkerPos()) == 3;
-    }
-
 
     /**
      * Choose action. Given an Action this class calls the right function to execute.
@@ -90,16 +80,14 @@ public class God {
                     return true;
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE) {
-            if (move(action)) {
-                chosenWorker=action.getWorker();
-                this.hasMoved = true;
-                return true;
-            }
+        }else if (action.getType()==Action.ActionType.MOVE) if (move(action)) {
+            chosenWorker = action.getWorker();
+            this.hasMoved = true;
+            return true;
         }
-        else if(action.getType()==Action.ActionType.END_TURN){
-            if(endTurn(action)){
-
+        if(action.getType()==Action.ActionType.END_TURN) {
+            if (endTurn(action)) {
+                return true;
             }
         }
         return false;
@@ -114,11 +102,8 @@ public class God {
      */
     public boolean move(Action action) {
 
-        // Vector2 currPos= action.getWorker().getPosition(); // unused variable
-        // int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos()); // unused variable
-        //action will be built probably in model
 
-        if(!this.isWorkersMoveValid(action)) {
+        if(!this.isMoveValid(action)) {
             return false;
         }
 
@@ -135,37 +120,40 @@ public class God {
      * @param action the action
      * @return the boolean.
      */
-    public boolean isWorkersMoveValid (Action action){
+    public boolean isMoveValid (Action action){
         Vector2 currPos= action.getWorkerPos();
         Vector2 nextPos= action.getTargetPos();
 
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
 
+        int heightDiff = this.board.getHeight(action.getTargetPos())-this.board.getHeight(currPos);
+
+        //workers cannot go where there are already workers
         if (this.board.getWorker(action.getTargetPos()) != null){
             return false;
         }
 
+        //workers cannot go up more than 1 level
         if(heightDiff>1){
             return false;
         }
 
+        //workers cannot go where there are domes. complete may be not the right word
         if(this.board.isComplete(nextPos)){
             return false;
         }
 
+        //workers cannot go outside the board
         if (nextPos.getX()>=5 || nextPos.getY()>=5 || nextPos.getX()<0 || nextPos.getY()<0){
             return false;
         }
 
+        //workers cannot stay on the same pos. maybe useless.
         if(nextPos.equals(currPos) ){
             return false;
         }
 
-        if(Math.abs(nextPos.getX()-currPos.getX()) >1  || Math.abs(nextPos.getY()-currPos.getY()) >1){
-            return false;
-        }
-
-        return true;
+        //workers can move only in adjacent cells
+        return Math.abs(nextPos.getX() - currPos.getX()) <= 1 && Math.abs(nextPos.getY() - currPos.getY()) <= 1;
     }
 
     /**
@@ -303,6 +291,8 @@ public class God {
         if(!hasMoved){
             return false;
         }
+
+        return false;
     }
 }
 

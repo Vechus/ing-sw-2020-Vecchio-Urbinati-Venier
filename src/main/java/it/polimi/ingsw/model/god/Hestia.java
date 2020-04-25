@@ -64,29 +64,6 @@ public class Hestia extends God {
     public boolean isBuildValid(Action action){
         Vector2 pos=action.getTargetPos();
 
-        //check if pos is within board
-        if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
-            return false;
-        }
-        //check if targeted pos doesn't have any other worker. It also check that you don't build where your worker is.
-        if (this.board.getWorker(pos) != null){
-            return false;
-        }
-
-
-        if(this.board.isComplete(pos)){
-            return false;
-        }
-        if (this.board.getHeight(pos)>=3){
-            return false;
-        }
-
-        //check worker is building within their range
-        if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
-            return false;
-        }
-        //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
 
         if(counterHestiaBuilds==1 && (pos.getY()==4 || pos.getX()==4 || pos.getY()==0 || pos.getX()==0)){
             return false;
@@ -96,31 +73,6 @@ public class Hestia extends God {
 
     @Override
     public boolean isBuildDomeValid(Action action){
-
-        //check if pos is within board
-        if(action.getTargetPos().getY()>=5 || action.getTargetPos().getX()>=5 || action.getTargetPos().getY()<0 || action.getTargetPos().getX()<0){
-            return false;
-        }
-        //check if targeted pos doesn't have any other worker
-        if (this.board.getWorker(action.getTargetPos()) != null){
-            return false;
-        }
-
-
-        if(this.board.isComplete(action.getTargetPos())){
-            return false;
-        }
-
-        //check worker is building within their range
-        if(action.getWorker().getPosition().getX() - action.getTargetPos().getX()>1 || action.getWorker().getPosition().getY()-action.getTargetPos().getY()>1){
-            return false;
-        }
-
-        if(this.board.getHeight(action.getTargetPos())<3){
-            return false;
-        }
-        //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
 
         if(counterHestiaBuilds==1 && (action.getTargetPos().getY()==4 || action.getTargetPos().getX()==4 || action.getTargetPos().getY()==0 || action.getTargetPos().getX()==0)){
             return false;

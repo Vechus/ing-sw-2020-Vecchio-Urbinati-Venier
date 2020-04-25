@@ -54,35 +54,8 @@ public class Prometheus extends God {
 
 
     @Override
-    public boolean isWorkersMoveValid (Action action){
-        Vector2 currPos= action.getWorkerPos();
-        Vector2 nextPos= action.getTargetPos();
+    public boolean isMoveValid (Action action){
 
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
-
-        if (this.board.getWorker(action.getTargetPos()) != null){
-            return false;
-        }
-
-        if(heightDiff>1){
-            return false;
-        }
-
-        if(this.board.isComplete(nextPos)){
-            return false;
-        }
-
-        if (nextPos.getX()>=5 || nextPos.getY()>=5 || nextPos.getX()<0 || nextPos.getY()<0){
-            return false;
-        }
-
-        if(nextPos.equals(currPos) ){
-            return false;
-        }
-
-        if(Math.abs(nextPos.getX()-currPos.getX()) >1  || Math.abs(nextPos.getY()-currPos.getY()) >1){
-            return false;
-        }
 
         //extra condition
         if(hasBuilt==true && this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos())>0){
