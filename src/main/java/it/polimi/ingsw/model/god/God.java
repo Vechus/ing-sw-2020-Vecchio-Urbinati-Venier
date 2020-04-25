@@ -107,6 +107,7 @@ public class God {
             return false;
         }
 
+
         this.board.moveWorker(action);
         action.getWorker().setPosition(action.getTargetPos());
 
