@@ -27,9 +27,9 @@ class ModelTest {
         board.setHeight(new Vector2(1,0), 2);
         model.checkPlayersLoseCondition();
         assertEquals(1, model.getNumberOfPlayers());
-        //board.setHeight(new Vector2(1,1), 3);
-        //model.checkPlayersLoseCondition();
-        //assertEquals(0, model.getNumberOfPlayers());
+        board.setHeight(new Vector2(1,1), 3);
+        model.checkPlayersLoseCondition();
+        assertEquals(0, model.getNumberOfPlayers());
     }
 
     @Test

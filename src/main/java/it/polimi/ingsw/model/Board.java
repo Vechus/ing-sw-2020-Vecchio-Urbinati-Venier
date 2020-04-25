@@ -34,6 +34,7 @@ public class Board {
      * @return the int.
      */
     public int getHeight(Vector2 pos){
+        if(pos.getX() < 0 || pos.getY() < 0) return -1;
         return state[pos.getX()][pos.getY()].getHeight();
     }
 

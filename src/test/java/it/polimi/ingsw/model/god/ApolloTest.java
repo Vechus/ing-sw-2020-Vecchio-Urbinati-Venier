@@ -60,6 +60,6 @@ class ApolloTest {
         assertEquals(p1.getWorker(0), board.getWorker(p1Pos));
         board.placeWorker(p2.getWorker(0), p2Pos);
         assertEquals(p2.getWorker(0), board.getWorker(p2Pos));
-        assertTrue(apollo.isWorkersMoveValid(new Action(p1.getWorker(0), p2Pos, Action.ActionType.MOVE)));
+        assertTrue(apollo.isMoveValid(new Action(p1.getWorker(0), p2Pos, Action.ActionType.MOVE)));
     }
 }

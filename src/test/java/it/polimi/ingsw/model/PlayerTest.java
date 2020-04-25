@@ -56,11 +56,11 @@ class PlayerTest {
         assertFalse(p1.checkLoseCondition());
         board.placeWorker(p2.getWorker(0), new Vector2(0,1));
         assertFalse(p1.checkLoseCondition());
-        board.placeWorker(p2.getWorker(0), new Vector2(1,0));
+        board.placeWorker(p2.getWorker(1), new Vector2(1,0));
         assertFalse(p1.checkLoseCondition());
         board.setHeight(new Vector2(1,1), 2);
         // now he should lose
-        //assertTrue(p1.checkLoseCondition());
+        assertTrue(p1.checkLoseCondition());
     }
 
     @Test
