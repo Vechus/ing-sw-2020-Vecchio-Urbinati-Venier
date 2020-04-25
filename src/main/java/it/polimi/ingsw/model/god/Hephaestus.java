@@ -54,35 +54,12 @@ public class Hephaestus extends God {
 
     @Override
     public boolean isBuildValid(Action action){
-        Vector2 pos=action.getTargetPos();
-
-        //check if pos is within board
-        if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
-            return false;
-        }
-        //check if targeted pos doesn't have any other worker. It also check that you don't build where your worker is.
-        if (this.board.getWorker(pos) != null){
-            return false;
-        }
-
-
-        if(this.board.isComplete(pos)){
-            return false;
-        }
-        if (this.board.getHeight(pos)>=3){
-            return false;
-        }
-
-        //check worker is building within their range
-        if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
-            return false;
-        }
 
         if(counterHephaestusBuilds==1 && action.getTargetPos()!=posFirstBuild){
             return false;
         }
-        //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
+
+
         return true;
     }
 

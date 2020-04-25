@@ -15,12 +15,6 @@ public class Chronus extends God {
     public boolean checkWinCondition(Action action){
         int counterBuildings=0;
         int i,j;
-        if (this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) >0
-                && this.board.getHeight(action.getTargetPos())==3
-        ){
-            return true;
-        }
-
 
         for (i=0;i<5; i++ ){
             for(j=0; j<5;j++){

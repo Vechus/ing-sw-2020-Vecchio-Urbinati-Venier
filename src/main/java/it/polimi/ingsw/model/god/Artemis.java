@@ -25,8 +25,8 @@ public class Artemis extends God {
                 return true;
             }
         }
-        if(counterArtemisMoves==1){
-            if(action.getType()==Action.ActionType.MOVE){
+        if(counterArtemisMoves>=1){
+            if(action.getType()==Action.ActionType.MOVE && counterArtemisMoves == 1){
                 if(move(action)) {
                     counterArtemisMoves++;
                     return true;
@@ -38,68 +38,28 @@ public class Artemis extends God {
                     return true;
                 }
             }
-            if(action.getType()==Action.ActionType.BUILD_DOME){
-                if(buildDome(action)){
-                    hasFinishedTurn=true;
-                    return true;
-                }
-            }
-        }
-        if(counterArtemisMoves==2){
-            if(action.getType()==Action.ActionType.BUILD){
-                if(build(action)) {
-                    hasFinishedTurn=true;
-                    return true;
-                }
-            }
             if(action.getType()==Action.ActionType.BUILD_DOME) {
                 if (buildDome(action)) {
                     hasFinishedTurn = true;
                     return true;
                 }
             }
-
         }
 
         return false;
     }
 
     @Override
-    public boolean isWorkersMoveValid (Action action){
-        Vector2 currPos= action.getWorkerPos();
+    public boolean isMoveValid (Action action){
         Vector2 nextPos= action.getTargetPos();
 
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
-
-        if (this.board.getWorker(action.getTargetPos()) != null){
-            return false;
-        }
-
-        if(heightDiff>1){
-            return false;
-        }
-
-        if(this.board.isComplete(nextPos)){
-            return false;
-        }
-
-        if (nextPos.getX()>=5 || nextPos.getY()>=5 || nextPos.getX()<0 || nextPos.getY()<0){
-            return false;
-        }
-
-        if(nextPos.equals(currPos) ){
-            return false;
-        }
-
-        if(Math.abs(nextPos.getX()-currPos.getX()) >1  || Math.abs(nextPos.getY()-currPos.getY()) >1){
-            return false;
-        }
+        boolean res = super.isMoveValid(action);
 
         //check added for Artemis power
         if(counterArtemisMoves==1 && nextPos.equals(initialPos)){
             return false;
         }
-        if(counterArtemisMoves==1&& !(chosenWorker.equals(action.getWorker()))){
+        if(counterArtemisMoves==1 && !(chosenWorker.equals(action.getWorker()))){
             return false;
         }
 

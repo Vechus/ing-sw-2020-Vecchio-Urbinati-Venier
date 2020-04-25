@@ -45,16 +45,6 @@ public class Triton extends God {
     @Override
     public boolean move(Action action) {
 
-        Vector2 currPos= action.getWorker().getPosition();
-        int heightDiff = this.board.getHeight(currPos)-this.board.getHeight(action.getTargetPos());
-        //action will be built probably in model
-
-        if(!this.isWorkersMoveValid(action)) {
-            return false;
-        }
-
-        this.board.moveWorker(action);
-        action.getWorker().setPosition(action.getTargetPos());
 
         //special setting for triton
         if(action.getWorker().getPosition().getY()==4 || action.getWorker().getPosition().getX()==4){
