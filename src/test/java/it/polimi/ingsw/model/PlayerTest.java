@@ -20,6 +20,8 @@ class PlayerTest {
     void setup(){
         p1.setPlayerGod(new God(board, p1));
         p2.setPlayerGod(new God(board, p1));
+        p1.setPlayerColor(ConsoleColor.GREEN_BOLD_BRIGHT);
+        p2.setPlayerColor(ConsoleColor.BLUE_BOLD_BRIGHT);
     }
 
     @Test
@@ -82,6 +84,7 @@ class PlayerTest {
         assertFalse(p1.doAction(testActionBuildDome));
         board.setHeight(target, 3);
         assertTrue(p1.doAction(new Action(p1.getWorker(0), new Vector2(1,0), Action.ActionType.MOVE)));
+        board.print();
         assertTrue(p1.doAction(testActionBuildDome));
     }
 
