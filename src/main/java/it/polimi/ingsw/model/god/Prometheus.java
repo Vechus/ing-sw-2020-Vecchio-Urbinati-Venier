@@ -21,7 +21,7 @@ public class Prometheus extends God {
     public  boolean chooseAction (Action action){
         if(this.hasMoved ){
             if(action.getType()==Action.ActionType.BUILD){
-                if(build(action)) {
+                if(buildBlock(action)) {
                     hasFinishedTurn=true;
                     return true;
                 }
@@ -40,11 +40,11 @@ public class Prometheus extends God {
                 return true;
             }
         } else if(hasBuilt==false && action.getType()==Action.ActionType.BUILD){
-            if (build(action)){
+            if (buildBlock(action)){
                 hasBuilt=true;
             }
         } else if(hasBuilt==false && action.getType()==Action.ActionType.BUILD_DOME){
-            if (build(action)){
+            if (buildBlock(action)){
                 hasBuilt=true;
             }
         }

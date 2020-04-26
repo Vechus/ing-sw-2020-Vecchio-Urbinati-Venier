@@ -19,7 +19,7 @@ public class Demeter extends God {
         if(this.hasMoved ){
             if(counterDemeterBuild==0){
                 if(action.getType()==Action.ActionType.BUILD){
-                    if(build(action)) {
+                    if(buildBlock(action)) {
 
                         posFirstBuild=action.getTargetPos();
                         counterDemeterBuild++;
@@ -34,7 +34,7 @@ public class Demeter extends God {
             }
             if(counterDemeterBuild==1) {
                 if (action.getType() == Action.ActionType.BUILD) {
-                    if (build(action)) {
+                    if (buildBlock(action)) {
                         hasFinishedTurn = true;
                         return true;
                     }
@@ -56,7 +56,7 @@ public class Demeter extends God {
     }
 
     @Override
-    public boolean isBuildValid(Action action){
+    public boolean isBuildBlockValid(Action action){
 
 
         //check for Demeter power

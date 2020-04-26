@@ -18,7 +18,7 @@ public class Hestia extends God {
         if(this.hasMoved ){
            if(counterHestiaBuilds==0){
                if(action.getType()==Action.ActionType.BUILD){
-                   if(build(action)) {
+                   if(buildBlock(action)) {
                        counterHestiaBuilds++;
                        return true;
                    }
@@ -32,7 +32,7 @@ public class Hestia extends God {
 
            } else if(counterHestiaBuilds==1){
                if(action.getType()==Action.ActionType.BUILD){
-                   if(build(action)) {
+                   if(buildBlock(action)) {
                        hasFinishedTurn=true;
                        return true;
                    }
@@ -61,7 +61,7 @@ public class Hestia extends God {
 
 
     @Override
-    public boolean isBuildValid(Action action){
+    public boolean isBuildBlockValid(Action action){
         Vector2 pos=action.getTargetPos();
 
 

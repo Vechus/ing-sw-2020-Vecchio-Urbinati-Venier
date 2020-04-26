@@ -4,7 +4,12 @@ import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.util.Vector2;
+import org.testng.internal.collections.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * The type God.
@@ -22,6 +27,11 @@ public class God {
      * Has the player moved.
      */
     protected boolean hasMoved= false;
+
+    protected boolean hasBuilt=false;
+
+    public boolean getHasMoved(){return hasMoved;  }
+    public boolean getHasBuilt(){ return hasBuilt; }
     /**
      * Has the player finished turn.
      */
@@ -29,7 +39,34 @@ public class God {
     /**
      * The Chosen worker.
      */
-    protected Worker chosenWorker;
+    protected Worker chosenWorker= null;
+
+    List<Function<Pair<Action, Board>, Boolean>> moveValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                    GodValidationMethods::isCellWorkersFree,
+                    GodValidationMethods::isTargetPosOnDifferentCell,
+                    GodValidationMethods::isTargetPosDomesFree,
+                    GodValidationMethods::isTargetPosAdjacent,
+                    GodValidationMethods::isMoveHeightLessThanOne
+            ));
+
+    List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                    GodValidationMethods::isCellWorkersFree,
+                    GodValidationMethods::isTargetPosOnDifferentCell,
+                    GodValidationMethods::isTargetPosDomesFree,
+                    GodValidationMethods::isTargetPosAdjacent,
+                    GodValidationMethods::isBuildingHeightLessThanThree
+            ));
+
+    List<Function<Pair<Action, Board>, Boolean>> buildDomeValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                    GodValidationMethods::isCellWorkersFree,
+                    GodValidationMethods::isTargetPosOnDifferentCell,
+                    GodValidationMethods::isTargetPosDomesFree,
+                    GodValidationMethods::isTargetPosAdjacent,
+                    GodValidationMethods::isBuildingHeightThree
+            ));
 
 
     /**
@@ -37,7 +74,7 @@ public class God {
      *
      * @param board the board.
      */
-    public God(Board board) {
+     public God(Board board) {
         this.board = board;
     }
 
@@ -68,25 +105,29 @@ public class God {
      * @return the boolean.
      */
     public  boolean chooseAction (Action action){
+        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
+
         if(this.hasMoved ){
-            if(action.getType()==Action.ActionType.BUILD){
-                if(build(action)) {
-                    hasFinishedTurn=true;
+            if(action.getType()==Action.ActionType.BUILD && chosenWorker==action.getWorker()){
+                if(buildBlock(action)) {
+                    this.hasBuilt=true;
                     return true;
                 }
-            }else if(action.getType()==Action.ActionType.BUILD_DOME){
+            }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
                 if(buildDome(action)) {
-                    hasFinishedTurn = true;
+                    this.hasBuilt=true;
                     return true;
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE) if (move(action)) {
-            chosenWorker = action.getWorker();
-            this.hasMoved = true;
-            return true;
+        }else if (action.getType()==Action.ActionType.MOVE && chosenWorker==action.getWorker()){
+            if (move(action)) {
+                this.hasMoved = true;
+                return true;
+            }
         }
-        if(action.getType()==Action.ActionType.END_TURN) {
-            if (endTurn(action)) {
+        if(action.getType()==Action.ActionType.END_TURN ) {
+            if (endTurn()) {
+                this.hasFinishedTurn = true;
                 return true;
             }
         }
@@ -101,16 +142,10 @@ public class God {
      * @return the boolean.
      */
     public boolean move(Action action) {
-
-
         if(!this.isMoveValid(action)) {
             return false;
         }
-
-
         this.board.moveWorker(action);
-        action.getWorker().setPosition(action.getTargetPos());
-
 
         return true;
     }
@@ -122,39 +157,7 @@ public class God {
      * @return the boolean.
      */
     public boolean isMoveValid (Action action){
-        Vector2 currPos= action.getWorkerPos();
-        Vector2 nextPos= action.getTargetPos();
-
-
-        int heightDiff = this.board.getHeight(action.getTargetPos())-this.board.getHeight(currPos);
-
-        //workers cannot go where there are already workers
-        if (this.board.getWorker(action.getTargetPos()) != null){
-            return false;
-        }
-
-        //workers cannot go up more than 1 level
-        if(heightDiff>1){
-            return false;
-        }
-
-        //workers cannot go where there are domes. complete may be not the right word
-        if(this.board.isComplete(nextPos)){
-            return false;
-        }
-
-        //workers cannot go outside the board
-        if (nextPos.getX()>=5 || nextPos.getY()>=5 || nextPos.getX()<0 || nextPos.getY()<0){
-            return false;
-        }
-
-        //workers cannot stay on the same pos. maybe useless.
-        if(nextPos.equals(currPos) ){
-            return false;
-        }
-
-        //workers can move only in adjacent cells
-        return Math.abs(nextPos.getX() - currPos.getX()) <= 1 && Math.abs(nextPos.getY() - currPos.getY()) <= 1;
+        return checkConditions(moveValidationFunctions, action);
     }
 
     /**
@@ -163,9 +166,8 @@ public class God {
      * @param action the action
      * @return the boolean.
      */
-    public boolean build (Action action){
-
-        if(isBuildValid(action)) {
+    public boolean buildBlock (Action action){
+        if(isBuildBlockValid(action)) {
             this.board.setHeight(action.getTargetPos(), board.getHeight(action.getTargetPos()) + 1);
             return true;
         }else{
@@ -180,34 +182,10 @@ public class God {
      * @param action the action
      * @return the boolean.
      */
-    public boolean isBuildValid(Action action){
-        Vector2 pos=action.getTargetPos();
-
-        //check if pos is within board
-        if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
-            return false;
-        }
-        //check if targeted pos doesn't have any other worker. It also checks that you don't build where your worker is.
-       if (this.board.getWorker(pos) != null){
-           return false;
-       }
-
-       if(this.board.isComplete(pos)){
-           return false;
-       }
-       if (this.board.getHeight(pos)>=3){
-           return false;
-       }
-
-       //check worker is building within their range
-       if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
-           return false;
-       }
-
-
-       //check the worker is the same that moved
-        return chosenWorker.equals(action.getWorker());
+    public boolean isBuildBlockValid(Action action){
+        return checkConditions(buildBlockValidationFunctions, action);
     }
+
 
     /**
      * Build a dome. Returns True if the action has been correctly performed.
@@ -231,31 +209,7 @@ public class God {
      * @return the boolean.
      */
     public boolean isBuildDomeValid(Action action){
-
-        //check if pos is within board
-        if(action.getTargetPos().getY()>=5 || action.getTargetPos().getX()>=5 || action.getTargetPos().getY()<0 || action.getTargetPos().getX()<0){
-            return false;
-        }
-        //check if targeted pos doesn't have any other worker
-        if (this.board.getWorker(action.getTargetPos()) != null){
-            return false;
-        }
-
-
-        if(this.board.isComplete(action.getTargetPos())){
-            return false;
-        }
-
-        //check worker is building within their range
-        if(action.getWorker().getPosition().getX() - action.getTargetPos().getX()>1 || action.getWorker().getPosition().getY()-action.getTargetPos().getY()>1){
-            return false;
-        }
-
-        if(this.board.getHeight(action.getTargetPos())<3){
-            return false;
-        }
-        //check the worker is the same that moved
-        return chosenWorker.equals(action.getWorker());
+        return checkConditions(buildDomeValidationFunctions, action);
     }
 
 
@@ -277,23 +231,34 @@ public class God {
     public void beginNewTurn(){
         this.hasMoved = false;
         this.hasFinishedTurn = false;
+        this.hasBuilt=false;
     }
 
 
-    public boolean endTurn(Action action){
-        if(!(isEndTurnValid(action))){
+    public boolean endTurn(){
+        if(!(isEndTurnValid())){
             return false;
         }
-
         return true;
     }
 
-    public boolean isEndTurnValid(Action action){
+    public boolean isEndTurnValid(){
         if(!hasMoved){
             return false;
         }
+        if(!hasBuilt){
+            return false;
+        }
+        return true;
+    }
 
-        return false;
+    private boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){
+        Pair<Action, Board> arg = new Pair<>(action, this.board);
+        for(Function<Pair<Action, Board>, Boolean> check : list){
+            if(!check.apply(arg))
+                return false;
+        }
+        return true;
     }
 }
 

@@ -104,6 +104,7 @@ public class Board {
     public void moveWorker(Action action){
         workers[action.getWorkerPos().getX()][action.getWorkerPos().getY()] = null;
         workers[action.getTargetPos().getX()][action.getTargetPos().getY()] = action.getWorker();
+        action.getWorker().setPosition(action.getTargetPos());
     }
 
     /**

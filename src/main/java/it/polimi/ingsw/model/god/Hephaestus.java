@@ -19,7 +19,7 @@ public class Hephaestus extends God {
         if (this.hasMoved) {
             if (counterHephaestusBuilds==0){
                 if (action.getType() == Action.ActionType.BUILD) {
-                    if (build(action)) {
+                    if (buildBlock(action)) {
                         posFirstBuild=action.getTargetPos();
                         counterHephaestusBuilds++;
                         return true;
@@ -34,7 +34,7 @@ public class Hephaestus extends God {
 
             }else if(counterHephaestusBuilds==1){
                 if (action.getType() == Action.ActionType.BUILD) {
-                    if (build(action)) {
+                    if (buildBlock(action)) {
                         hasFinishedTurn = true;
                         return true;
                     }
@@ -53,7 +53,7 @@ public class Hephaestus extends God {
 
 
     @Override
-    public boolean isBuildValid(Action action){
+    public boolean isBuildBlockValid(Action action){
 
         if(counterHephaestusBuilds==1 && action.getTargetPos()!=posFirstBuild){
             return false;

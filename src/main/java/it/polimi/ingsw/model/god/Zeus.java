@@ -11,7 +11,7 @@ public class Zeus extends God {
     }
 
     @Override
-    public boolean isBuildValid(Action action){
+    public boolean isBuildBlockValid(Action action){
         Vector2 pos=action.getTargetPos();
 
         //check if pos is within board

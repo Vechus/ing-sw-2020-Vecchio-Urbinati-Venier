@@ -21,7 +21,7 @@ public class Triton extends God {
                 }
             }
             if(action.getType()==Action.ActionType.BUILD){
-                if(build(action)) {
+                if(buildBlock(action)) {
                     hasFinishedTurn=true;
                     return true;
                 }
