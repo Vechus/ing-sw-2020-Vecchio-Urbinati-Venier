@@ -65,7 +65,7 @@ public class GodValidationMethods {
     static boolean isBuildingHeightLessThanThree(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
         Board board = actionBoardPair.second();
-        if (board.getHeight(action.getTargetPos())>=3){
+        if (board.getHeight(action.getTargetPos())==3){
             return false;
         }
         return true;
@@ -75,7 +75,7 @@ public class GodValidationMethods {
     static boolean isBuildingHeightThree(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
         Board board = actionBoardPair.second();
-        if (board.getHeight(action.getTargetPos())==3){
+        if (board.getHeight(action.getTargetPos())!=3){
             return false;
         }
         return true;
