@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PanTest {
+public class ZeusTest {
     Board board;
     Player player;
     Vector2 highPos=new Vector2(1,0);;
@@ -27,13 +27,27 @@ public class PanTest {
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);
-        board.placeWorker(worker, highPos);
-        worker = new Worker(highPos, player);
+        board.placeWorker(worker, midPos);
+        worker = new Worker(midPos, player);
     }
 
     @Test
-    void winConditionValid(){
-        Action action=new Action(worker, lowPos, Action.ActionType.MOVE);
-        assertTrue(god.checkWinCondition(action));
+    void buildValid(){
+        Action move = new Action(worker, lowPos, Action.ActionType.MOVE );
+        Action build = new Action(worker, lowPos, Action.ActionType.BUILD );
+        god.move(move);
+        god.buildBlock(build);
+        assertTrue(board.getHeight(lowPos)==1);
     }
+    @Test
+    void buildNotValid(){
+        Worker otherWorker=new Worker (highPos,player);
+        board.setWorker(highPos,otherWorker);
+        Action move = new Action(worker, lowPos, Action.ActionType.MOVE );
+        Action build = new Action(worker, highPos, Action.ActionType.BUILD );
+        god.move(move);
+        god.buildBlock(build);
+        assertFalse(board.getHeight(highPos)==3);
+    }
+
 }

@@ -1,5 +1,4 @@
 package it.polimi.ingsw.model.god;
-
 import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
@@ -8,17 +7,15 @@ import it.polimi.ingsw.util.Vector2;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HephaestusTest {
+public class HestiaTest {
     Board board;
     Player player;
     Vector2 highPos=new Vector2(1,0);;
     Vector2 lowPos=new Vector2(1,1);;
     Vector2 midPos=new Vector2(0,0);
-    Vector2 outsidePos=new Vector2(-1,-1);
     Worker worker;
     God god= new God(board, player);
 
@@ -32,22 +29,25 @@ public class HephaestusTest {
         board.placeWorker(worker, midPos);
         worker = new Worker(midPos, player);
     }
+
     @Test
     void buildValid(){
-        Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
-        Action secondAction=new Action(worker, lowPos, Action.ActionType.BUILD);
-        god.buildBlock(firstAction);
-        god.buildBlock(secondAction);
-        assertTrue(board.getHeight(lowPos)==2);
+        Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        Action firstBuild=new Action(worker, midPos, Action.ActionType.BUILD);
+        Action secondBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
+        god.move(move);
+        god.buildBlock(firstBuild);
+        god.buildBlock(secondBuild);
+        assertTrue(board.getHeight(midPos)==2&& board.getHeight(lowPos)==1);
     }
-
     @Test
-    void  buildNotValid(){
-        Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
-        Action secondAction=new Action(worker, highPos, Action.ActionType.BUILD);
-        god.buildBlock(firstAction);
-        god.buildBlock(secondAction);
-        assertFalse(board.getHeight(highPos)==3);
+    void buildNotValid(){
+        Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        Action firstBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action secondBuild=new Action(worker, midPos, Action.ActionType.BUILD);
+        god.move(move);
+        god.buildBlock(firstBuild);
+        god.buildBlock(secondBuild);
+        assertFalse(board.getHeight(midPos)==2&& board.getHeight(lowPos)==1);
     }
-
 }

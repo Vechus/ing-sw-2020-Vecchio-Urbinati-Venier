@@ -2,8 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.Vector2;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,17 +18,18 @@ public class GodTest {
     Vector2 midPos=new Vector2(0,0);
     Vector2 outsidePos=new Vector2(-1,-1);
     Worker worker;
-    God god= new God(board, player);
+    God god;
 
     @BeforeEach
     void setup(){
         board= new Board();
         player=new Player();
+        god= new God(board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos,0);
         board.setHeight(midPos,1);
+        worker=new Worker (player);
         board.placeWorker(worker, midPos);
-        worker=new Worker (midPos, player);
     }
 
     //CHOOSE ACTION
@@ -56,7 +57,8 @@ public class GodTest {
     // 6 TESTS FOR MOVE
     @Test
     void testIsCellFreeFromWorkes(){
-        Worker otherWorker=new Worker (highPos, player);
+        Worker otherWorker=new Worker (player);
+        board.placeWorker(otherWorker, highPos);
         Action action=new Action (worker, otherWorker.getPosition(), Action.ActionType.MOVE);
         assertFalse(god.isMoveValid(action));
     }
@@ -95,6 +97,7 @@ public class GodTest {
     @Test
     void BuildBlockValid(){
         Action action = new Action (worker, highPos, Action.ActionType.BUILD);
+        god.buildBlock(action);
         assertTrue(board.getWorker(midPos)==worker && board.getHeight(highPos)==3);
     }
     @Test
@@ -107,7 +110,6 @@ public class GodTest {
     //1 TEST FOR BUILD BLOCK
     @Test
     void testIsBuildHeightLessThanThreeWhenBuilding(){
-
         board.setHeight(highPos, 3);
         Action action=new Action(worker,highPos, Action.ActionType.BUILD);
         assertFalse(god.isBuildBlockValid(action));
@@ -120,6 +122,7 @@ public class GodTest {
     void BuildDomeValid(){
         board.setHeight(highPos, 3);
         Action action = new Action (worker, highPos, Action.ActionType.BUILD_DOME);
+        god.buildDome(action);
         assertTrue(board.getWorker(midPos)==worker && board.isComplete(highPos)==true);
     }
     @Test
@@ -131,10 +134,9 @@ public class GodTest {
     //1 TESTS FOR BUILD_DOME
     @Test
     void testIsBuildHeightThreeWhenBuildingDome(){
-
         board.setHeight(highPos, 2);
         Action action=new Action(worker,highPos, Action.ActionType.BUILD_DOME);
-        assertFalse(god.isBuildBlockValid(action));
+        assertFalse(god.isBuildDomeValid(action));
     }
 
 
@@ -173,9 +175,8 @@ public class GodTest {
         god.beginNewTurn();
         Action actionMove=new Action(worker, highPos, Action.ActionType.MOVE);
         Action actionBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
-        god.move(actionMove);
-        god.buildBlock(actionBuild);
-        god.endTurn();
+        assertTrue(god.chooseAction(actionMove));
+        assertTrue(god.chooseAction(actionBuild));
         assertTrue(god.endTurn());
     }
 }

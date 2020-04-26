@@ -18,16 +18,15 @@ public class Apollo extends God {
 
     public Apollo(Board board, Player player) {
         super(board, player);
+        this.moveValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isMoveHeightLessThanOne
+                ));
     }
 
-
-    List<Function<Pair<Action, Board>, Boolean>> moveValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isMoveHeightLessThanOne
-            ));
 
     @Override
     public boolean move(Action action) {
