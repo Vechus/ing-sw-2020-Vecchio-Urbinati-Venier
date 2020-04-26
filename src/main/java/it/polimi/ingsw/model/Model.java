@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.listeners.ModelChangeListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -47,11 +48,13 @@ public class Model {
      * Check players lose condition.
      */
     public void checkPlayersLoseCondition() {
-        for(Player p : this.players) {
+        Iterator<Player> playerIterator = this.players.iterator();
+        while(playerIterator.hasNext()) {
+            Player p = playerIterator.next();
             if(p.checkLoseCondition()) {
                 // player lost the game
                 p.setSpectator(true);
-                this.players.remove(p);
+                playerIterator.remove();
             }
         }
     }
