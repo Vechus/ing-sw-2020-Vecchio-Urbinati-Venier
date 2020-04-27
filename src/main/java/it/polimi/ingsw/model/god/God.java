@@ -108,18 +108,18 @@ public class God {
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
         if(this.hasMoved ){
-            if(action.getType()==Action.ActionType.BUILD && chosenWorker==action.getWorker()){
+            if(action.getType()==Action.ActionType.BUILD && chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildBlock(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
-            }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
+            }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildDome(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE && chosenWorker==action.getWorker()){
+        }else if (action.getType()==Action.ActionType.MOVE && chosenWorker==action.getWorker()&&hasBuilt==false){
             if (move(action)) {
                 this.hasMoved = true;
                 return true;

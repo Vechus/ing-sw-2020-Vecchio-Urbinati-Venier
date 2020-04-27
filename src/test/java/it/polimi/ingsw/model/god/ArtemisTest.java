@@ -46,9 +46,9 @@ public class ArtemisTest {
     @Test
     void notValidMove(){
         Action firstAction= new Action(worker, highPos, Action.ActionType.MOVE);
-        god.move(firstAction);
+        assertTrue(god.chooseAction(firstAction));
         Action secondAction= new Action(worker, midPos, Action.ActionType.MOVE);
-        god.move(secondAction);
+        assertFalse(god.chooseAction(secondAction));
         assertFalse(board.getWorker(midPos)==worker&&
                 board.getWorker(highPos)==null);
     }
@@ -56,11 +56,11 @@ public class ArtemisTest {
     @Test
     void movingAfterBuildNotValid(){
         Action firstAction= new Action(worker, highPos, Action.ActionType.MOVE);
-        god.move(firstAction);
+        assertTrue(god.chooseAction(firstAction));
         Action secondAction= new Action(worker, midPos, Action.ActionType.BUILD);
-        god.buildBlock(secondAction);
+        assertTrue(god.chooseAction(secondAction));
         Action thirdAction= new Action(worker, lowPos, Action.ActionType.MOVE);
-        god.move(thirdAction);
+        assertFalse(god.chooseAction(thirdAction));
         assertFalse(board.getWorker(lowPos)==worker);
         assertTrue(board.getWorker(highPos)==worker);
     }

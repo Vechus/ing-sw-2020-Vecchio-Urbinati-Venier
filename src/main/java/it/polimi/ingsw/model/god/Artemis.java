@@ -7,8 +7,6 @@ import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
 
 public class Artemis extends God {
     private int counterArtemisMoves=0;
@@ -31,27 +29,31 @@ public class Artemis extends God {
     public boolean chooseAction (Action action){
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
-        if(counterArtemisMoves==0 && action.getType()==Action.ActionType.MOVE){
+        if(counterArtemisMoves==0 && action.getType()==Action.ActionType.MOVE&&hasBuilt==false){
             initialPos=action.getWorkerPos();
             if (move(action)) {
+                this.hasMoved = true;
                 counterArtemisMoves++;
                 return true;
             }
         }
         if(counterArtemisMoves>=1){
-            if(action.getType()==Action.ActionType.MOVE && counterArtemisMoves == 1&& chosenWorker==action.getWorker()){
+            if(action.getType()==Action.ActionType.MOVE && counterArtemisMoves == 1&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(move(action)) {
+                    this.hasMoved = true;
                     counterArtemisMoves++;
                     return true;
                 }
             }
-            if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()){
+            if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildBlock(action)) {
+                    this.hasBuilt=true;
                     return true;
                 }
             }
-            if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()) {
+            if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false) {
                 if (buildDome(action)) {
+                    this.hasBuilt=true;
                     return true;
                 }
             }

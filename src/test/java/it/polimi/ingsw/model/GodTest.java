@@ -179,4 +179,18 @@ public class GodTest {
         assertTrue(god.chooseAction(actionBuild));
         assertTrue(god.endTurn());
     }
+
+
+    //CHOOSE ACTION TESTS
+    @Test
+    void testCannotDoAnythingAfterBuilding(){
+        Action move = new Action(worker, highPos, Action.ActionType.MOVE);
+        assertTrue(god.chooseAction(move));
+        Action build = new Action(worker, lowPos, Action.ActionType.BUILD);
+        assertTrue(god.chooseAction(build));
+        Action secondMove = new Action(worker, lowPos, Action.ActionType.MOVE);
+        assertFalse(god.chooseAction(secondMove));
+        Action secondBuild = new Action(worker, midPos, Action.ActionType.BUILD);
+        assertFalse(god.chooseAction(secondBuild));
+    }
 }
