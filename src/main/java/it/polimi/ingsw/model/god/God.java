@@ -252,7 +252,7 @@ public class God {
         return true;
     }
 
-    private boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){
+    protected boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){
         Pair<Action, Board> arg = new Pair<>(action, this.board);
         for(Function<Pair<Action, Board>, Boolean> check : list){
             if(!check.apply(arg))
