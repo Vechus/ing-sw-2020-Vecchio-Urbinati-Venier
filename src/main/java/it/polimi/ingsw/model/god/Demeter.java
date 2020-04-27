@@ -50,7 +50,6 @@ public class Demeter extends God {
                     }
                 }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
                     if (buildDome(action)){
-
                         counterDemeterBuild++;
                         return true;
                     }
@@ -59,15 +58,17 @@ public class Demeter extends God {
             if(counterDemeterBuild==1) {
                 if (action.getType() == Action.ActionType.BUILD&& chosenWorker==action.getWorker()) {
                     if (buildBlock(action)) {
+                        counterDemeterBuild++;
                         return true;
                     }
                 }else if (action.getType() == Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()) {
                     if (buildDome(action)){
+                        counterDemeterBuild++;
                         return true;
                     }
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE&& chosenWorker==action.getWorker()){
+        }else if (action.getType()==Action.ActionType.MOVE && chosenWorker==action.getWorker()&&counterDemeterBuild==0){
             if(move(action)) {
                 this.hasMoved=true;
                 return true;

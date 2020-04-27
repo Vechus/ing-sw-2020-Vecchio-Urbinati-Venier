@@ -35,23 +35,22 @@ public class HephaestusTest {
     @Test
     void buildValid(){
         Action move= new Action(worker, highPos, Action.ActionType.MOVE);
-        god.chooseAction(move);
+        assertTrue(god.chooseAction(move));
         Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
-        god.chooseAction(firstAction);
+        assertTrue(god.chooseAction(firstAction));
         Action secondAction=new Action(worker, lowPos, Action.ActionType.BUILD);
-        god.chooseAction(secondAction);
+        assertTrue(god.chooseAction(secondAction));
         assertTrue(board.getHeight(lowPos)==2);
     }
 
     @Test
     void  buildNotValid(){
         Action move= new Action(worker, highPos, Action.ActionType.MOVE);
-        god.chooseAction(move);
+        assertTrue(god.chooseAction(move));
         Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
-        god.chooseAction(firstAction);
+        assertTrue(god.chooseAction(firstAction));
         Action secondAction=new Action(worker, midPos, Action.ActionType.BUILD);
-        god.chooseAction(secondAction);
+        assertFalse(god.chooseAction(secondAction));
         assertFalse(board.getHeight(highPos)==3);
     }
-
 }

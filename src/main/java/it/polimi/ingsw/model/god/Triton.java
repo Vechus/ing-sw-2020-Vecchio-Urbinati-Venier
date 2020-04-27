@@ -3,49 +3,47 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.util.Vector2;
 import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
 
 public class Triton extends God {
     public Triton(Board board, Player player) {
         super(board, player);
+        this.moveValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isMoveHeightLessThanOne,
+                        this::isMoveOnPerimeter
+                ));
     }
-    boolean isTritonInPerimeter;
-    List<Function<Pair<Action, Board>, Boolean>> moveValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isCellWorkersFree,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isMoveHeightLessThanOne,
-                    this::isMoveOnPerimenter
-            ));
 
     @Override
     public  boolean chooseAction (Action action){
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
-        if(this.hasMoved ){
-            if(action.getType()==Action.ActionType.MOVE && isTritonInPerimeter==true){
+        if(this.hasMoved){
+            if(action.getType()==Action.ActionType.MOVE&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(move(action)){
                     return true;
                 }
             }
-            if(action.getType()==Action.ActionType.BUILD){
+            if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildBlock(action)) {
+                    hasBuilt=true;
                     return true;
                 }
-            }else if(action.getType()==Action.ActionType.BUILD_DOME){
+            }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildDome(action)) {
+                    hasBuilt=true;
                     return true;
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE) {
+        }else if (action.getType()==Action.ActionType.MOVE&& chosenWorker==action.getWorker()&&hasBuilt==false) {
             if (move(action)) {
                 this.hasMoved = true;
                 return true;
@@ -61,11 +59,10 @@ public class Triton extends God {
     }
 
 
-    public boolean isMoveOnPerimenter(Pair<Action, Board> actionBoardPair) {
+    public boolean isMoveOnPerimeter(Pair<Action, Board> actionBoardPair) {
         Action action = actionBoardPair.first();
-        if(action.getWorker().getPosition().getY()==4 || action.getWorker().getPosition().getX()==4){
-            isTritonInPerimeter=true;
-        }
+        if(hasMoved && !(action.getWorkerPos().getY()==4 || action.getWorkerPos().getX()==4|| action.getWorkerPos().getX()==0|| action.getWorkerPos().getY()==0))
+            return false;
         return true;
     }
 }

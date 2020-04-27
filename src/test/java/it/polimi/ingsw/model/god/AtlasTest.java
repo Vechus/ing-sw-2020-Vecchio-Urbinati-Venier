@@ -33,8 +33,10 @@ public class AtlasTest {
 
     @Test
     void validBuild(){
+        Action move =new Action(worker, highPos, Action.ActionType.MOVE);
+        assertTrue(god.chooseAction(move));
         Action action =new Action(worker, lowPos, Action.ActionType.BUILD_DOME);
-        assertTrue(god.buildDome(action));
+        assertTrue(god.chooseAction(action));
     }
 
 }

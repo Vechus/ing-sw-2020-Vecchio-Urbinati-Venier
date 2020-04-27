@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,11 +34,11 @@ public class PrometheusTest {
     @Test
     void validTurn(){
         Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
+        assertTrue(god.chooseAction(firstAction));
         Action secondAction= new Action(worker, lowPos, Action.ActionType.MOVE);
+        assertTrue(god.chooseAction(secondAction));
         Action thirdAction= new Action(worker, midPos, Action.ActionType.BUILD);
-        god.buildBlock(firstAction);
-        god.move(secondAction);
-        god.buildBlock(thirdAction);
+        assertTrue(god.chooseAction(thirdAction));
         assertTrue(board.getWorker(lowPos)==worker&&
                 board.getHeight(lowPos)==1&&
                 board.getHeight(midPos)==2);
@@ -47,11 +47,11 @@ public class PrometheusTest {
     @Test
     void notValidTurn(){
         Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
+        assertTrue(god.chooseAction(firstAction));
         Action secondAction= new Action(worker, highPos, Action.ActionType.MOVE);
+        assertFalse(god.chooseAction(secondAction));
         Action thirdAction= new Action(worker, midPos, Action.ActionType.BUILD);
-        god.buildBlock(firstAction);
-        god.move(secondAction);
-        god.buildBlock(thirdAction);
+        assertFalse(god.chooseAction(thirdAction));
         assertFalse(board.getWorker(highPos)==worker ||
                 board.getHeight(midPos)==2);
     }

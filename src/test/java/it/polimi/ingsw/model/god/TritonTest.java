@@ -5,49 +5,52 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
-import org.junit.Test;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class TritonClass {
+public class TritonTest {
     Board board;
     Player player;
-    Vector2 highPos=new Vector2(1,0);;
-    Vector2 lowPos=new Vector2(1,1);;
+    Vector2 highPos=new Vector2(1,0);
+    Vector2 lowPos=new Vector2(1,1);
     Vector2 midPos=new Vector2(0,0);
     Worker worker;
-    God god= new God(board, player);
+    God god;
 
     @BeforeEach
     void setup() {
         board = new Board();
         player = new Player();
+        god= new Triton(board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);
+        worker = new Worker(player);
         board.placeWorker(worker, lowPos);
-        worker = new Worker(lowPos, player);
     }
 
     @Test
     void moveValid(){
         Action firstMove=new Action(worker, midPos, Action.ActionType.MOVE);
+        assertTrue(god.move(firstMove));
         Action secondMove=new Action(worker, highPos, Action.ActionType.MOVE);
-        god.move(firstMove);
-        god.move(secondMove);
+        assertTrue(god.move(secondMove));
         assertTrue(board.getWorker(midPos)==null && board.getWorker(highPos)==worker);
     }
 
     @Test
     void moveNotValid(){
         Action firstMove=new Action(worker, midPos, Action.ActionType.MOVE);
+        assertTrue(god.chooseAction(firstMove));
         Action secondMove=new Action(worker, lowPos, Action.ActionType.MOVE);
+        assertTrue(god.chooseAction(secondMove));
         Action thirdMove=new Action(worker, midPos, Action.ActionType.MOVE);
-        god.move(firstMove);
-        god.move(secondMove);
-        god.move(thirdMove);
+        assertFalse(god.chooseAction(thirdMove));
         assertFalse(board.getWorker(midPos)==worker && board.getWorker(lowPos)==null);
     }
 }

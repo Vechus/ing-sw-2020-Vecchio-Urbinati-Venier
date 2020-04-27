@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,21 +34,21 @@ public class HestiaTest {
     @Test
     void buildValid(){
         Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        assertTrue(god.chooseAction(move));
         Action firstBuild=new Action(worker, midPos, Action.ActionType.BUILD);
+        assertTrue(god.chooseAction(firstBuild));
         Action secondBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
-        god.move(move);
-        god.buildBlock(firstBuild);
-        god.buildBlock(secondBuild);
+        assertTrue(god.chooseAction(secondBuild));
         assertTrue(board.getHeight(midPos)==2&& board.getHeight(lowPos)==1);
     }
     @Test
     void buildNotValid(){
         Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        assertTrue(god.chooseAction(move));
         Action firstBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
+        assertTrue(god.chooseAction(firstBuild));
         Action secondBuild=new Action(worker, midPos, Action.ActionType.BUILD);
-        god.move(move);
-        god.buildBlock(firstBuild);
-        god.buildBlock(secondBuild);
+        assertFalse(god.chooseAction(secondBuild));
         assertFalse(board.getHeight(midPos)==2&& board.getHeight(lowPos)==1);
     }
 }

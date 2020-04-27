@@ -40,9 +40,8 @@ public class DemeterTest {
         Action secondBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
         assertTrue(god.chooseAction(secondBuild));
         assertTrue(board.getHeight(midPos)==2 && board.getHeight(lowPos)==1);
-
-
     }
+
 
     @Test
     void notValidBuild(){
@@ -54,5 +53,17 @@ public class DemeterTest {
         assertFalse(god.chooseAction(secondBuild));
         assertFalse(board.getHeight(lowPos)==2);
         assertTrue(board.getHeight(lowPos)==1);
+    }
+
+    @Test
+    void notValidBuildDome(){
+        board.setHeight(lowPos, 2);
+        Action move=new Action(worker, highPos, Action.ActionType.MOVE);
+        god.chooseAction(move);
+        Action firstBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
+        assertTrue(god.chooseAction(firstBuild));
+        Action secondBuild=new Action(worker, lowPos, Action.ActionType.BUILD_DOME);
+        assertFalse(god.chooseAction(secondBuild));
+        assertTrue(board.getHeight(lowPos)==3);
     }
 }

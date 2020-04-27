@@ -47,11 +47,12 @@ public class Hephaestus extends God {
             }else if(counterHephaestusBuilds==1){
                 if (action.getType() == Action.ActionType.BUILD) {
                     if (buildBlock(action)) {
+                        counterHephaestusBuilds++;
                         return true;
                     }
                 }
             }
-        } else if (action.getType() == Action.ActionType.MOVE) {
+        } else if (action.getType() == Action.ActionType.MOVE&&counterHephaestusBuilds==0) {
             if (move(action)) {
                 this.hasMoved = true;
                 return true;

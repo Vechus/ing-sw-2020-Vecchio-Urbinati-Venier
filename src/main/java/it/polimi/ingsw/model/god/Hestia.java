@@ -7,8 +7,6 @@ import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
 
 public class Hestia extends God {
 
@@ -55,7 +53,6 @@ public class Hestia extends God {
                    }
                }
 
-
            } else if(counterHestiaBuilds==1){
                if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()){
                    if(buildBlock(action)) {
@@ -66,13 +63,9 @@ public class Hestia extends God {
                        return true;
                    }
                }
-
-
-
            }
 
-
-        }else if (action.getType()==Action.ActionType.MOVE&& chosenWorker==action.getWorker()) {
+        }else if (action.getType()==Action.ActionType.MOVE&& chosenWorker==action.getWorker()&&counterHestiaBuilds==0) {
             if (move(action)) {
                 this.hasMoved = true;
                 return true;
