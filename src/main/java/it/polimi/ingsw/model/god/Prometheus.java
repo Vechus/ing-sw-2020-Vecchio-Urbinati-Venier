@@ -14,17 +14,16 @@ public class Prometheus extends God {
 
     public Prometheus(Board board, Player player) {
         super(board, player);
+        this.moveValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isMoveHeightLessThanOne,
+                        this::hasBuiltBefore
+                ));
     }
-
-    List<Function<Pair<Action, Board>, Boolean>> moveValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isCellWorkersFree,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isMoveHeightLessThanOne,
-                    this::hasBuiltBefore
-            ));
 
     @Override
     public  boolean chooseAction (Action action){

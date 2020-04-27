@@ -9,8 +9,6 @@ import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
 
 public class Hephaestus extends God {
     private Vector2 posFirstBuild;
@@ -18,17 +16,17 @@ public class Hephaestus extends God {
 
     public Hephaestus(Board board, Player player) {
         super(board, player);
+        this.buildBlockValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isBuildingHeightLessThanThree,
+                        this::isCellTheSame
+                ));
+
     }
-
-    List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isCellWorkersFree,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isBuildingHeightLessThanThree
-            ));
-
 
     @Override
     public boolean chooseAction(Action action) {

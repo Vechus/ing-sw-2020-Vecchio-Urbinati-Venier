@@ -16,19 +16,19 @@ public class PrometheusTest {
     Vector2 highPos=new Vector2(1,0);;
     Vector2 lowPos=new Vector2(1,1);;
     Vector2 midPos=new Vector2(0,0);
-    Vector2 outsidePos=new Vector2(-1,-1);
     Worker worker;
-    God god= new God(board, player);
+    God god;
 
     @BeforeEach
     void setup() {
         board = new Board();
         player = new Player();
+        god= new Prometheus(board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);
+        worker = new Worker(player);
         board.placeWorker(worker, midPos);
-        worker = new Worker(midPos, player);
     }
 
     @Test

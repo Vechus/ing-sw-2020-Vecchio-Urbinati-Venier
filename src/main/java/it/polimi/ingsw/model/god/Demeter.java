@@ -8,8 +8,6 @@ import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
 
 public class Demeter extends God {
     private int counterDemeterBuild=0;
@@ -17,33 +15,33 @@ public class Demeter extends God {
 
     public Demeter(Board board, Player player) {
         super(board, player);
+
+        this.buildBlockValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isBuildingHeightLessThanThree,
+                        this::isCellDifferentWhenBuilding
+                ));
+        this.buildDomeValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isBuildingHeightThree,
+                        this::isCellDifferentWhenBuilding
+                ));
     }
-
-    List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isCellWorkersFree,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isBuildingHeightLessThanThree,
-                    this::isCellDifferentWhenBuilding
-            ));
-
-    List<Function<Pair<Action, Board>, Boolean>> buildDomeValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isCellWorkersFree,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isBuildingHeightThree,
-                    this::isCellDifferentWhenBuilding
-            ));
 
     @Override
     public  boolean chooseAction (Action action){
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
         if(this.hasMoved ){
             if(counterDemeterBuild==0){
+
                 if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()){
                     if(buildBlock(action)) {
                         posFirstBuild=action.getTargetPos();
@@ -52,6 +50,7 @@ public class Demeter extends God {
                     }
                 }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
                     if (buildDome(action)){
+
                         counterDemeterBuild++;
                         return true;
                     }

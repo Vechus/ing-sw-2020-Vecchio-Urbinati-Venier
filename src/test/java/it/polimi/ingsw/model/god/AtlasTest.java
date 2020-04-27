@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.testng.Assert.assertTrue;
 
@@ -16,19 +17,21 @@ public class AtlasTest {
     Vector2 lowPos=new Vector2(1,1);;
     Vector2 midPos=new Vector2(0,0);
     Worker worker;
-    God god= new God(board, player);
+    God god;
 
     @BeforeEach
     void setup(){
         board= new Board();
         player=new Player();
+        god= new Atlas(board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos,0);
         board.setHeight(midPos,1);
+        worker=new Worker (player);
         board.placeWorker(worker, midPos);
-        worker=new Worker (midPos, player);
     }
 
+    @Test
     void validBuild(){
         Action action =new Action(worker, lowPos, Action.ActionType.BUILD_DOME);
         assertTrue(god.buildDome(action));
