@@ -11,30 +11,30 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Hestia extends God {
-    List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isCellWorkersFree,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isBuildingHeightLessThanThree,
-                    this::isBuildOffThePerimeter
-            ));
-    List<Function<Pair<Action, Board>, Boolean>> buildDomeValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
-                    GodValidationMethods::isCellWorkersFree,
-                    GodValidationMethods::isTargetPosOnDifferentCell,
-                    GodValidationMethods::isTargetPosDomesFree,
-                    GodValidationMethods::isTargetPosAdjacent,
-                    GodValidationMethods::isBuildingHeightThree,
-                    this::isBuildOffThePerimeter
-            ));
-
 
     int counterHestiaBuilds=0;
 
     public Hestia(Board board, Player player) {
         super(board, player);
+        this.buildBlockValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isBuildingHeightLessThanThree,
+                        this::isBuildOffThePerimeter
+                ));
+
+        this.buildDomeValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent,
+                        GodValidationMethods::isBuildingHeightThree,
+                        this::isBuildOffThePerimeter
+                ));
     }
 
 

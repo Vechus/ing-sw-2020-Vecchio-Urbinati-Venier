@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,35 +18,39 @@ public class HephaestusTest {
     Vector2 highPos=new Vector2(1,0);;
     Vector2 lowPos=new Vector2(1,1);;
     Vector2 midPos=new Vector2(0,0);
-    Vector2 outsidePos=new Vector2(-1,-1);
     Worker worker;
-    God god= new God(board, player);
+    God god;
 
     @BeforeEach
     void setup() {
         board = new Board();
         player = new Player();
+        god= new Hephaestus(board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);
+        worker = new Worker(player);
         board.placeWorker(worker, midPos);
-        worker = new Worker(midPos, player);
     }
     @Test
     void buildValid(){
+        Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        god.chooseAction(move);
         Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
+        god.chooseAction(firstAction);
         Action secondAction=new Action(worker, lowPos, Action.ActionType.BUILD);
-        god.buildBlock(firstAction);
-        god.buildBlock(secondAction);
+        god.chooseAction(secondAction);
         assertTrue(board.getHeight(lowPos)==2);
     }
 
     @Test
     void  buildNotValid(){
+        Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        god.chooseAction(move);
         Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
-        Action secondAction=new Action(worker, highPos, Action.ActionType.BUILD);
-        god.buildBlock(firstAction);
-        god.buildBlock(secondAction);
+        god.chooseAction(firstAction);
+        Action secondAction=new Action(worker, midPos, Action.ActionType.BUILD);
+        god.chooseAction(secondAction);
         assertFalse(board.getHeight(highPos)==3);
     }
 

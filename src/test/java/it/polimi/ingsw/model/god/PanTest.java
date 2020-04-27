@@ -18,17 +18,18 @@ public class PanTest {
     Vector2 lowPos=new Vector2(1,1);;
     Vector2 midPos=new Vector2(0,0);
     Worker worker;
-    God god= new God(board, player);
+    God god;
 
     @BeforeEach
     void setup() {
         board = new Board();
         player = new Player();
+        god= new Pan(board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);
+        worker = new Worker(player);
         board.placeWorker(worker, highPos);
-        worker = new Worker(highPos, player);
     }
 
     @Test

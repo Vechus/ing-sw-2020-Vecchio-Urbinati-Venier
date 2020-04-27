@@ -90,13 +90,6 @@ public class Board {
     }
 
     /**
-     * Set the worker at the desired location
-     * @param pos the position of the worker
-     * @param worker the worker to position
-     */
-    public void setWorker(Vector2 pos, Worker worker){ workers[pos.getX()][pos.getY()] = worker; }
-
-    /**
      * Move worker.
      *
      * @param action the action.

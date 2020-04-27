@@ -42,7 +42,7 @@ public class ZeusTest {
     @Test
     void buildNotValid(){
         Worker otherWorker=new Worker (highPos,player);
-        board.setWorker(highPos,otherWorker);
+        board.placeWorker(otherWorker,highPos);
         Action move = new Action(worker, lowPos, Action.ActionType.MOVE );
         Action build = new Action(worker, highPos, Action.ActionType.BUILD );
         god.move(move);
