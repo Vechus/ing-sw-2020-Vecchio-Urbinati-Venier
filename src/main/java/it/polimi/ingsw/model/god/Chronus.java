@@ -13,15 +13,11 @@ public class Chronus extends God {
 
     @Override
     public boolean checkWinCondition(Action action){
+        if(!super.checkWinCondition(action)){
+            return false;
+        }
         int counterBuildings=0;
         int i,j;
-        if (this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) >0
-                && this.board.getHeight(action.getTargetPos())==3
-        ){
-            return true;
-        }
-
-
         for (i=0;i<5; i++ ){
             for(j=0; j<5;j++){
                 Vector2 pos=new Vector2(i,j);
@@ -29,12 +25,10 @@ public class Chronus extends God {
                     return true;
                 }
             }
-
         }
         if(counterBuildings==5){
             return true;
         }
-
         return false;
     }
 }

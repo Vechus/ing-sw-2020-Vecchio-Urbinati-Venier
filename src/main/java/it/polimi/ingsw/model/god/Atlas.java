@@ -3,37 +3,23 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import org.testng.internal.collections.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 public class Atlas extends God {
     public Atlas(Board board, Player player) {
         super(board, player);
     }
 
-    @Override
-    public boolean isBuildDomeValid(Action action){
-
-        //check if pos is within board
-        if(action.getTargetPos().getY()>=5 || action.getTargetPos().getX()>=5 || action.getTargetPos().getY()<0 || action.getTargetPos().getX()<0){
-            return false;
-        }
-        //check if targeted pos doesn't have any other worker
-        if (this.board.getWorker(action.getTargetPos()) != null){
-            return false;
-        }
-
-
-        if(this.board.isComplete(action.getTargetPos())){
-            return false;
-        }
-
-        //check worker is building within their range
-        if(action.getWorker().getPosition().getX() - action.getTargetPos().getX()>1 || action.getWorker().getPosition().getY()-action.getTargetPos().getY()>1){
-            return false;
-        }
-        //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
-
-
-        return true;
-    }
+    List<Function<Pair<Action, Board>, Boolean>> buildDomeValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                    GodValidationMethods::isCellWorkersFree,
+                    GodValidationMethods::isTargetPosOnDifferentCell,
+                    GodValidationMethods::isTargetPosDomesFree,
+                    GodValidationMethods::isTargetPosAdjacent
+            ));
 }

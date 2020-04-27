@@ -4,40 +4,33 @@ import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.util.Vector2;
+import org.testng.internal.collections.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 public class Zeus extends God {
     public Zeus(Board board, Player player) {
         super(board, player);
     }
 
-    @Override
-    public boolean isBuildValid(Action action){
-        Vector2 pos=action.getTargetPos();
+    List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                    this::isCellOtherWorkersFree,
+                    GodValidationMethods::isTargetPosDomesFree,
+                    GodValidationMethods::isTargetPosAdjacent,
+                    GodValidationMethods::isBuildingHeightLessThanThree
+            ));
 
-        //check if pos is within board
-        if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
+
+
+    boolean isCellOtherWorkersFree(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        if (this.board.getWorker(action.getTargetPos()) != null && !(action.getTargetPos().equals(action.getWorker().getPosition()))  ){
             return false;
         }
-        //check if targeted pos doesn't have any other worker. It also check that you don't build where your worker is.
-        if (this.board.getWorker(pos) != null && !(action.getTargetPos().equals(action.getWorker().getPosition()))  ){
-            return false;
-        }
-
-        if(this.board.isComplete(pos)){
-            return false;
-        }
-        if (this.board.getHeight(pos)>=3){
-            return false;
-        }
-
-        //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
-
-        //check worker is building within their range
-        if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
-            return false;
-        }
-
         return true;
     }
 

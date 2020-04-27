@@ -2,18 +2,19 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.util.ConsoleColor;
 import it.polimi.ingsw.util.Vector2;
+import it.polimi.ingsw.model.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
+    Board board = new Board();
+    Player p1 = new Player(board);
+    Player p2 = new Player(board);
+    Player p3 = new Player(board);
 
     @Test
     void print() {
-        Board board = new Board();
-        Player p1 = new Player(board);
-        Player p2 = new Player(board);
-        Player p3 = new Player(board);
         p1.setPlayerColor(ConsoleColor.BLUE_UNDERLINED + ConsoleColor.BLUE_BOLD_BRIGHT);
         p2.setPlayerColor(ConsoleColor.GREEN_UNDERLINED + ConsoleColor.GREEN_BOLD_BRIGHT);
         p3.setPlayerColor(ConsoleColor.RED_UNDERLINED + ConsoleColor.RED_BOLD_BRIGHT);
@@ -33,5 +34,10 @@ class BoardTest {
         board.placeWorker(p3.getWorker(1), new Vector2(1,2));
         board.placeWorker(p3.getWorker(0), new Vector2(4,1));
         board.print();
+    }
+
+    @Test
+    void isEffectActive() {
+        assertFalse(board.isEffectActive(p1));
     }
 }

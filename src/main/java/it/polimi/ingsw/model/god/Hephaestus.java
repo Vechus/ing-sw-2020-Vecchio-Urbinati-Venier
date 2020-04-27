@@ -5,6 +5,12 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
+import org.testng.internal.collections.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 public class Hephaestus extends God {
     private Vector2 posFirstBuild;
@@ -14,37 +20,47 @@ public class Hephaestus extends God {
         super(board, player);
     }
 
+    List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                    GodValidationMethods::isCellWorkersFree,
+                    GodValidationMethods::isTargetPosOnDifferentCell,
+                    GodValidationMethods::isTargetPosDomesFree,
+                    GodValidationMethods::isTargetPosAdjacent,
+                    GodValidationMethods::isBuildingHeightLessThanThree
+            ));
+
+
     @Override
     public boolean chooseAction(Action action) {
+        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
         if (this.hasMoved) {
             if (counterHephaestusBuilds==0){
                 if (action.getType() == Action.ActionType.BUILD) {
-                    if (build(action)) {
+                    if (buildBlock(action)) {
                         posFirstBuild=action.getTargetPos();
                         counterHephaestusBuilds++;
                         return true;
                     }
                 } else if (action.getType() == Action.ActionType.BUILD_DOME) {
                     if (buildDome(action)) {
-                        hasFinishedTurn = true;
                         return true;
                     }
                 }
-
-
             }else if(counterHephaestusBuilds==1){
                 if (action.getType() == Action.ActionType.BUILD) {
-                    if (build(action)) {
-                        hasFinishedTurn = true;
+                    if (buildBlock(action)) {
                         return true;
                     }
                 }
             }
-
         } else if (action.getType() == Action.ActionType.MOVE) {
             if (move(action)) {
-                chosenWorker=action.getWorker();
                 this.hasMoved = true;
+                return true;
+            }
+        }if(action.getType()==Action.ActionType.END_TURN ) {
+            if (endTurn()) {
+                this.hasFinishedTurn = true;
                 return true;
             }
         }
@@ -52,37 +68,11 @@ public class Hephaestus extends God {
     }
 
 
-    @Override
-    public boolean isBuildValid(Action action){
-        Vector2 pos=action.getTargetPos();
-
-        //check if pos is within board
-        if(pos.getY()>=5 || pos.getX()>=5 || pos.getY()<0 || pos.getX()<0){
-            return false;
-        }
-        //check if targeted pos doesn't have any other worker. It also check that you don't build where your worker is.
-        if (this.board.getWorker(pos) != null){
-            return false;
-        }
-
-
-        if(this.board.isComplete(pos)){
-            return false;
-        }
-        if (this.board.getHeight(pos)>=3){
-            return false;
-        }
-
-        //check worker is building within their range
-        if(action.getWorker().getPosition().getX() - pos.getX()>1 || action.getWorker().getPosition().getY()-pos.getY()>1){
-            return false;
-        }
-
+    public boolean isCellTheSame(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
         if(counterHephaestusBuilds==1 && action.getTargetPos()!=posFirstBuild){
             return false;
         }
-        //check the worker is the same that moved
-        if(!(chosenWorker.equals(action.getWorker()))){return false;}
         return true;
     }
 
