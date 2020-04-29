@@ -10,7 +10,13 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * The type Client.
+ */
 public class Client {
+    /**
+     * The enum clientStateEnum describes the client as a Finite State Machine.
+     */
     public enum clientStateEnum {HANDSHAKE, WAITING_HANDSHAKE, LOBBY, TURN, NOT_TURN};
     private final String ip;
     private final int port;
@@ -19,43 +25,95 @@ public class Client {
     private clientStateEnum state = clientStateEnum.HANDSHAKE;
     private String playerName;
 
+    /**
+     * Instantiates a new Client.
+     *
+     * @param ip   the ip
+     * @param port the port
+     */
     public Client(String ip, int port) {
         this.ip = ip;
         this.port = port;
     }
 
+    /**
+     * Sets state.
+     *
+     * @param state the state
+     */
     public synchronized void setState(clientStateEnum state) {
         this.state = state;
     }
 
+    /**
+     * Gets state.
+     *
+     * @return the state
+     */
     public synchronized clientStateEnum getState() {
         return this.state;
     }
 
+    /**
+     * Gets game id.
+     *
+     * @return the game id
+     */
     public synchronized int getGameID() {
         return gameID;
     }
 
+    /**
+     * Sets game id.
+     *
+     * @param gameID the game id
+     */
     public synchronized void setGameID(int gameID) {
         this.gameID = gameID;
     }
 
+    /**
+     * Gets player name.
+     *
+     * @return the player name
+     */
     public synchronized String getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Sets player name.
+     *
+     * @param playerName the player name
+     */
     public synchronized void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
+    /**
+     * Is active boolean.
+     *
+     * @return active flag
+     */
     public synchronized boolean isActive() {
         return this.active;
     }
 
+    /**
+     * Sets active.
+     *
+     * @param active the active flag
+     */
     public synchronized void setActive(boolean active) {
         this.active = active;
     }
 
+    /**
+     * Async read from socket thread.
+     *
+     * @param socketIn the socket in
+     * @return the thread
+     */
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn) {
         Thread t = new Thread(() -> {
             try {
@@ -71,6 +129,13 @@ public class Client {
         return t;
     }
 
+    /**
+     * Async write to socket thread.
+     *
+     * @param stdin     the stdin
+     * @param socketOut the socket out
+     * @return the thread
+     */
     public Thread asyncWriteToSocket(final Scanner stdin, final ObjectOutputStream socketOut){
         Thread t = new Thread(() -> {
             try {
@@ -86,6 +151,11 @@ public class Client {
         return t;
     }
 
+    /**
+     * Run.
+     *
+     * @throws IOException if crashes
+     */
     public void run() throws IOException {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection established with " + ip + ":" + port);
