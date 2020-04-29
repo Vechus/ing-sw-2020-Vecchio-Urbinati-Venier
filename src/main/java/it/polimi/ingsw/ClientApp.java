@@ -12,23 +12,9 @@ public class ClientApp {
         Client client = new Client(ip, port);
 
         try {
-            client.run(menu());
+            client.run();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    private static boolean menu() {
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("SANTORINI OFFICIAL GAME SPONSORED BY Java 13©");
-        String ans = input.next();
-        System.out.println("Vuoi aprire una nuova partita?[si/no] ");
-        while(!ans.equals("si") && !ans.equals("no")) {
-            ans = input.next();
-            System.out.println("Errore input! Vuoi aprire una nuova partita?[si/no] ");
-        }
-        input.close();
-        return ans.equals("si");
     }
 }
