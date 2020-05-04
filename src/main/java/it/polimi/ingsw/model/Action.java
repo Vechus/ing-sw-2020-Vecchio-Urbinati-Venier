@@ -16,7 +16,7 @@ public class Action {
          import it.polimi.ingsw.model.Action
          Action.ActionType foo = Action.ActionType.BUILD;
      */
-    public enum ActionType {BUILD, MOVE, BUILD_DOME, END_TURN};
+    public enum ActionType {PLACE_WORKER, BUILD, MOVE, BUILD_DOME, END_TURN};
 
 
     /**
@@ -28,7 +28,7 @@ public class Action {
     public Action(Worker worker, Vector2 targetPos, ActionType type) {
         this.worker = worker;
         this.targetPos = targetPos;
-        this.workerPos = worker.getPosition();
+        if(worker != null) this.workerPos = worker.getPosition();
         this.type = type;
     }
 

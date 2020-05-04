@@ -74,9 +74,11 @@ public class Board {
      * @param w   the w
      * @param pos the pos.
      */
-    public void placeWorker(Worker w, Vector2 pos){
+    public boolean placeWorker(Worker w, Vector2 pos){
+        if(pos.getX() < 0 || pos.getX() > 4 || pos.getY() < 0 || pos.getY() > 4) return false;
         workers[pos.getX()][pos.getY()] = w;
         w.setPosition(pos);
+        return true;
     }
 
     /**

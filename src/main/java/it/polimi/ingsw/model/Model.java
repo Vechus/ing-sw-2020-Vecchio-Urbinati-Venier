@@ -146,7 +146,7 @@ public class Model {
     public boolean placeWorker(int pid, Vector2 initPos) {
         if(board.getWorker(initPos) != null) return false;
         Worker worker = new Worker(players.get(pid));
-        board.placeWorker(worker, initPos);
+        if(!board.placeWorker(worker, initPos)) return false;
         players.get(pid).addWorker(worker);
         return true;
     }
