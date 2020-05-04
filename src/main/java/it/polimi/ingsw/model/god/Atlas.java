@@ -18,4 +18,15 @@ public class Atlas extends God {
                         GodValidationMethods::isTargetPosAdjacent
                 ));
     }
+    public Atlas(Board board) {
+        super(board);
+
+        this.buildDomeValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent
+                ));
     }
+}

@@ -11,15 +11,24 @@ import java.util.Vector;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
-    Board board = new Board();
-    Player p1 = new Player(board);
-    Player p2 = new Player(board);
+    Model model;
+    Board board;
+    Player p1;
+    Player p2;
+    God god1, god2;
+    int pid1, pid2;
     Vector2 origin = new Vector2(0,0);
     
     @BeforeEach
     void setup(){
-        p1.setPlayerGod(new God(board, p1));
-        p2.setPlayerGod(new God(board, p1));
+        model = new Model();
+        board = model.getBoard();
+        god1 = new God(board);
+        god2 = new God(board);
+        pid1 = model.addNewPlayer(god1);
+        pid2 = model.addNewPlayer(god2);
+        p1 = model.getPlayer(pid1);
+        p2 = model.getPlayer(pid2);
         p1.setPlayerColor(ConsoleColor.GREEN_BOLD_BRIGHT);
         p2.setPlayerColor(ConsoleColor.BLUE_BOLD_BRIGHT);
     }
@@ -39,7 +48,7 @@ class PlayerTest {
         Vector2 fromPos = new Vector2(0, 1);
         board.setHeight(winningPos, 3);
         board.setHeight(fromPos, 2);
-        board.placeWorker(p1.getWorker(0), fromPos);
+        model.placeWorker(pid1, fromPos);
         // let's win!
         Action winAction = new Action(p1.getWorker(0), winningPos, Action.ActionType.MOVE);
         //p1.doAction(winAction);
@@ -53,12 +62,12 @@ class PlayerTest {
         P1|P2|..
         P2|b2|...
          */
-        board.placeWorker(p1.getWorker(0), origin);
+        model.placeWorker(pid1, origin);
         // he should not lose right now, neither with the P2 only
         assertFalse(p1.checkLoseCondition());
-        board.placeWorker(p2.getWorker(0), new Vector2(0,1));
+        model.placeWorker(pid2, new Vector2(0,1));
         assertFalse(p1.checkLoseCondition());
-        board.placeWorker(p2.getWorker(1), new Vector2(1,0));
+        model.placeWorker(pid2, new Vector2(1,0));
         assertFalse(p1.checkLoseCondition());
         board.setHeight(new Vector2(1,1), 2);
         // now he should lose
@@ -67,7 +76,7 @@ class PlayerTest {
 
     @Test
     void doAction() {
-        board.placeWorker(p1.getWorker(0), origin);
+        model.placeWorker(pid1, origin);
         Vector2 target = new Vector2(0,1);
         Action testActionMove = new Action(p1.getWorker(0), target, Action.ActionType.MOVE);
         Action testActionBuild = new Action(p1.getWorker(0), target, Action.ActionType.BUILD);
@@ -90,15 +99,10 @@ class PlayerTest {
 
     @Test
     void getWorker() {
+        model.placeWorker(pid1, new Vector2(0, 0));
+        model.placeWorker(pid1, new Vector2(1, 1));
         assertNotNull(p1.getWorker(0));
         assertNotNull(p1.getWorker(1));
-    }
-
-    @Test
-    void setWorker() {
-        Worker testWorker = new Worker(origin, p1);
-        p1.setWorker(1, testWorker);
-        assertEquals(p1.getWorker(1), testWorker);
     }
 
     @Test

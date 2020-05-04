@@ -6,10 +6,13 @@ import it.polimi.ingsw.model.Model;
 public abstract class GameStageController {
     protected Model model;
     protected GameStage stage;
+    protected boolean stageDone = false;
 
     public GameStageController(Model model){
         this.model = model;
     }
+
+    public boolean isStageDone(){ return this.stageDone; }
 
     public GameStage getGameStage(){ return this.stage; }
 

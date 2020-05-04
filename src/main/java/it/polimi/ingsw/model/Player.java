@@ -14,6 +14,7 @@ public class Player {
     private Board board;
     private String playerName;
     private String playerColor;
+    private int playerId;
 
     /**
      * Constructor for player without any parameter
@@ -25,9 +26,6 @@ public class Player {
         this.isSpectator = false;
         this.isFinished = false;
         this.workers = new ArrayList<>();
-        for(int i = 0; i < 2; i++) {
-            this.workers.add(new Worker(this));
-        }
     }
 
     /**
@@ -41,9 +39,6 @@ public class Player {
         this.isFinished = false;
         this.board = board;
         this.workers = new ArrayList<>();
-        for(int i = 0; i < 2; i++) {
-            this.workers.add(new Worker(this));
-        }
     }
 
 
@@ -57,10 +52,11 @@ public class Player {
         this.isFinished = false;
         this.board = board;
         this.workers = new ArrayList<>();
-        for(int i = 0; i < 2; i++) {
-            this.workers.add(new Worker(this));
-        }
     }
+
+    public void setPlayerId(int id){ this.playerId = id; }
+
+    public int getPlayerId(){ return this.playerId; }
 
     /**
      * Begin a new turn, initialising all parameters.
@@ -84,6 +80,7 @@ public class Player {
      */
     public boolean checkLoseCondition() {
         Vector2 posDelta;
+        if(this.workers.size() == 0) return false;
         for(Worker w : this.workers) {
             // iterate around the worker
             for(int x = -1; x <= 1; x++) {
@@ -103,7 +100,9 @@ public class Player {
      * @return boolean result: 1 if the action is valid
      */
     public boolean doAction(Action action) {
-        return this.playerGod.chooseAction(action);
+        boolean res = playerGod.chooseAction(action);
+        setFinished(playerGod.getHasFinishedTurn());
+        return res;
     }
 
     /**
@@ -116,12 +115,11 @@ public class Player {
     }
 
     /**
-     * Set the n-th worker of this Player
-     * @param idx index of the worker to be set to
-     * @param w Worker to set
+     * Add a new worker to the player
+     * @param w
      */
-    public void setWorker(int idx, Worker w) {
-        this.workers.set(idx, w);
+    public void addWorker(Worker w){
+        workers.add(w);
     }
 
     /**

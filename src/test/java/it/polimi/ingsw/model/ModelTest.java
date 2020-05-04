@@ -20,38 +20,38 @@ class ModelTest {
     void checkPlayersLoseCondition() {
         Vector2 origin = new Vector2(0,0);
         Board board = model.getBoard();
-        model.addNewPlayer(new God(board));
-        board.placeWorker(model.getPlayer(0).getWorker(0), origin);
-        model.beginNewTurn(model.getPlayer(0));
+        int pid = model.addNewPlayer(new God(board));
+        model.placeWorker(pid, origin);
+        model.beginNewTurn(0);
         board.setHeight(new Vector2(0,1), 2);
         board.setHeight(new Vector2(1,0), 2);
         model.checkPlayersLoseCondition();
-        assertEquals(1, model.getNumberOfPlayers());
+        assertFalse(model.getPlayer(pid).isSpectator());
         board.setHeight(new Vector2(1,1), 3);
         model.checkPlayersLoseCondition();
-        assertEquals(0, model.getNumberOfPlayers());
+        assertTrue(model.getPlayer(pid).isSpectator());
     }
 
     @Test
     void checkGameOver() {
-        model.addNewPlayer(new God(model.getBoard()));
+        int pid1 = model.addNewPlayer(new God(model.getBoard()));
         Assert.assertTrue(model.checkGameOver());
-        model.addNewPlayer(new God(model.getBoard()));
+        int pid2 = model.addNewPlayer(new God(model.getBoard()));
         Assert.assertFalse(model.checkGameOver());
     }
 
     @Test
     void executeAction() {
-        model.addNewPlayer(new God(model.getBoard()));
-        model.getBoard().placeWorker(model.getPlayer(0).getWorker(0), new Vector2(0,0));
-        assertTrue(model.executeAction(0, new Action(model.getPlayer(0).getWorker(0), new Vector2(0,1), Action.ActionType.MOVE)));
+        int pid = model.addNewPlayer(new God(model.getBoard()));
+        model.placeWorker(pid, new Vector2(0,0));
+        assertTrue(model.executeAction(pid, new Action(model.getPlayer(pid).getWorker(0), new Vector2(0,1), Action.ActionType.MOVE)));
     }
 
     @Test
     void beginNewTurn() {
         model.addNewPlayer(new God(model.getBoard()));
         model.getPlayer(0).setFinished(true);
-        model.beginNewTurn(model.getPlayer(0));
+        model.beginNewTurn(0);
         assertFalse(model.getPlayer(0).isFinished());
     }
 

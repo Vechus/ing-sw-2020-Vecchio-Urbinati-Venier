@@ -20,6 +20,8 @@ public class Controller implements PlayerActionListener {
 
     @Override
     public void onPlayerAction(int playerId, Action a) {
-        currentStage.performAction(playerId, a);
+        this.currentStage.performAction(playerId, a);
+        if(this.currentStage.isStageDone())
+            this.currentStage = currentStage.advance();
     }
 }

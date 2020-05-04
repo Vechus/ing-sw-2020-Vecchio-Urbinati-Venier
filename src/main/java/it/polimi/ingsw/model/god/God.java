@@ -90,6 +90,15 @@ public class God {
     }
 
     /**
+     * Set the god's player
+     *
+     * @param player the player
+     */
+    public void setPlayer(Player player){
+        this.player = player;
+    }
+
+    /**
      * Get has finished turn boolean.
      *
      * @return the boolean.
@@ -221,7 +230,8 @@ public class God {
      */
     public boolean checkWinCondition(Action action){
         return this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) > 0
-                && this.board.getHeight(action.getTargetPos()) == 3;
+                && this.board.getHeight(action.getTargetPos()) == 3
+                && action.getType() == Action.ActionType.MOVE;
     }
 
 

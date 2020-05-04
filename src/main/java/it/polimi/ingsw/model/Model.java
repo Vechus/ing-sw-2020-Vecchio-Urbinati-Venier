@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.Vector2;
 import it.polimi.ingsw.util.listeners.ModelChangeListener;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class Model {
     private Board board;
     private List<Player> players;
     private List<ModelChangeListener> listeners;
+    int curPlayer = 0;
 
     /**
      * Instantiates a new Model.
@@ -40,21 +42,22 @@ public class Model {
      * @return the index of the player
      */
     public int addNewPlayer(God god) {
-        this.players.add(new Player(god, this.board));
-        return this.players.size()-1;
+        Player player = new Player(god, this.board);
+        god.setPlayer(player);
+        this.players.add(player);
+        int pid = this.players.size()-1;
+        this.players.get(pid).setPlayerId(pid);
+        return pid;
     }
 
     /**
      * Check players lose condition.
      */
     public void checkPlayersLoseCondition() {
-        Iterator<Player> playerIterator = this.players.iterator();
-        while(playerIterator.hasNext()) {
-            Player p = playerIterator.next();
-            if(p.checkLoseCondition()) {
+        for (Player p : this.players) {
+            if (p.checkLoseCondition()) {
                 // player lost the game
                 p.setSpectator(true);
-                playerIterator.remove();
             }
         }
     }
@@ -65,9 +68,11 @@ public class Model {
      * @return the boolean
      */
     public boolean checkGameOver() {
-        // can also do this:
-        // this.checkPlayersLoseCondition();
-        return (this.players.size() == 1);
+        this.checkPlayersLoseCondition();
+        int activePlayers = 0;
+        for(Player p : this.players)
+            if(!p.isSpectator()) activePlayers++;
+        return activePlayers <= 1;
     }
 
     /**
@@ -89,10 +94,10 @@ public class Model {
     /**
      * Begin a new turn.
      *
-     * @param currentPlayer the current player.
+     * @param pid the player's pid
      */
-    public void beginNewTurn(Player currentPlayer) {
-        currentPlayer.beginNewTurn();
+    public void beginNewTurn(int pid) {
+        players.get(pid).beginNewTurn();
     }
 
     /**
@@ -121,5 +126,28 @@ public class Model {
      */
     public Board getBoard() {
         return board;
+    }
+
+    public int getCurPlayer() {
+        return this.curPlayer;
+    }
+
+    public void incrementCurPlayer(){
+        int orig = curPlayer;
+        do{
+            curPlayer = (curPlayer + 1) % getNumberOfPlayers();
+        } while(players.get(curPlayer).isSpectator() && curPlayer != orig);
+    }
+
+    public boolean isPlayersTurn(int playerId){
+        return playerId == this.curPlayer;
+    }
+
+    public boolean placeWorker(int pid, Vector2 initPos) {
+        if(board.getWorker(initPos) != null) return false;
+        Worker worker = new Worker(players.get(pid));
+        board.placeWorker(worker, initPos);
+        players.get(pid).addWorker(worker);
+        return true;
     }
 }

@@ -6,16 +6,24 @@ import it.polimi.ingsw.model.Model;
 public class MatchController extends GameStageController {
     public MatchController(Model model) {
         super(model);
-        this.stage = GameStage.PLAY;
+        stage = GameStage.PLAY;
     }
 
     @Override
     public boolean performAction(int playerId, Action a) {
-        return this.model.executeAction(playerId, a);
+        if(!model.isPlayersTurn(playerId)) return false;
+        if(!model.executeAction(playerId, a)) return false;
+        if(model.getPlayer(model.getCurPlayer()).checkWinCondition(a) || model.checkGameOver())
+            stageDone = true;
+        if(model.getPlayer(model.getCurPlayer()).isFinished()) {
+            model.incrementCurPlayer();
+            model.beginNewTurn(model.getCurPlayer());
+        }
+        return true;
     }
 
     @Override
     public GameStageController advance() {
-        return new FinishedController(this.model);
+        return new FinishedController(model);
     }
 }

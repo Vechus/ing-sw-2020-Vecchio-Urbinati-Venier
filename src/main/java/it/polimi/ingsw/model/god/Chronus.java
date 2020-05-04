@@ -10,6 +10,9 @@ public class Chronus extends God {
         super(board, player);
     }
 
+    public Chronus(Board board) {
+        super(board);
+    }
 
     @Override
     public boolean checkWinCondition(Action action){

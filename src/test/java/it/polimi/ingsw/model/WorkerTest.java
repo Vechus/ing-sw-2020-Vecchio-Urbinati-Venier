@@ -30,7 +30,8 @@ class WorkerTest {
     @Test
     void getOwner() {
         final Player player = new Player();
-        assertSame(player.getWorker(0).getOwner(), player);
+        Worker w = new Worker(player);
+        assertSame(w.getOwner(), player);
     }
 
     @Test
