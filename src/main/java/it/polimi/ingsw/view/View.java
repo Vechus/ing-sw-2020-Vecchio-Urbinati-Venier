@@ -2,6 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.listeners.ModelChangeListener;
 import it.polimi.ingsw.util.listeners.PlayerActionListener;
 
@@ -16,6 +18,12 @@ public abstract class View implements ModelChangeListener {
     }
 
     public void addListener(PlayerActionListener listener){ this.listeners.add(listener); }
+
+    public void processPlayerCreation(God god){
+        for(PlayerActionListener listener : this.listeners){
+            listener.onPlayerCreate(this.playerId, god);
+        }
+    }
 
     public void processAction(Action action){
         for(PlayerActionListener listener : this.listeners){
