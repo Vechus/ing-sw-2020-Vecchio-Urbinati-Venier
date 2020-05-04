@@ -123,6 +123,12 @@ public class Player {
     }
 
     /**
+     * How many workers does the player have?
+     * @return the number of workers the player has
+     */
+    public int getNumWorkers(){ return this.workers.size(); }
+
+    /**
      * Get Player's God
      * @return playerGod God of this Player
      */

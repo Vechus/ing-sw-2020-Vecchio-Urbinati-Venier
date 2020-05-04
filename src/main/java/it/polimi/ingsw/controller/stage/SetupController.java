@@ -13,7 +13,13 @@ public class SetupController extends GameStageController {
     public boolean performAction(int playerId, Action a) {
         if(!model.isPlayersTurn(playerId)) return false;
         if(a.getType() != Action.ActionType.PLACE_WORKER) return false;
-        return model.placeWorker(playerId, a.getTargetPos());
+        if(!model.placeWorker(playerId, a.getTargetPos())) return false;
+        model.incrementCurPlayer();
+        boolean full = true;
+        for(int i=0;i<model.getNumberOfPlayers();i++)
+            full &= model.getPlayer(i).getNumWorkers() == 2;
+        if(full) stageDone = true;
+        return true;
     }
 
     @Override

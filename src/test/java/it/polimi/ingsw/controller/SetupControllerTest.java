@@ -26,10 +26,14 @@ public class SetupControllerTest {
     }
 
     @Test
-    void testNotPlayersTurn(){
-        w2 = new Worker(null, model.getPlayer(pid2));
-        Action action = new Action(w2, new Vector2(2, 2), Action.ActionType.MOVE);
+    void testPlayersTurn(){
+        w1 = new Worker(null, model.getPlayer(pid2));
+        Action action = new Action(null, new Vector2(2, 2), Action.ActionType.PLACE_WORKER);
         assertFalse(controller.performAction(pid2, action));
+        assertTrue(controller.performAction(pid1, action));
+        action = new Action(null, new Vector2(0, 0), Action.ActionType.PLACE_WORKER);
+        assertFalse(controller.performAction(pid1, action));
+        assertTrue(controller.performAction(pid2, action));
     }
 
     @Test
@@ -46,5 +50,21 @@ public class SetupControllerTest {
         assertEquals(w1, model.getPlayer(pid1).getWorker(0));
         assertEquals(w1.getOwner(), model.getPlayer(pid1));
         assertEquals(w1.getPosition(), new Vector2(0, 0));
+    }
+
+    @Test
+    void testSetupDone(){
+        Action a = new Action(null, new Vector2(0, 0), Action.ActionType.PLACE_WORKER);
+        assertTrue(controller.performAction(pid1, a));
+        assertFalse(controller.isStageDone());
+        a = new Action(null, new Vector2(0, 1), Action.ActionType.PLACE_WORKER);
+        assertTrue(controller.performAction(pid2, a));
+        assertFalse(controller.isStageDone());
+        a = new Action(null, new Vector2(1, 0), Action.ActionType.PLACE_WORKER);
+        assertTrue(controller.performAction(pid1, a));
+        assertFalse(controller.isStageDone());
+        a = new Action(null, new Vector2(1, 1), Action.ActionType.PLACE_WORKER);
+        assertTrue(controller.performAction(pid2, a));
+        assertTrue(controller.isStageDone());
     }
 }
