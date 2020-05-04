@@ -99,6 +99,12 @@ public class God {
     }
 
     /**
+     * Get the god's player
+     * @return the player
+     */
+    public Player getPlayer(){ return this.player; }
+
+    /**
      * Get has finished turn boolean.
      *
      * @return the boolean.

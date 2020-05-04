@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller.stage;
 
 import it.polimi.ingsw.model.Action;
 import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.god.God;
 
 public abstract class GameStageController {
     protected Model model;
@@ -16,7 +17,11 @@ public abstract class GameStageController {
 
     public GameStage getGameStage(){ return this.stage; }
 
+    public boolean createPlayer(int playerId, God god){ return false; }
+
     public abstract boolean performAction(int playerId, Action a);
 
     public abstract GameStageController advance();
+
+    public void setStageDone(boolean done){ stageDone = done; }
 }
