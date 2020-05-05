@@ -15,4 +15,9 @@ public class RemoteView extends View {
     /*
      * TODO: Add network code
      */
+
+    @Override
+    public void onModelChange(Model model) {
+        super.onModelChange(model);
+    }
 }
