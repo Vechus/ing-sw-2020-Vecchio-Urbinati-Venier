@@ -9,15 +9,13 @@ import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HephaestusTest {
     Board board;
     Player player;
-    Vector2 highPos=new Vector2(1,0);;
-    Vector2 lowPos=new Vector2(1,1);;
+    Vector2 highPos=new Vector2(1,0);
+    Vector2 lowPos=new Vector2(1,1);
     Vector2 midPos=new Vector2(0,0);
     Worker worker;
     God god;
@@ -41,7 +39,7 @@ public class HephaestusTest {
         assertTrue(god.chooseAction(firstAction));
         Action secondAction=new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(secondAction));
-        assertTrue(board.getHeight(lowPos)==2);
+        assertEquals(2, board.getHeight(lowPos));
     }
 
     @Test
@@ -52,6 +50,6 @@ public class HephaestusTest {
         assertTrue(god.chooseAction(firstAction));
         Action secondAction=new Action(worker, midPos, ActionType.BUILD);
         assertFalse(god.chooseAction(secondAction));
-        assertFalse(board.getHeight(highPos)==3);
+        assertNotEquals(3, board.getHeight(highPos));
     }
 }

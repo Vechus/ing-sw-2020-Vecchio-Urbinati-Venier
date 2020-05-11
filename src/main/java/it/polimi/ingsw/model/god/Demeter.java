@@ -85,7 +85,6 @@ public class Demeter extends God {
 
     public boolean isCellDifferentWhenBuilding(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        if(counterDemeterBuild==1 && action.getTargetPos().equals(posFirstBuild)) { return false; }
-        return true;
+        return counterDemeterBuild != 1 || !action.getTargetPos().equals(posFirstBuild);
     }
 }

@@ -15,8 +15,8 @@ public class GodTest {
 
     Board board;
     Player player;
-    Vector2 highPos=new Vector2(1,0);;
-    Vector2 lowPos=new Vector2(1,1);;
+    Vector2 highPos=new Vector2(1,0);
+    Vector2 lowPos=new Vector2(1,1);
     Vector2 midPos=new Vector2(0,0);
     Vector2 outsidePos=new Vector2(-1,-1);
     Worker worker;
@@ -125,12 +125,12 @@ public class GodTest {
         board.setHeight(highPos, 3);
         Action action = new Action (worker, highPos, ActionType.BUILD_DOME);
         god.buildDome(action);
-        assertTrue(board.getWorker(midPos)==worker && board.isComplete(highPos)==true);
+        assertTrue(board.getWorker(midPos)==worker && board.isComplete(highPos));
     }
     @Test
     void BuildDomeNotValid(){
         Action action = new Action (worker, highPos, ActionType.BUILD_DOME);
-        assertTrue(board.getWorker(midPos)==worker && board.isComplete(highPos)==false);
+        assertTrue(board.getWorker(midPos)==worker && !board.isComplete(highPos));
     }
 
     //1 TESTS FOR BUILD_DOME

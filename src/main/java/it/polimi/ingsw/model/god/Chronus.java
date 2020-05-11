@@ -20,18 +20,13 @@ public class Chronus extends God {
             return false;
         }
         int counterBuildings=0;
-        int i,j;
-        for (i=0;i<5; i++ ){
-            for(j=0; j<5;j++){
+        for (int i=0;i<5; i++ ){
+            for(int j=0; j<5;j++){
                 Vector2 pos=new Vector2(i,j);
-                if(this.board.getHeight(pos)==3 && this.board.isComplete(pos)){
-                    return true;
-                }
+                if(this.board.getHeight(pos)==3 && this.board.isComplete(pos))
+                    counterBuildings++;
             }
         }
-        if(counterBuildings==5){
-            return true;
-        }
-        return false;
+        return counterBuildings == 5;
     }
 }

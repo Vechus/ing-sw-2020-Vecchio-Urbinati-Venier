@@ -7,7 +7,8 @@ public class Handshake extends Message {
     /**
      * The enum Handshake type. Host if the player wants to host a new Game, Join if the player wants to join an existing Game.
      */
-    public enum HandshakeType {HOST, JOIN};
+    public enum HandshakeType {HOST, JOIN}
+
     private int gameId;
     private String playerName;
     private HandshakeType type;

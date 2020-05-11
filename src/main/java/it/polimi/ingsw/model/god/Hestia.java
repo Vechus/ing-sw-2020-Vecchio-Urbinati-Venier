@@ -84,10 +84,7 @@ public class Hestia extends God {
 
     public boolean isBuildOffThePerimeter(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        if(counterHestiaBuilds==1 && (action.getTargetPos().getY()==4 || action.getTargetPos().getX()==4 || action.getTargetPos().getY()==0 || action.getTargetPos().getX()==0)){
-            return false;
-        }
-        return true;
+        return counterHestiaBuilds != 1 || (action.getTargetPos().getY() != 4 && action.getTargetPos().getX() != 4 && action.getTargetPos().getY() != 0 && action.getTargetPos().getX() != 0);
     }
 
 

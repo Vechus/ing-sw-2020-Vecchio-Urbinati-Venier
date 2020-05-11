@@ -15,9 +15,6 @@ public class Pan extends God {
         if(super.checkWinCondition(action)){
             return true;
         }
-        if (this.board.getHeight(action.getWorkerPos())-  this.board.getHeight(action.getTargetPos())>=2){
-            return true;
-        }
-        return false;
+        return this.board.getHeight(action.getWorkerPos()) - this.board.getHeight(action.getTargetPos()) >= 2;
     }
 }

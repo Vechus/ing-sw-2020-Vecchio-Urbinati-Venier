@@ -124,18 +124,18 @@ public class God {
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
         if(this.hasMoved ){
-            if(action.getType()== ActionType.BUILD && chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.BUILD && chosenWorker==action.getWorker()&& !hasBuilt){
                 if(buildBlock(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
-            }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&& !hasBuilt){
                 if(buildDome(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
             }
-        }else if (action.getType()== ActionType.MOVE && chosenWorker==action.getWorker()&&hasBuilt==false){
+        }else if (action.getType()== ActionType.MOVE && chosenWorker==action.getWorker()&& !hasBuilt){
             if (move(action)) {
                 this.hasMoved = true;
                 return true;
@@ -253,20 +253,14 @@ public class God {
 
 
     public boolean endTurn(){
-        if(!(isEndTurnValid())){
-            return false;
-        }
-        return true;
+        return isEndTurnValid();
     }
 
     public boolean isEndTurnValid(){
         if(!hasMoved){
             return false;
         }
-        if(!hasBuilt){
-            return false;
-        }
-        return true;
+        return hasBuilt;
     }
 
     protected boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){

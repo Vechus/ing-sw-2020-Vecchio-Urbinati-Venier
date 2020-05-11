@@ -28,23 +28,23 @@ public class Triton extends God {
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
         if(this.hasMoved){
-            if(action.getType()== ActionType.MOVE&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.MOVE&& chosenWorker==action.getWorker()&& !hasBuilt){
                 if(move(action)){
                     return true;
                 }
             }
-            if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()&& !hasBuilt){
                 if(buildBlock(action)) {
                     hasBuilt=true;
                     return true;
                 }
-            }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&& !hasBuilt){
                 if(buildDome(action)) {
                     hasBuilt=true;
                     return true;
                 }
             }
-        }else if (action.getType()== ActionType.MOVE&& chosenWorker==action.getWorker()&&hasBuilt==false) {
+        }else if (action.getType()== ActionType.MOVE&& chosenWorker==action.getWorker()&& !hasBuilt) {
             if (move(action)) {
                 this.hasMoved = true;
                 return true;
@@ -62,8 +62,6 @@ public class Triton extends God {
 
     public boolean isMoveOnPerimeter(Pair<Action, Board> actionBoardPair) {
         Action action = actionBoardPair.first();
-        if(hasMoved && !(action.getWorkerPos().getY()==4 || action.getWorkerPos().getX()==4|| action.getWorkerPos().getX()==0|| action.getWorkerPos().getY()==0))
-            return false;
-        return true;
+        return !hasMoved || (action.getWorkerPos().getY() == 4 || action.getWorkerPos().getX() == 4 || action.getWorkerPos().getX() == 0 || action.getWorkerPos().getY() == 0);
     }
 }

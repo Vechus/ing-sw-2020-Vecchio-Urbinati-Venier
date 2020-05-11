@@ -46,12 +46,12 @@ public class Prometheus extends God {
                 this.hasMoved = true;
                 return true;
             }
-        } else if(hasBuilt==false && action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
+        } else if(!hasBuilt && action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
             if (buildBlock(action)){
                 this.hasBuilt=true;
                 return true;
             }
-        } else if(hasBuilt==false && action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
+        } else if(!hasBuilt && action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
             if (buildBlock(action)){
                 this.hasBuilt=true;
                 return true;
@@ -68,9 +68,6 @@ public class Prometheus extends God {
 
     public boolean hasBuiltBefore (Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        if(hasBuilt==true && this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos())>0){
-            return false;
-        }
-        return true;
+        return !hasBuilt || this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) <= 0;
     }
 }

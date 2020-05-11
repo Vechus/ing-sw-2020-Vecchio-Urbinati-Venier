@@ -24,10 +24,7 @@ public class Zeus extends God {
 
     boolean isCellOtherWorkersFree(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        if (this.board.getWorker(action.getTargetPos()) != null && !(action.getTargetPos().equals(action.getWorker().getPosition()))  ){
-            return false;
-        }
-        return true;
+        return this.board.getWorker(action.getTargetPos()) == null || action.getTargetPos().equals(action.getWorker().getPosition());
     }
 
 }

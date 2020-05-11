@@ -14,8 +14,8 @@ import static org.testng.Assert.assertTrue;
 public class AtlasTest {
     Board board;
     Player player;
-    Vector2 highPos=new Vector2(1,0);;
-    Vector2 lowPos=new Vector2(1,1);;
+    Vector2 highPos=new Vector2(1,0);
+    Vector2 lowPos=new Vector2(1,1);
     Vector2 midPos=new Vector2(0,0);
     Worker worker;
     God god;

@@ -9,8 +9,7 @@ import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DemeterTest {
     Board board;
@@ -52,8 +51,8 @@ public class DemeterTest {
         assertTrue(god.chooseAction(firstBuild));
         Action secondBuild=new Action(worker, lowPos, ActionType.BUILD);
         assertFalse(god.chooseAction(secondBuild));
-        assertFalse(board.getHeight(lowPos)==2);
-        assertTrue(board.getHeight(lowPos)==1);
+        assertNotEquals(2, board.getHeight(lowPos));
+        assertEquals(1, board.getHeight(lowPos));
     }
 
     @Test
@@ -65,6 +64,6 @@ public class DemeterTest {
         assertTrue(god.chooseAction(firstBuild));
         Action secondBuild=new Action(worker, lowPos, ActionType.BUILD_DOME);
         assertFalse(god.chooseAction(secondBuild));
-        assertTrue(board.getHeight(lowPos)==3);
+        assertEquals(3, board.getHeight(lowPos));
     }
 }

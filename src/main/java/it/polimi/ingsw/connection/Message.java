@@ -7,13 +7,14 @@ public class Message {
     /**
      * The enum Payload type. It describes the status in detail.
      */
-    public enum ErrorType {GEN_ERROR, MOVE_INVALID, BUILD_INVALID, BUILD_DOME_INVALID, NOT_TURN_ERROR, GAME_ID_INVALID_ERROR, LOBBY_FULL_ERROR, CLOSE_SESSION};
-    public enum MessageType {GEN_MESSAGE, ACTION_REQUEST, ACTION, HANDSHAKE, BOARD_STATE, GAME_END};
+    public enum ErrorType {GEN_ERROR, MOVE_INVALID, BUILD_INVALID, BUILD_DOME_INVALID, NOT_TURN_ERROR, GAME_ID_INVALID_ERROR, LOBBY_FULL_ERROR, CLOSE_SESSION}
+    public enum MessageType {GEN_MESSAGE, ACTION_REQUEST, ACTION, HANDSHAKE, BOARD_STATE, GAME_END}
 
     /**
      * The enum Status.
      */
-    public enum Status {ERROR, OK};
+    public enum Status {ERROR, OK}
+
     private String payload;
     private ErrorType errorType;
     private MessageType messageType;

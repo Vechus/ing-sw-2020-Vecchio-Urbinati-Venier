@@ -30,7 +30,7 @@ public class Artemis extends God {
     public boolean chooseAction (Action action){
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
-        if(counterArtemisMoves==0 && action.getType()== ActionType.MOVE&&hasBuilt==false){
+        if(counterArtemisMoves==0 && action.getType()== ActionType.MOVE&& !hasBuilt){
             initialPos=action.getWorkerPos();
             if (move(action)) {
                 this.hasMoved = true;
@@ -39,20 +39,20 @@ public class Artemis extends God {
             }
         }
         if(counterArtemisMoves>=1){
-            if(action.getType()== ActionType.MOVE && counterArtemisMoves == 1&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.MOVE && counterArtemisMoves == 1&& chosenWorker==action.getWorker()&& !hasBuilt){
                 if(move(action)) {
                     this.hasMoved = true;
                     counterArtemisMoves++;
                     return true;
                 }
             }
-            if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()&& !hasBuilt){
                 if(buildBlock(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
             }
-            if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false) {
+            if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&& !hasBuilt) {
                 if (buildDome(action)) {
                     this.hasBuilt=true;
                     return true;
@@ -71,10 +71,7 @@ public class Artemis extends God {
 
     public boolean isCellDifferentFromInitialSpace(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        if(counterArtemisMoves==1 && action.getTargetPos().equals(initialPos)){
-            return false;
-        }
-        return true;
+        return counterArtemisMoves != 1 || !action.getTargetPos().equals(initialPos);
     }
 
 }

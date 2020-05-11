@@ -9,8 +9,7 @@ import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ArtemisTest {
     Board board;
@@ -39,9 +38,9 @@ public class ArtemisTest {
         assertTrue(god.chooseAction(firstAction));
         Action secondAction= new Action(worker, lowPos, ActionType.MOVE);
         assertTrue(god.chooseAction(secondAction));
-        assertTrue(board.getWorker(midPos)==null);
-        assertTrue(board.getWorker(highPos)==null);
-        assertTrue(board.getWorker(lowPos)==worker);
+        assertNull(board.getWorker(midPos));
+        assertNull(board.getWorker(highPos));
+        assertSame(board.getWorker(lowPos), worker);
     }
 
     @Test
@@ -62,7 +61,7 @@ public class ArtemisTest {
         assertTrue(god.chooseAction(secondAction));
         Action thirdAction= new Action(worker, lowPos, ActionType.MOVE);
         assertFalse(god.chooseAction(thirdAction));
-        assertFalse(board.getWorker(lowPos)==worker);
-        assertTrue(board.getWorker(highPos)==worker);
+        assertNotSame(board.getWorker(lowPos), worker);
+        assertSame(board.getWorker(highPos), worker);
     }
 }

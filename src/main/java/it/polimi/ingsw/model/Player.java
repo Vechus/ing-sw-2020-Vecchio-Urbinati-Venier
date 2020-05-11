@@ -118,7 +118,7 @@ public class Player {
 
     /**
      * Add a new worker to the player
-     * @param w
+     * @param w Worker the worker to add
      */
     public void addWorker(Worker w){
         workers.add(w);
