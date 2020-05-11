@@ -1,15 +1,13 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.util.ConsoleColor;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,13 +45,13 @@ class ApolloTest {
     @Test
     void move() {
         // action move
-        assertTrue(p1.doAction(new Action(w1, p2Pos, Action.ActionType.MOVE)));
+        assertTrue(p1.doAction(new Action(w1, p2Pos, ActionType.MOVE)));
         assertEquals(board.getWorker(p1Pos), w2);
         assertEquals(board.getWorker(p2Pos), w1);
     }
 
     @Test
     void isWorkersMoveValid() {
-        assertTrue(apollo.isMoveValid(new Action(w1, p2Pos, Action.ActionType.MOVE)));
+        assertTrue(apollo.isMoveValid(new Action(w1, p2Pos, ActionType.MOVE)));
     }
 }

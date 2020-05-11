@@ -2,11 +2,11 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.util.Vector2;
 import it.polimi.ingsw.util.listeners.ModelChangeListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**

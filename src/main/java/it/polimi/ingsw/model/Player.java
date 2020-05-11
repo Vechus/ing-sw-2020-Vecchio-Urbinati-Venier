@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.Action;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
 import java.util.ArrayList;
@@ -87,7 +89,7 @@ public class Player {
                 for(int y = -1; y <= 1; y++) {
                     posDelta = w.getPosition().add(new Vector2(x, y));
                     if(posDelta.getX() < 0 || posDelta.getY() < 0) continue;
-                    if(this.getPlayerGod().isMoveValid(new Action(w, posDelta, Action.ActionType.MOVE))) return false;
+                    if(this.getPlayerGod().isMoveValid(new Action(w, posDelta, ActionType.MOVE))) return false;
                 }
             }
         }

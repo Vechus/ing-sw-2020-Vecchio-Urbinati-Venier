@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.util.ActionType;
 import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
@@ -41,12 +42,12 @@ public class Hestia extends God {
 
         if(this.hasMoved ){
            if(counterHestiaBuilds==0){
-               if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()){
+               if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
                    if(buildBlock(action)) {
                        counterHestiaBuilds++;
                        return true;
                    }
-               }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
+               }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
                    if(buildDome(action)) {
                        counterHestiaBuilds++;
                        return true;
@@ -54,24 +55,24 @@ public class Hestia extends God {
                }
 
            } else if(counterHestiaBuilds==1){
-               if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()){
+               if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
                    if(buildBlock(action)) {
                        return true;
                    }
-               }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
+               }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
                    if(buildDome(action)) {
                        return true;
                    }
                }
            }
 
-        }else if (action.getType()==Action.ActionType.MOVE&& chosenWorker==action.getWorker()&&counterHestiaBuilds==0) {
+        }else if (action.getType()== ActionType.MOVE&& chosenWorker==action.getWorker()&&counterHestiaBuilds==0) {
             if (move(action)) {
                 this.hasMoved = true;
                 return true;
             }
         }
-        if(action.getType()==Action.ActionType.END_TURN ) {
+        if(action.getType()== ActionType.END_TURN ) {
             if (endTurn()) {
                 this.hasFinishedTurn = true;
                 return true;

@@ -3,13 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.stage.GameStage;
 import it.polimi.ingsw.controller.stage.GameStageController;
 import it.polimi.ingsw.controller.stage.GodChoiceController;
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.listeners.PlayerActionListener;
-
-import java.util.Observable;
-import java.util.Observer;
 
 public class Controller implements PlayerActionListener {
     GameStageController currentStage;

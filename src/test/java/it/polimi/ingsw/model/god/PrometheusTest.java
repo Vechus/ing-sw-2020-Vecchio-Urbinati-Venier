@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PrometheusTest {
     Board board;
     Player player;
-    Vector2 highPos=new Vector2(1,0);;
-    Vector2 lowPos=new Vector2(1,1);;
+    Vector2 highPos=new Vector2(1,0);
+    Vector2 lowPos=new Vector2(1,1);
     Vector2 midPos=new Vector2(0,0);
     Worker worker;
     God god;
@@ -33,11 +34,11 @@ public class PrometheusTest {
 
     @Test
     void validTurn(){
-        Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action firstAction= new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(firstAction));
-        Action secondAction= new Action(worker, lowPos, Action.ActionType.MOVE);
+        Action secondAction= new Action(worker, lowPos, ActionType.MOVE);
         assertTrue(god.chooseAction(secondAction));
-        Action thirdAction= new Action(worker, midPos, Action.ActionType.BUILD);
+        Action thirdAction= new Action(worker, midPos, ActionType.BUILD);
         assertTrue(god.chooseAction(thirdAction));
         assertTrue(board.getWorker(lowPos)==worker&&
                 board.getHeight(lowPos)==1&&
@@ -46,11 +47,11 @@ public class PrometheusTest {
 
     @Test
     void notValidTurn(){
-        Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action firstAction= new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(firstAction));
-        Action secondAction= new Action(worker, highPos, Action.ActionType.MOVE);
+        Action secondAction= new Action(worker, highPos, ActionType.MOVE);
         assertFalse(god.chooseAction(secondAction));
-        Action thirdAction= new Action(worker, midPos, Action.ActionType.BUILD);
+        Action thirdAction= new Action(worker, midPos, ActionType.BUILD);
         assertFalse(god.chooseAction(thirdAction));
         assertFalse(board.getWorker(highPos)==worker ||
                 board.getHeight(midPos)==2);

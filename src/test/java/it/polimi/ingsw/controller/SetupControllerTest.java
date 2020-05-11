@@ -1,10 +1,11 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.stage.SetupController;
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,23 +29,23 @@ public class SetupControllerTest {
     @Test
     void testPlayersTurn(){
         w1 = new Worker(null, model.getPlayer(pid2));
-        Action action = new Action(null, new Vector2(2, 2), Action.ActionType.PLACE_WORKER);
+        Action action = new Action(null, new Vector2(2, 2), ActionType.PLACE_WORKER);
         assertFalse(controller.performAction(pid2, action));
         assertTrue(controller.performAction(pid1, action));
-        action = new Action(null, new Vector2(0, 0), Action.ActionType.PLACE_WORKER);
+        action = new Action(null, new Vector2(0, 0), ActionType.PLACE_WORKER);
         assertFalse(controller.performAction(pid1, action));
         assertTrue(controller.performAction(pid2, action));
     }
 
     @Test
     void testWrongActionType(){
-        Action a = new Action(null, new Vector2(0, 0), Action.ActionType.MOVE);
+        Action a = new Action(null, new Vector2(0, 0), ActionType.MOVE);
         assertFalse(controller.performAction(pid1, a));
     }
 
     @Test
     void testPlaceValid(){
-        Action a = new Action(null, new Vector2(0, 0), Action.ActionType.PLACE_WORKER);
+        Action a = new Action(null, new Vector2(0, 0), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid1, a));
         w1 = model.getBoard().getWorker(new Vector2(0, 0));
         assertEquals(w1, model.getPlayer(pid1).getWorker(0));
@@ -54,16 +55,16 @@ public class SetupControllerTest {
 
     @Test
     void testSetupDone(){
-        Action a = new Action(null, new Vector2(0, 0), Action.ActionType.PLACE_WORKER);
+        Action a = new Action(null, new Vector2(0, 0), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid1, a));
         assertFalse(controller.isStageDone());
-        a = new Action(null, new Vector2(0, 1), Action.ActionType.PLACE_WORKER);
+        a = new Action(null, new Vector2(0, 1), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid2, a));
         assertFalse(controller.isStageDone());
-        a = new Action(null, new Vector2(1, 0), Action.ActionType.PLACE_WORKER);
+        a = new Action(null, new Vector2(1, 0), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid1, a));
         assertFalse(controller.isStageDone());
-        a = new Action(null, new Vector2(1, 1), Action.ActionType.PLACE_WORKER);
+        a = new Action(null, new Vector2(1, 1), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid2, a));
         assertTrue(controller.isStageDone());
     }

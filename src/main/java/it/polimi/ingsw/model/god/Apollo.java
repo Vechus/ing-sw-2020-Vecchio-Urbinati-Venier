@@ -1,18 +1,13 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Vector2;
-import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-
-import static it.polimi.ingsw.model.Action.ActionType.MOVE;
 
 public class Apollo extends God {
 

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,14 +36,14 @@ public class AthenaTest {
 
     @Test
     void testActivationTrue(){
-        Action playerMove = new Action(playerWorker, highPos, Action.ActionType.MOVE);
+        Action playerMove = new Action(playerWorker, highPos, ActionType.MOVE);
         athena.move(playerMove);
         assertTrue(board.isEffectActive(player));
     }
 
     @Test
     void testActivationFalse(){
-        Action playerMove = new Action(playerWorker, lowPos, Action.ActionType.MOVE);
+        Action playerMove = new Action(playerWorker, lowPos, ActionType.MOVE);
         athena.move(playerMove);
         assertFalse(board.isEffectActive(player));
     }

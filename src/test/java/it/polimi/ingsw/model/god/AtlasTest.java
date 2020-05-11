@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,9 +34,9 @@ public class AtlasTest {
 
     @Test
     void validBuild(){
-        Action move =new Action(worker, highPos, Action.ActionType.MOVE);
+        Action move =new Action(worker, highPos, ActionType.MOVE);
         assertTrue(god.chooseAction(move));
-        Action action =new Action(worker, lowPos, Action.ActionType.BUILD_DOME);
+        Action action =new Action(worker, lowPos, ActionType.BUILD_DOME);
         assertTrue(god.chooseAction(action));
     }
 

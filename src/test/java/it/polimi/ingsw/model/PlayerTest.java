@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.Action;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.ConsoleColor;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,7 +50,7 @@ class PlayerTest {
         board.setHeight(fromPos, 2);
         model.placeWorker(pid1, fromPos);
         // let's win!
-        Action winAction = new Action(p1.getWorker(0), winningPos, Action.ActionType.MOVE);
+        Action winAction = new Action(p1.getWorker(0), winningPos, ActionType.MOVE);
         //p1.doAction(winAction);
         assertTrue(p1.checkWinCondition(winAction));
     }
@@ -78,21 +78,21 @@ class PlayerTest {
     void doAction() {
         model.placeWorker(pid1, origin);
         Vector2 target = new Vector2(0,1);
-        Action testActionMove = new Action(p1.getWorker(0), target, Action.ActionType.MOVE);
-        Action testActionBuild = new Action(p1.getWorker(0), target, Action.ActionType.BUILD);
-        Action testActionBuildDome = new Action(p1.getWorker(0), target, Action.ActionType.BUILD_DOME);
+        Action testActionMove = new Action(p1.getWorker(0), target, ActionType.MOVE);
+        Action testActionBuild = new Action(p1.getWorker(0), target, ActionType.BUILD);
+        Action testActionBuildDome = new Action(p1.getWorker(0), target, ActionType.BUILD_DOME);
         assertTrue(p1.doAction(testActionMove));
         assertFalse(p1.doAction(testActionBuild));
         assertFalse(p1.doAction(testActionBuildDome));
         p1.beginNewTurn();
         assertEquals(p1.getWorker(0).getPosition(), target);
-        Action goBack = new Action(p1.getWorker(0), origin, Action.ActionType.MOVE);
+        Action goBack = new Action(p1.getWorker(0), origin, ActionType.MOVE);
         assertTrue(p1.doAction(goBack));
         assertTrue(p1.doAction(testActionBuild));
         p1.beginNewTurn();
         assertFalse(p1.doAction(testActionBuildDome));
         board.setHeight(target, 3);
-        assertTrue(p1.doAction(new Action(p1.getWorker(0), new Vector2(1,0), Action.ActionType.MOVE)));
+        assertTrue(p1.doAction(new Action(p1.getWorker(0), new Vector2(1,0), ActionType.MOVE)));
         board.print();
         assertTrue(p1.doAction(testActionBuildDome));
     }

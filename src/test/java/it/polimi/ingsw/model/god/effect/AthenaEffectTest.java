@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.god.effect;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.model.god.Athena;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,20 +39,20 @@ public class AthenaEffectTest {
     @Test
     void testEffectActiveValid(){
         board.setEffectActive(player, true);
-        Action moveValid = new Action(oppWorker, lowPos, Action.ActionType.MOVE);
+        Action moveValid = new Action(oppWorker, lowPos, ActionType.MOVE);
         assertTrue(board.isActionPermittedByEffects(moveValid));
     }
 
     @Test
     void testEffectActiveInvalid(){
         board.setEffectActive(player, true);
-        Action moveInvalid = new Action(oppWorker, highPos, Action.ActionType.MOVE);
+        Action moveInvalid = new Action(oppWorker, highPos, ActionType.MOVE);
         assertFalse(board.isActionPermittedByEffects(moveInvalid));
     }
 
     @Test
     void testEffectInactive(){
-        Action moveInvalid = new Action(oppWorker, highPos, Action.ActionType.MOVE);
+        Action moveInvalid = new Action(oppWorker, highPos, ActionType.MOVE);
         assertTrue(board.isActionPermittedByEffects(moveInvalid));
     }
 }

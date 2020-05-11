@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.Action;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,14 +43,14 @@ public class GodTest {
     //MOVE
     @Test
     void moveValid(){
-        Action action=new Action (worker, highPos, Action.ActionType.MOVE);
+        Action action=new Action (worker, highPos, ActionType.MOVE);
         god.move(action);
         assertTrue(board.getWorker(midPos)==null && board.getWorker(highPos)==worker);
     }
     @Test
     void moveNotValid(){
         board.setComplete(highPos,true);
-        Action action=new Action (worker, highPos, Action.ActionType.MOVE);
+        Action action=new Action (worker, highPos, ActionType.MOVE);
         god.move(action);
         assertTrue(board.getWorker(midPos)==worker && board.getWorker(highPos)==null);
     }
@@ -59,35 +61,35 @@ public class GodTest {
     void testIsCellFreeFromWorkes(){
         Worker otherWorker=new Worker (player);
         board.placeWorker(otherWorker, highPos);
-        Action action=new Action (worker, otherWorker.getPosition(), Action.ActionType.MOVE);
+        Action action=new Action (worker, otherWorker.getPosition(), ActionType.MOVE);
         assertFalse(god.isMoveValid(action));
     }
     @Test
     void testIsCellFreeFromDomes(){
         board.setComplete(highPos,true);
-        Action action=new Action(worker, highPos, Action.ActionType.MOVE);
+        Action action=new Action(worker, highPos, ActionType.MOVE);
         assertFalse(god.isMoveValid(action));
     }
     @Test
     void testIsMoveOnBoard(){
-        Action action = new Action(worker, outsidePos, Action.ActionType.MOVE);
+        Action action = new Action(worker, outsidePos, ActionType.MOVE);
         assertFalse(god.isMoveValid(action));
     }
     @Test
     void testHasWorkerChanchedPos(){
-        Action action=new Action(worker, midPos, Action.ActionType.MOVE);
+        Action action=new Action(worker, midPos, ActionType.MOVE);
         assertFalse(god.isMoveValid(action));
     }
     @Test
     void testIsCellAdjacent(){
         Vector2 farPos= new Vector2(2,2);
-        Action action =new Action(worker, farPos, Action.ActionType.MOVE);
+        Action action =new Action(worker, farPos, ActionType.MOVE);
         assertFalse(god.isMoveValid(action));
     }
     @Test
     void testIsHeightDiffCorrect(){
         worker.setPosition(lowPos);
-        Action action = new Action(worker, highPos, Action.ActionType.MOVE);
+        Action action = new Action(worker, highPos, ActionType.MOVE);
         assertFalse(god.isMoveValid(action));
     }
 
@@ -96,14 +98,14 @@ public class GodTest {
     //BUILD BLOCK
     @Test
     void BuildBlockValid(){
-        Action action = new Action (worker, highPos, Action.ActionType.BUILD);
+        Action action = new Action (worker, highPos, ActionType.BUILD);
         god.buildBlock(action);
         assertTrue(board.getWorker(midPos)==worker && board.getHeight(highPos)==3);
     }
     @Test
     void BuildBlockNotValid(){
         board.setHeight(highPos, 3);
-        Action action = new Action (worker, highPos, Action.ActionType.BUILD);
+        Action action = new Action (worker, highPos, ActionType.BUILD);
         assertTrue(board.getWorker(midPos)==worker && board.getHeight(highPos)==3);
     }
 
@@ -111,7 +113,7 @@ public class GodTest {
     @Test
     void testIsBuildHeightLessThanThreeWhenBuilding(){
         board.setHeight(highPos, 3);
-        Action action=new Action(worker,highPos, Action.ActionType.BUILD);
+        Action action=new Action(worker,highPos, ActionType.BUILD);
         assertFalse(god.isBuildBlockValid(action));
     }
 
@@ -121,13 +123,13 @@ public class GodTest {
     @Test
     void BuildDomeValid(){
         board.setHeight(highPos, 3);
-        Action action = new Action (worker, highPos, Action.ActionType.BUILD_DOME);
+        Action action = new Action (worker, highPos, ActionType.BUILD_DOME);
         god.buildDome(action);
         assertTrue(board.getWorker(midPos)==worker && board.isComplete(highPos)==true);
     }
     @Test
     void BuildDomeNotValid(){
-        Action action = new Action (worker, highPos, Action.ActionType.BUILD_DOME);
+        Action action = new Action (worker, highPos, ActionType.BUILD_DOME);
         assertTrue(board.getWorker(midPos)==worker && board.isComplete(highPos)==false);
     }
 
@@ -135,7 +137,7 @@ public class GodTest {
     @Test
     void testIsBuildHeightThreeWhenBuildingDome(){
         board.setHeight(highPos, 2);
-        Action action=new Action(worker,highPos, Action.ActionType.BUILD_DOME);
+        Action action=new Action(worker,highPos, ActionType.BUILD_DOME);
         assertFalse(god.isBuildDomeValid(action));
     }
 
@@ -147,12 +149,12 @@ public class GodTest {
     void testWinConditionValid(){
         board.setHeight(midPos, 2);
         board.setHeight(highPos, 3);
-        Action action=new Action(worker, highPos, Action.ActionType.MOVE);
+        Action action=new Action(worker, highPos, ActionType.MOVE);
         assertTrue(god.checkWinCondition(action));
     }
     @Test
     void testWinCOnditionNotValid(){
-        Action action=new Action(worker, highPos, Action.ActionType.MOVE);
+        Action action=new Action(worker, highPos, ActionType.MOVE);
         assertFalse(god.checkWinCondition(action));
     }
 
@@ -173,8 +175,8 @@ public class GodTest {
     @Test
     void testEndTurnValid(){
         god.beginNewTurn();
-        Action actionMove=new Action(worker, highPos, Action.ActionType.MOVE);
-        Action actionBuild=new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action actionMove=new Action(worker, highPos, ActionType.MOVE);
+        Action actionBuild=new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(actionMove));
         assertTrue(god.chooseAction(actionBuild));
         assertTrue(god.endTurn());
@@ -184,13 +186,13 @@ public class GodTest {
     //CHOOSE ACTION TESTS
     @Test
     void testCannotDoAnythingAfterBuilding(){
-        Action move = new Action(worker, highPos, Action.ActionType.MOVE);
+        Action move = new Action(worker, highPos, ActionType.MOVE);
         assertTrue(god.chooseAction(move));
-        Action build = new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action build = new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(build));
-        Action secondMove = new Action(worker, lowPos, Action.ActionType.MOVE);
+        Action secondMove = new Action(worker, lowPos, ActionType.MOVE);
         assertFalse(god.chooseAction(secondMove));
-        Action secondBuild = new Action(worker, midPos, Action.ActionType.BUILD);
+        Action secondBuild = new Action(worker, midPos, ActionType.BUILD);
         assertFalse(god.chooseAction(secondBuild));
     }
 }

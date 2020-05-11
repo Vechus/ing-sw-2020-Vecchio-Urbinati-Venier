@@ -1,5 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.util;
 
+import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
 public class Action {
@@ -8,20 +10,9 @@ public class Action {
     private Vector2 targetPos;
     private ActionType type;
 
-
-
-    /**
-     * Defines the type of the action.
-     * How to use it somewhere else:
-         import it.polimi.ingsw.model.Action
-         Action.ActionType foo = Action.ActionType.BUILD;
-     */
-    public enum ActionType {PLACE_WORKER, BUILD, MOVE, BUILD_DOME, END_TURN};
-
-
     /**
      * Generate an Action object
-     * @param Worker Worker target
+     * @param worker Worker target
      * @param targetPos Vector2 target position of the action
      * @param type ActionType [enum] type of action
      */

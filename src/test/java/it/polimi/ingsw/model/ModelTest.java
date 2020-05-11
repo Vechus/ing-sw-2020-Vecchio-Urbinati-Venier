@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.Action;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,7 @@ class ModelTest {
     void executeAction() {
         int pid = model.addNewPlayer(new God(model.getBoard()));
         model.placeWorker(pid, new Vector2(0,0));
-        assertTrue(model.executeAction(pid, new Action(model.getPlayer(pid).getWorker(0), new Vector2(0,1), Action.ActionType.MOVE)));
+        assertTrue(model.executeAction(pid, new Action(model.getPlayer(pid).getWorker(0), new Vector2(0,1), ActionType.MOVE)));
     }
 
     @Test

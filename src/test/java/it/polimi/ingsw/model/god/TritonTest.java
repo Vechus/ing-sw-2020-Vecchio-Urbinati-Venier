@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -36,20 +37,20 @@ public class TritonTest {
 
     @Test
     void moveValid(){
-        Action firstMove=new Action(worker, midPos, Action.ActionType.MOVE);
+        Action firstMove=new Action(worker, midPos, ActionType.MOVE);
         assertTrue(god.move(firstMove));
-        Action secondMove=new Action(worker, highPos, Action.ActionType.MOVE);
+        Action secondMove=new Action(worker, highPos, ActionType.MOVE);
         assertTrue(god.move(secondMove));
         assertTrue(board.getWorker(midPos)==null && board.getWorker(highPos)==worker);
     }
 
     @Test
     void moveNotValid(){
-        Action firstMove=new Action(worker, midPos, Action.ActionType.MOVE);
+        Action firstMove=new Action(worker, midPos, ActionType.MOVE);
         assertTrue(god.chooseAction(firstMove));
-        Action secondMove=new Action(worker, lowPos, Action.ActionType.MOVE);
+        Action secondMove=new Action(worker, lowPos, ActionType.MOVE);
         assertTrue(god.chooseAction(secondMove));
-        Action thirdMove=new Action(worker, midPos, Action.ActionType.MOVE);
+        Action thirdMove=new Action(worker, midPos, ActionType.MOVE);
         assertFalse(god.chooseAction(thirdMove));
         assertFalse(board.getWorker(midPos)==worker && board.getWorker(lowPos)==null);
     }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.util.listeners;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.god.God;
 
 public interface PlayerActionListener {

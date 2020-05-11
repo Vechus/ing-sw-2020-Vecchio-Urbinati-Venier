@@ -1,10 +1,11 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.stage.MatchController;
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,23 +39,23 @@ public class MatchControllerTest {
 
     @Test
     void testNotPlayersTurn(){
-        Action action = new Action(worker2, new Vector2(2, 2), Action.ActionType.MOVE);
+        Action action = new Action(worker2, new Vector2(2, 2), ActionType.MOVE);
         assertFalse(controller.performAction(pid2, action));
     }
 
     @Test
     void testActionInvalid(){
-        Action action = new Action(worker1, new Vector2(2, 2), Action.ActionType.MOVE);
+        Action action = new Action(worker1, new Vector2(2, 2), ActionType.MOVE);
         assertFalse(controller.performAction(pid1, action));
     }
 
     @Test
     void testTurnFinished(){
-        Action move = new Action(worker1, new Vector2(1, 1), Action.ActionType.MOVE);
+        Action move = new Action(worker1, new Vector2(1, 1), ActionType.MOVE);
         assertTrue(controller.performAction(pid1, move));
-        Action build = new Action(worker1, new Vector2(0, 0), Action.ActionType.BUILD);
+        Action build = new Action(worker1, new Vector2(0, 0), ActionType.BUILD);
         assertTrue(controller.performAction(pid1, build));
-        Action finish = new Action(worker1, new Vector2(0, 0), Action.ActionType.END_TURN);
+        Action finish = new Action(worker1, new Vector2(0, 0), ActionType.END_TURN);
         assertTrue(controller.performAction(pid1, finish));
         assertEquals(model.getCurPlayer(), pid2);
     }
@@ -63,7 +64,7 @@ public class MatchControllerTest {
     void testWin(){
         model.getBoard().setHeight(initPos, 2);
         model.getBoard().setHeight(new Vector2(1, 1), 3);
-        Action action = new Action(worker1, new Vector2(1, 1), Action.ActionType.MOVE);
+        Action action = new Action(worker1, new Vector2(1, 1), ActionType.MOVE);
         assertTrue(controller.performAction(pid1, action));
         assertTrue(controller.isStageDone());
     }

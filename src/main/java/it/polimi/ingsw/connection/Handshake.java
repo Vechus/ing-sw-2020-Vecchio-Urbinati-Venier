@@ -7,10 +7,14 @@ public class Handshake extends Message {
     /**
      * The enum Handshake type. Host if the player wants to host a new Game, Join if the player wants to join an existing Game.
      */
-    public enum handshakeType{HOST, JOIN};
+    public enum HandshakeType {HOST, JOIN};
     private int gameId;
     private String playerName;
-    private handshakeType type;
+    private HandshakeType type;
+
+    public Handshake(){
+        setMessageType(MessageType.HANDSHAKE);
+    }
 
     /**
      * Gets game id.
@@ -53,7 +57,7 @@ public class Handshake extends Message {
      *
      * @return the handshake type
      */
-    public handshakeType getType() {
+    public HandshakeType getType() {
         return type;
     }
 
@@ -62,7 +66,7 @@ public class Handshake extends Message {
      *
      * @param type the handshake type
      */
-    public void setType(handshakeType type) {
+    public void setType(HandshakeType type) {
         this.type = type;
     }
 }

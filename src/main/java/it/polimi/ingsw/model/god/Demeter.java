@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.testng.internal.collections.Pair;
 
@@ -42,13 +43,13 @@ public class Demeter extends God {
         if(this.hasMoved ){
             if(counterDemeterBuild==0){
 
-                if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()){
+                if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
                     if(buildBlock(action)) {
                         posFirstBuild=action.getTargetPos();
                         counterDemeterBuild++;
                         return true;
                     }
-                }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
+                }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
                     if (buildDome(action)){
                         counterDemeterBuild++;
                         return true;
@@ -56,24 +57,24 @@ public class Demeter extends God {
                 }
             }
             if(counterDemeterBuild==1) {
-                if (action.getType() == Action.ActionType.BUILD&& chosenWorker==action.getWorker()) {
+                if (action.getType() == ActionType.BUILD&& chosenWorker==action.getWorker()) {
                     if (buildBlock(action)) {
                         counterDemeterBuild++;
                         return true;
                     }
-                }else if (action.getType() == Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()) {
+                }else if (action.getType() == ActionType.BUILD_DOME&& chosenWorker==action.getWorker()) {
                     if (buildDome(action)){
                         counterDemeterBuild++;
                         return true;
                     }
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE && chosenWorker==action.getWorker()&&counterDemeterBuild==0){
+        }else if (action.getType()== ActionType.MOVE && chosenWorker==action.getWorker()&&counterDemeterBuild==0){
             if(move(action)) {
                 this.hasMoved=true;
                 return true;
             }
-        }if(action.getType()==Action.ActionType.END_TURN ) {
+        }if(action.getType()== ActionType.END_TURN ) {
             if (endTurn()) {
                 this.hasFinishedTurn = true;
                 return true;

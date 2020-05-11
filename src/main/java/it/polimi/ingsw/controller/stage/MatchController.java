@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.stage;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Model;
 
 public class MatchController extends GameStageController {

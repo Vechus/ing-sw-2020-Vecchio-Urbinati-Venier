@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
@@ -123,24 +124,24 @@ public class God {
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
         if(this.hasMoved ){
-            if(action.getType()==Action.ActionType.BUILD && chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.BUILD && chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildBlock(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
-            }else if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildDome(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
             }
-        }else if (action.getType()==Action.ActionType.MOVE && chosenWorker==action.getWorker()&&hasBuilt==false){
+        }else if (action.getType()== ActionType.MOVE && chosenWorker==action.getWorker()&&hasBuilt==false){
             if (move(action)) {
                 this.hasMoved = true;
                 return true;
             }
         }
-        if(action.getType()==Action.ActionType.END_TURN ) {
+        if(action.getType()== ActionType.END_TURN ) {
             if (endTurn()) {
                 this.hasFinishedTurn = true;
                 return true;
@@ -237,7 +238,7 @@ public class God {
     public boolean checkWinCondition(Action action){
         return this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) > 0
                 && this.board.getHeight(action.getTargetPos()) == 3
-                && action.getType() == Action.ActionType.MOVE;
+                && action.getType() == ActionType.MOVE;
     }
 
 

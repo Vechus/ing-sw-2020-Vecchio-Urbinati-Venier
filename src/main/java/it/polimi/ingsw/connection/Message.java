@@ -7,17 +7,17 @@ public class Message {
     /**
      * The enum Payload type. It describes the status in detail.
      */
-    public enum errorType{GEN_ERROR, MOVE_INVALID, BUILD_INVALID, BUILD_DOME_INVALID, NOT_TURN_ERROR, GAME_ID_INVALID_ERROR, LOBBY_FULL_ERROR, CLOSE_SESSION};
-    public enum messageType{GEN_MESSAGE, BEGIN_TURN, END_TURN, START_SESSION};
+    public enum ErrorType {GEN_ERROR, MOVE_INVALID, BUILD_INVALID, BUILD_DOME_INVALID, NOT_TURN_ERROR, GAME_ID_INVALID_ERROR, LOBBY_FULL_ERROR, CLOSE_SESSION};
+    public enum MessageType {GEN_MESSAGE, ACTION_REQUEST, ACTION, HANDSHAKE, BOARD_STATE, GAME_END};
 
     /**
      * The enum Status.
      */
-    public enum status{ERROR, OK};
+    public enum Status {ERROR, OK};
     private String payload;
-    private errorType errorType;
-    private messageType messageType;
-    private status status;
+    private ErrorType errorType;
+    private MessageType messageType;
+    private Status status;
 
     /**
      * Gets payload.
@@ -42,7 +42,7 @@ public class Message {
      *
      * @return the payload type
      */
-    public Message.errorType getErrorType() {
+    public ErrorType getErrorType() {
         return errorType;
     }
 
@@ -51,7 +51,7 @@ public class Message {
      *
      * @param errorType the payload type
      */
-    public void setErrorType(Message.errorType errorType) {
+    public void setErrorType(ErrorType errorType) {
         this.errorType = errorType;
     }
 
@@ -60,7 +60,7 @@ public class Message {
      *
      * @return the status
      */
-    public Message.status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -69,7 +69,7 @@ public class Message {
      *
      * @param status the status
      */
-    public void setStatus(Message.status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -78,7 +78,7 @@ public class Message {
      *
      * @return the message type
      */
-    public Message.messageType getMessageType() {
+    public MessageType getMessageType() {
         return messageType;
     }
 
@@ -87,7 +87,18 @@ public class Message {
      *
      * @param messageType the message type
      */
-    public void setMessageType(Message.messageType messageType) {
+    public void setMessageType(MessageType messageType) {
         this.messageType = messageType;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "status=" + status +
+                (status == Status.OK ?
+                    ", messageType=" + messageType :
+                    ", errorType=" + errorType) +
+                ", payload='" + payload + '\'' +
+                '}';
     }
 }

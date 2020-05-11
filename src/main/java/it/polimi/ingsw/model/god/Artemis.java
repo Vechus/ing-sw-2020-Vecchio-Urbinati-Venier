@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.god;
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.testng.internal.collections.Pair;
 
@@ -29,7 +30,7 @@ public class Artemis extends God {
     public boolean chooseAction (Action action){
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
-        if(counterArtemisMoves==0 && action.getType()==Action.ActionType.MOVE&&hasBuilt==false){
+        if(counterArtemisMoves==0 && action.getType()== ActionType.MOVE&&hasBuilt==false){
             initialPos=action.getWorkerPos();
             if (move(action)) {
                 this.hasMoved = true;
@@ -38,26 +39,26 @@ public class Artemis extends God {
             }
         }
         if(counterArtemisMoves>=1){
-            if(action.getType()==Action.ActionType.MOVE && counterArtemisMoves == 1&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.MOVE && counterArtemisMoves == 1&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(move(action)) {
                     this.hasMoved = true;
                     counterArtemisMoves++;
                     return true;
                 }
             }
-            if(action.getType()==Action.ActionType.BUILD&& chosenWorker==action.getWorker()&&hasBuilt==false){
+            if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()&&hasBuilt==false){
                 if(buildBlock(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
             }
-            if(action.getType()==Action.ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false) {
+            if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&&hasBuilt==false) {
                 if (buildDome(action)) {
                     this.hasBuilt=true;
                     return true;
                 }
             }
-        }if(action.getType()==Action.ActionType.END_TURN ) {
+        }if(action.getType()== ActionType.END_TURN ) {
             if (endTurn()) {
                 this.hasFinishedTurn = true;
                 return true;

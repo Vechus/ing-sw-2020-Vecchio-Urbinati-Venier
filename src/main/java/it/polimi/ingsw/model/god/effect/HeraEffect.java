@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.god.effect;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.util.Vector2;

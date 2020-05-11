@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,22 +35,22 @@ public class HephaestusTest {
     }
     @Test
     void buildValid(){
-        Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        Action move= new Action(worker, highPos, ActionType.MOVE);
         assertTrue(god.chooseAction(move));
-        Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action firstAction= new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(firstAction));
-        Action secondAction=new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action secondAction=new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(secondAction));
         assertTrue(board.getHeight(lowPos)==2);
     }
 
     @Test
     void  buildNotValid(){
-        Action move= new Action(worker, highPos, Action.ActionType.MOVE);
+        Action move= new Action(worker, highPos, ActionType.MOVE);
         assertTrue(god.chooseAction(move));
-        Action firstAction= new Action(worker, lowPos, Action.ActionType.BUILD);
+        Action firstAction= new Action(worker, lowPos, ActionType.BUILD);
         assertTrue(god.chooseAction(firstAction));
-        Action secondAction=new Action(worker, midPos, Action.ActionType.BUILD);
+        Action secondAction=new Action(worker, midPos, ActionType.BUILD);
         assertFalse(god.chooseAction(secondAction));
         assertFalse(board.getHeight(highPos)==3);
     }

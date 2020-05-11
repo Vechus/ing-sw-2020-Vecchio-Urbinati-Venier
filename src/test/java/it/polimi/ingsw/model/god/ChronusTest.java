@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class ChronusTest {
 
     @Test
     void testWinFalse(){
-        Action action = new Action(playerWorker, new Vector2(0, 1), Action.ActionType.MOVE);
+        Action action = new Action(playerWorker, new Vector2(0, 1), ActionType.MOVE);
         assertFalse(chronus.checkWinCondition(action));
     }
 }

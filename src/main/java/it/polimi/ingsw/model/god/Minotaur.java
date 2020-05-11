@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.testng.internal.collections.Pair;
 
@@ -50,7 +51,7 @@ public class Minotaur extends God {
         Worker otherWorker = board.getWorker(action.getTargetPos());
         Vector2 delta = action.getTargetPos().sub(action.getWorkerPos());
         Vector2 movedPos = action.getTargetPos().add(delta);
-        Action movedAction = new Action(otherWorker, movedPos, Action.ActionType.MOVE);
+        Action movedAction = new Action(otherWorker, movedPos, ActionType.MOVE);
         return checkConditions(this.pushValidationFunctions, movedAction);
     }
 
@@ -63,7 +64,7 @@ public class Minotaur extends God {
         if(otherWorker != null) {
             Vector2 delta = action.getTargetPos().sub(action.getWorkerPos());
             Vector2 movedPos = action.getTargetPos().add(delta);
-            board.moveWorker(new Action(otherWorker, movedPos, Action.ActionType.MOVE));
+            board.moveWorker(new Action(otherWorker, movedPos, ActionType.MOVE));
         }
         board.moveWorker(action);
         return true;

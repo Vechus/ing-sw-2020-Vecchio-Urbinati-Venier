@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ public class MinotaurTest {
 
     @Test
     void movePushValid(){
-        Action move = new Action(playerWorker, pos2, Action.ActionType.MOVE);
+        Action move = new Action(playerWorker, pos2, ActionType.MOVE);
         assertTrue(minotaur.chooseAction(move));
         assertNull(board.getWorker(pos1));
         assertEquals(board.getWorker(pos2), playerWorker);
@@ -43,7 +44,7 @@ public class MinotaurTest {
     @Test
     void movePushOccupied(){
         board.placeWorker(other2, pos3);
-        Action move = new Action(playerWorker, pos2, Action.ActionType.MOVE);
+        Action move = new Action(playerWorker, pos2, ActionType.MOVE);
         assertFalse(minotaur.chooseAction(move));
         assertEquals(board.getWorker(pos1), playerWorker);
         assertEquals(board.getWorker(pos2), other1);
@@ -53,7 +54,7 @@ public class MinotaurTest {
     @Test
     void movePushHigh(){
         board.setHeight(pos3, 3);
-        Action move = new Action(playerWorker, pos2, Action.ActionType.MOVE);
+        Action move = new Action(playerWorker, pos2, ActionType.MOVE);
         assertTrue(minotaur.chooseAction(move));
         assertNull(board.getWorker(pos1));
         assertEquals(board.getWorker(pos2), playerWorker);
@@ -63,7 +64,7 @@ public class MinotaurTest {
     @Test
     void movePushDome(){
         board.setComplete(pos3, true);
-        Action move = new Action(playerWorker, pos2, Action.ActionType.MOVE);
+        Action move = new Action(playerWorker, pos2, ActionType.MOVE);
         assertFalse(minotaur.chooseAction(move));
         assertEquals(board.getWorker(pos1), playerWorker);
         assertEquals(board.getWorker(pos2), other1);
@@ -72,7 +73,7 @@ public class MinotaurTest {
 
     @Test
     void movePushOutOfBounds(){
-        Action move = new Action(other1, pos1, Action.ActionType.MOVE);
+        Action move = new Action(other1, pos1, ActionType.MOVE);
         assertFalse(minotaur.chooseAction(move));
         assertEquals(board.getWorker(pos1), playerWorker);
         assertEquals(board.getWorker(pos2), other1);

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.god;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,9 +35,9 @@ public class ZeusTest {
 
     @Test
     void buildValid(){
-        Action move = new Action(worker, lowPos, Action.ActionType.MOVE );
+        Action move = new Action(worker, lowPos, ActionType.MOVE );
         god.chooseAction(move);
-        Action build = new Action(worker, lowPos, Action.ActionType.BUILD );
+        Action build = new Action(worker, lowPos, ActionType.BUILD );
         god.chooseAction(build);
         assertTrue(board.getHeight(lowPos)==1);
     }
@@ -44,9 +45,9 @@ public class ZeusTest {
     void buildNotValid(){
         Worker otherWorker=new Worker (highPos,player);
         board.placeWorker(otherWorker,highPos);
-        Action move = new Action(worker, lowPos, Action.ActionType.MOVE );
+        Action move = new Action(worker, lowPos, ActionType.MOVE );
         god.chooseAction(move);
-        Action build = new Action(worker, highPos, Action.ActionType.BUILD );
+        Action build = new Action(worker, highPos, ActionType.BUILD );
         god.chooseAction(build);
         assertFalse(board.getHeight(highPos)==3);
     }

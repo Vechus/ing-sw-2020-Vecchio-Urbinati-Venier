@@ -1,7 +1,8 @@
 package it.polimi.ingsw.controller.stage;
 
-import it.polimi.ingsw.model.Action;
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.util.ActionType;
 
 public class SetupController extends GameStageController {
     public SetupController(Model model) {
@@ -12,7 +13,7 @@ public class SetupController extends GameStageController {
     @Override
     public boolean performAction(int playerId, Action a) {
         if(!model.isPlayersTurn(playerId)) return false;
-        if(a.getType() != Action.ActionType.PLACE_WORKER) return false;
+        if(a.getType() != ActionType.PLACE_WORKER) return false;
         if(!model.placeWorker(playerId, a.getTargetPos())) return false;
         model.incrementCurPlayer();
         boolean full = true;
