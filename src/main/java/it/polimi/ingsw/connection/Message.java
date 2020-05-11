@@ -7,14 +7,16 @@ public class Message {
     /**
      * The enum Payload type. It describes the status in detail.
      */
-    public enum payloadType{MESSAGE, GEN_ERROR, MOVE_INVALID, BUILD_INVALID, BUILD_DOME_INVALID, NOT_TURN_ERROR, GAME_ID_INVALID_ERROR, LOBBY_FULL_ERROR};
+    public enum errorType{GEN_ERROR, MOVE_INVALID, BUILD_INVALID, BUILD_DOME_INVALID, NOT_TURN_ERROR, GAME_ID_INVALID_ERROR, LOBBY_FULL_ERROR, CLOSE_SESSION};
+    public enum messageType{GEN_MESSAGE, BEGIN_TURN, END_TURN, START_SESSION};
 
     /**
      * The enum Status.
      */
     public enum status{ERROR, OK};
     private String payload;
-    private payloadType payloadType;
+    private errorType errorType;
+    private messageType messageType;
     private status status;
 
     /**
@@ -40,17 +42,17 @@ public class Message {
      *
      * @return the payload type
      */
-    public Message.payloadType getPayloadType() {
-        return payloadType;
+    public Message.errorType getErrorType() {
+        return errorType;
     }
 
     /**
      * Sets payload type.
      *
-     * @param payloadType the payload type
+     * @param errorType the payload type
      */
-    public void setPayloadType(Message.payloadType payloadType) {
-        this.payloadType = payloadType;
+    public void setErrorType(Message.errorType errorType) {
+        this.errorType = errorType;
     }
 
     /**
@@ -69,5 +71,23 @@ public class Message {
      */
     public void setStatus(Message.status status) {
         this.status = status;
+    }
+
+    /**
+     * Gets message type.
+     *
+     * @return the message type
+     */
+    public Message.messageType getMessageType() {
+        return messageType;
+    }
+
+    /**
+     * Sets message type.
+     *
+     * @param messageType the message type
+     */
+    public void setMessageType(Message.messageType messageType) {
+        this.messageType = messageType;
     }
 }
