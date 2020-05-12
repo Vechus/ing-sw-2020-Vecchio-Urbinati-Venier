@@ -86,17 +86,15 @@ public class Client {
         port = ui.getPort();
 
         // setup connection with server
-        connection = new ClientConnection(ip, port);
+        connection = new ServerConnection(ip, port);
         connectionThread = new Thread((Runnable) connection);
         connectionThread.start();
 
         // Handshake: add the player to a new or existing game
         String playerName = ui.getPlayerName();
-        int gameID = ui.getGameID();
-        boolean host = gameID == -1;
         Message resp;
         try {
-            resp = connection.handshake(playerName, host, gameID);
+            resp = connection.handshake(playerName);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             closeThreads();

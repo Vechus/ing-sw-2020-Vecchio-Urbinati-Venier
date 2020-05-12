@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Queue;
 
-public class ClientConnection implements ClientServerInterface, Runnable {
+public class ServerConnection implements ClientServerInterface, Runnable {
     String ip;
     int port;
     private ObjectOutputStream socketOut;
@@ -18,7 +18,7 @@ public class ClientConnection implements ClientServerInterface, Runnable {
     Queue<Message> outQueue;
     boolean run = true;
 
-    public ClientConnection(String ip, int port) {
+    public ServerConnection(String ip, int port) {
         this.ip = ip;
         this.port = port;
     }
@@ -53,11 +53,9 @@ public class ClientConnection implements ClientServerInterface, Runnable {
     }
 
     @Override
-    public Message handshake(String playerName, boolean host, int gameID) throws IOException, ClassNotFoundException {
+    public Message handshake(String playerName) throws IOException, ClassNotFoundException {
         Handshake handshake = new Handshake();
-        handshake.setGameId(gameID);
         handshake.setPlayerName(playerName);
-        handshake.setType(host ? Handshake.HandshakeType.HOST : Handshake.HandshakeType.JOIN);
         sendObject(handshake);
         return receiveMessage();
     }

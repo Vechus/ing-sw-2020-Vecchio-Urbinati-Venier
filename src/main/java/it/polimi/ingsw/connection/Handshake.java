@@ -9,30 +9,10 @@ public class Handshake extends Message {
      */
     public enum HandshakeType {HOST, JOIN}
 
-    private int gameId;
     private String playerName;
-    private HandshakeType type;
 
     public Handshake(){
         setMessageType(MessageType.HANDSHAKE);
-    }
-
-    /**
-     * Gets game id.
-     *
-     * @return the game id
-     */
-    public int getGameId() {
-        return gameId;
-    }
-
-    /**
-     * Sets game id.
-     *
-     * @param gameId the game id
-     */
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
     }
 
     /**
@@ -51,23 +31,5 @@ public class Handshake extends Message {
      */
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
-    }
-
-    /**
-     * Gets type.
-     *
-     * @return the handshake type
-     */
-    public HandshakeType getType() {
-        return type;
-    }
-
-    /**
-     * Sets type.
-     *
-     * @param type the handshake type
-     */
-    public void setType(HandshakeType type) {
-        this.type = type;
     }
 }
