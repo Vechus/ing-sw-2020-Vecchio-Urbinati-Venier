@@ -41,7 +41,7 @@ public class Model {
      *
      * @return the index of the player
      */
-    public int addNewPlayer(God god) {
+    public int addNewPlayer(God god, String name) {
         Player player = new Player(god, this.board);
         god.setPlayer(player);
         this.players.add(player);
