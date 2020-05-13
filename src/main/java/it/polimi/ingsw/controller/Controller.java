@@ -20,9 +20,9 @@ public class Controller implements PlayerActionListener {
     }
 
     @Override
-    public void onPlayerCreate(int playerId, God god) {
+    public void onPlayerCreate(int playerId, God god, String name) {
         if(currentStage.getGameStage() != GameStage.GOD_CHOICE) return;
-        currentStage.createPlayer(playerId, god);
+        currentStage.createPlayer(playerId, god, name);
         if(model.getNumberOfPlayers() == totalPlayers)
             currentStage.setStageDone(true);
         if(currentStage.isStageDone())

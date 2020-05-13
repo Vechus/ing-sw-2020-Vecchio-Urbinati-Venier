@@ -25,12 +25,12 @@ public class MatchControllerTest {
         model = new Model();
 
         god1 = new God(model.getBoard());
-        pid1 = model.addNewPlayer(god1);
+        pid1 = model.addNewPlayer(god1, "");
         model.placeWorker(pid1, initPos);
         worker1 = model.getBoard().getWorker(initPos);
 
         god2 = new God(model.getBoard());
-        pid2 = model.addNewPlayer(god2);
+        pid2 = model.addNewPlayer(god2, "");
         model.placeWorker(pid2, oppPos);
         worker2 = model.getBoard().getWorker(oppPos);
 

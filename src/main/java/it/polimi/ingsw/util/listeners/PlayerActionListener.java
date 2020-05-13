@@ -5,5 +5,5 @@ import it.polimi.ingsw.model.god.God;
 
 public interface PlayerActionListener {
     void onPlayerAction(int playerId, Action a);
-    void onPlayerCreate(int playerId, God god);
+    void onPlayerCreate(int playerId, God god, String name);
 }

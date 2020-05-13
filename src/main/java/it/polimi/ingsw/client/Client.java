@@ -106,6 +106,8 @@ public class Client {
             return;
         }
 
+        // Choose god: to do
+
         // Game: respond to server move requests
         while(true){
             // Read message from server

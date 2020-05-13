@@ -25,8 +25,8 @@ class PlayerTest {
         board = model.getBoard();
         god1 = new God(board);
         god2 = new God(board);
-        pid1 = model.addNewPlayer(god1);
-        pid2 = model.addNewPlayer(god2);
+        pid1 = model.addNewPlayer(god1, "");
+        pid2 = model.addNewPlayer(god2, "");
         p1 = model.getPlayer(pid1);
         p2 = model.getPlayer(pid2);
         p1.setPlayerColor(ConsoleColor.GREEN_BOLD_BRIGHT);

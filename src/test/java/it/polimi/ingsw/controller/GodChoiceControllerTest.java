@@ -21,7 +21,7 @@ public class GodChoiceControllerTest {
     @Test
     void testValid(){
         God god = new God(model.getBoard());
-        assertTrue(controller.createPlayer(0, god));
+        assertTrue(controller.createPlayer(0, god, ""));
         assertEquals(god.getPlayer(), model.getPlayer(0));
         assertEquals(model.getPlayer(0).getPlayerGod(), god);
     }
@@ -30,8 +30,8 @@ public class GodChoiceControllerTest {
     void testOutOfOrder(){
         God god = new God(model.getBoard());
         God god2 = new God(model.getBoard());
-        assertFalse(controller.createPlayer(1, god2));
-        assertTrue(controller.createPlayer(0, god));
-        assertTrue(controller.createPlayer(1, god2));
+        assertFalse(controller.createPlayer(1, god2, ""));
+        assertTrue(controller.createPlayer(0, god, ""));
+        assertTrue(controller.createPlayer(1, god2, ""));
     }
 }

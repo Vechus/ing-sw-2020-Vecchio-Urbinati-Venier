@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardTest {
     Model model = new Model();
     Board board = model.getBoard();
-    int p1 = model.addNewPlayer(new God(board));
-    int p2 = model.addNewPlayer(new God(board));
-    int p3 = model.addNewPlayer(new God(board));
+    int p1 = model.addNewPlayer(new God(board), "");
+    int p2 = model.addNewPlayer(new God(board), "");
+    int p3 = model.addNewPlayer(new God(board), "");
 
     @Test
     void print() {

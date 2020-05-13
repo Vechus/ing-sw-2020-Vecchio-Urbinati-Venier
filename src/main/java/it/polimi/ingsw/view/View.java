@@ -22,7 +22,7 @@ public abstract class View implements ModelChangeListener {
 
     public void processPlayerCreation(God god, String name){
         for(PlayerActionListener listener : this.listeners){
-            listener.onPlayerCreate(this.playerId, god);
+            listener.onPlayerCreate(this.playerId, god, name);
         }
     }
 

@@ -15,7 +15,7 @@ public class ModelChangeListenerTest {
     @BeforeEach
     void setup(){
         model = new Model();
-        listener = new RemoteView(0);
+        listener = new RemoteView(null);
     }
 
     @Test
