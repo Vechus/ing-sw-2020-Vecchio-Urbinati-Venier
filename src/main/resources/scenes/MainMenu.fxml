@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1300.0" styleClass="root" stylesheets="@/scenes/css/MainMenuStyle.css"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.client.gui.MainMenuController">
+   <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="432.0" pickOnBounds="true" preserveRatio="true"
+              styleClass="title">
+      <Image url="@../images/santorini-logo.png"/>
+   </ImageView>
+   <ImageView fx:id="playButtonImage" fitHeight="145.0" fitWidth="270.0" layoutX="518.0" layoutY="225.0"
+              onMousePressed="#handleMousePress" onMouseReleased="#handleMouseRelease" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../images/cm_btn_blue.png"/>
+   </ImageView>
+   <ImageView fitHeight="127.0" fitWidth="119.0" layoutX="597.0" layoutY="234.0" onMousePressed="#handleMousePress"
+              onMouseReleased="#handleMouseRelease" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../images/button-play-down.png"/>
+   </ImageView>
+   <ImageView fx:id="creditsButton" fitHeight="150.0" fitWidth="200.0" layoutX="549.0" layoutY="451.0"
+              onMouseClicked="#handleCreditsClicked" onMousePressed="#handleCreditMousePress"
+              onMouseReleased="#handleCreditMouseRelease" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../images/btn_blue.png"/>
+   </ImageView>
+   <ImageView fx:id="exitButton" fitHeight="150.0" fitWidth="200.0" layoutX="550.0" layoutY="567.0"
+              onMouseClicked="#handleExitClicked" onMousePressed="#handleExitPressed"
+              onMouseReleased="#handleExitReleased" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../images/btn_coral.png"/>
+   </ImageView>
+   <Label layoutX="609.0" layoutY="451.0" onMouseClicked="#handleCreditsClicked"
+          onMousePressed="#handleCreditMousePress" onMouseReleased="#handleCreditMouseRelease"
+          stylesheets="@/scenes/css/MainMenuStyle.css" text="Credits"/>
+   <Label layoutX="629.0" layoutY="567.0" onMouseClicked="#handleExitClicked" onMousePressed="#handleExitPressed"
+          onMouseReleased="#handleExitReleased" stylesheets="@/scenes/css/MainMenuStyle.css" text="Exit"/>
+</AnchorPane>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1300.0" styleClass="root" stylesheets="@/scenes/css/MainMenuStyle.css"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.client.gui.CreditsController">
+    <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="432.0" pickOnBounds="true" preserveRatio="true"
+               styleClass="title">
+        <Image url="@../images/santorini-logo.png"/>
+    </ImageView>
+    <ImageView fx:id="backButton" fitHeight="150.0" fitWidth="200.0" layoutX="549.0" layoutY="245.0"
+               onMouseClicked="#handleBackClicked" onMousePressed="#handleMousePress"
+               onMouseReleased="#handleMouseRelease" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/btn_blue.png"/>
+    </ImageView>
+    <Label layoutX="618.0" layoutY="245.0" onMouseClicked="#handleBackClicked" onMousePressed="#handleMousePress"
+           onMouseReleased="#handleMouseRelease" stylesheets="@/scenes/css/MainMenuStyle.css" text="Menu"/>
+    <Label layoutX="520.0" layoutY="450.0" prefHeight="50.0" prefWidth="229.0"
+           stylesheets="@/scenes/css/MainMenuStyle.css" text="Made with love by:"/>
+    <Label layoutX="530.0" layoutY="500.0" prefHeight="50.0" prefWidth="229.0"
+           stylesheets="@/scenes/css/MainMenuStyle.css" text="* Daria Urbinati"/>
+    <Label layoutX="530.0" layoutY="550.0" prefHeight="50.0" prefWidth="229.0"
+           stylesheets="@/scenes/css/MainMenuStyle.css" text="* Luca Vecchio"/>
+    <Label layoutX="530.0" layoutY="600.0" prefHeight="50.0" prefWidth="229.0"
+           stylesheets="@/scenes/css/MainMenuStyle.css" text="* Daniele Venier"/>
+</AnchorPane>

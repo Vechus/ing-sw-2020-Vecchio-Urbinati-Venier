@@ -1,0 +1,16 @@
+.root {
+    -fx-background-image: url("../../images/bg_modeselect.png");
+    -fx-background-size: auto;
+    -fx-background-repeat: round;
+}
+
+.title {
+    -fx-alignment: center;
+    -fx-background-image: url("../../images/santorini-logo.png");
+    -fx-background-size: 50%;
+}
+
+.label {
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 25;
+}
