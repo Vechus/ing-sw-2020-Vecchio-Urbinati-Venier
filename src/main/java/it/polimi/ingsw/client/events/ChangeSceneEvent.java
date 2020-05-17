@@ -1,10 +1,9 @@
 package it.polimi.ingsw.client.events;
 
-import javafx.event.Event;
 import javafx.event.EventType;
 
-public class ChangeSceneEvent extends SceneEvent {
-    public static final EventType<SceneEvent> SCENE_CHANGE_EVENT_TYPE = new EventType<>(SCENE_EVENT_TYPE, "SceneChange");
+public class ChangeSceneEvent extends CustomEvent {
+    public static final EventType<CustomEvent> SCENE_CHANGE_EVENT_TYPE = new EventType<>(CUSTOM_EVENT_TYPE, "SceneChange");
     private final String param;
 
     public ChangeSceneEvent(String param) {
@@ -13,7 +12,7 @@ public class ChangeSceneEvent extends SceneEvent {
     }
 
     @Override
-    public void invokeHandler(SceneEventHandler handler) {
+    public void invokeHandler(CustomEventHandler handler) {
         handler.onSceneChange(param);
     }
 }

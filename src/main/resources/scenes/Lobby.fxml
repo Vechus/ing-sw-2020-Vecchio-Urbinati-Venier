@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1300.0" styleClass="root" stylesheets="@/scenes/css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.LobbyController">
+    <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="432.0" pickOnBounds="true" preserveRatio="true" styleClass="title">
+        <Image url="@../images/santorini-logo.png" />
+    </ImageView>
+    <ImageView fx:id="backButton" fitHeight="150.0" fitWidth="200.0" layoutX="550.0" layoutY="662.0" onMouseClicked="#handleBackClicked" onMousePressed="#handleMousePress" onMouseReleased="#handleMouseRelease" pickOnBounds="true" preserveRatio="true">
+        <Image url="@../images/btn_coral.png" />
+    </ImageView>
+    <Label layoutX="575.0" layoutY="662.0" onMouseClicked="#handleBackClicked" onMousePressed="#handleMousePress" onMouseReleased="#handleMouseRelease" stylesheets="@/scenes/css/MainMenuStyle.css" text="Back to Menu" />
+   <Pane fx:id="lobbyPane" layoutX="480.0" layoutY="161.0" prefHeight="477.0" prefWidth="338.0" visible="false">
+      <children>
+         <ImageView fitHeight="417.0" fitWidth="411.0" layoutX="20.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/clp_bg.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="171.0" fitWidth="265.0" layoutX="39.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/frameName.png" />
+            </image>
+         </ImageView>
+         <Label layoutX="138.0" layoutY="17.0" text="Lobby" textAlignment="CENTER">
+            <effect>
+               <Glow />
+            </effect>
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+         <Label fx:id="firstPlayer" layoutX="67.0" layoutY="121.0" text="empty">
+            <effect>
+               <Glow />
+            </effect>
+         </Label>
+         <Label fx:id="secondPlayer" layoutX="67.0" layoutY="191.0" text="empty">
+            <effect>
+               <Glow />
+            </effect>
+         </Label>
+         <Label fx:id="thirdPlayer" layoutX="67.0" layoutY="263.0" text="empty">
+            <effect>
+               <Glow />
+            </effect>
+         </Label>
+      </children>
+   </Pane>
+   <Pane fx:id="insertPane" layoutX="332.0" layoutY="178.0" prefHeight="409.0" prefWidth="649.0">
+      <children>
+         <ImageView fitHeight="493.0" fitWidth="238.0" layoutX="195.0" layoutY="-91.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+            <image>
+               <Image url="@../images/pause_back.png" />
+            </image></ImageView>
+         <ImageView fitHeight="69.0" fitWidth="283.0" layoutX="210.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/frameName.png" />
+            </image></ImageView>
+         <Label layoutX="289.0" layoutY="38.0" text="Hey!" />
+         <Label layoutX="190.0" layoutY="96.0" text="Please input your name" />
+         <TextField fx:id="textField" layoutX="186.0" layoutY="130.0" prefHeight="34.0" prefWidth="266.0" />
+         <ImageView fx:id="playerNameConfirmButton" fitHeight="60.0" fitWidth="200.0" layoutX="219.0" layoutY="179.0" onMouseClicked="#handleConfirmClicked" onMousePressed="#handleConfirmMousePress" onMouseReleased="#handleConfirmMouseRelease" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/btn_green.png" />
+            </image>
+         </ImageView>
+         <Label fx:id="playerNameConfirmLabel" layoutX="276.0" layoutY="179.0" onMouseClicked="#handleConfirmClicked" onMousePressed="#handleConfirmMousePress" onMouseReleased="#handleConfirmMouseRelease" text="confirm" />
+         <ImageView fx:id="errorImage" fitHeight="69.0" fitWidth="239.0" layoutX="205.0" layoutY="263.0" pickOnBounds="true" rotate="180.0" visible="false">
+            <image>
+               <Image url="@../images/nomoves_dialog.png" />
+            </image>
+         </ImageView>
+         <Label fx:id="errorLabel" layoutX="222.0" layoutY="281.0" text="Error: invalid name" textFill="RED" underline="true" visible="false" />
+      </children>
+   </Pane>
+
+</AnchorPane>

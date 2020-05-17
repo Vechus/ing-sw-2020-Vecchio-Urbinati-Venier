@@ -40,6 +40,11 @@ public class MainMenuController {
     }
 
     @FXML
+    public void handlePlayClicked(MouseEvent mouseEvent) {
+        creditsButton.fireEvent(new ChangeSceneEvent("lobby"));
+    }
+
+    @FXML
     public void handleExitClicked(MouseEvent mouseEvent) {
         System.exit(1);
     }
