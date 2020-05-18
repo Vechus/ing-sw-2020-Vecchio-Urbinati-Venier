@@ -26,7 +26,20 @@ public class Server {
     private Map<Integer, List<ClientConnection>> activeGames = new HashMap<>();
     private int waitingGameSize = 2;
 
-    //Deregister connection
+
+    /**
+     * setter to create Srver class
+     * @throws IOException
+     */
+    public Server() throws IOException {
+        this.serverSocket = new ServerSocket(PORT);
+    }
+
+
+    /**
+     * method to  eliminate a connection with a client when it is no loneger needed
+     * @param c stands for the connection that we want to eliminate
+     */
     public synchronized void deregisterConnection(ClientConnection c) {
         ClientConnection opponent = waitingConnection.get(c);
         if(opponent != null) {
@@ -43,8 +56,11 @@ public class Server {
     }
 
 
-
-    //Wait for another player
+    /**
+     * method which makes the server wait for a new player and puts him in wait
+     * @param c stands for the connection that we have to add to the game
+     * @param name stands for the name of the player that wants to play
+     */
     public synchronized void lobby(ClientConnection c, String name){
         if(waitingConnection.size() == 0){
             // ask player number
@@ -75,10 +91,9 @@ public class Server {
     }
 
 
-    public Server() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
-    }
-
+    /**
+     * method that makes the server wait for a connection request
+     */
     public void run(){
         while(true){
             try {

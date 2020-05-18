@@ -19,20 +19,37 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
     private boolean active = true;
 
+    /**
+     * setter fo SocketClientConnection
+     * @param socket
+     * @param server
+     */
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
     }
 
+    /**
+     * getter of param active
+     */
+    private synchronized boolean isActive(){
+        return active;
+    }
+
+
+    /**
+     * setter of param litener
+     */
     @Override
     public void addListener(ConnectionListener listener) {
         this.listener=listener;
     }
 
-    private synchronized boolean isActive(){
-        return active;
-    }
 
+    /**
+     * method that sends the object message
+     * @param message
+     */
     private synchronized void send(Object message) {
         try {
             out.reset();
@@ -43,6 +60,19 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
     }
 
+    /**
+     * methods that calls closeConnection and eliminates the connection frm the server
+     */
+    private void close() {
+        closeConnection();
+        System.out.println("Deregistering client...");
+        server.deregisterConnection(this);
+        System.out.println("Done!");
+    }
+
+    /**
+     * method that tells closes the connection and communicates it to the client
+     */
     public synchronized void closeConnection() {
         send("Connection closed!");
         try {
@@ -53,13 +83,11 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         active = false;
     }
 
-    private void close() {
-        closeConnection();
-        System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
-        System.out.println("Done!");
-    }
 
+    /**
+     * creates a new thread to send a messagge in order to not block the rest of the server while sent
+     * @param message
+     */
     @Override
     public void asyncSend(final Object message){
         new Thread(new Runnable() {
@@ -70,6 +98,9 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }).start();
     }
 
+    /**
+     *method that reads the handshake
+     */
     @Override
     public void run() {
         ObjectInputStream in;
