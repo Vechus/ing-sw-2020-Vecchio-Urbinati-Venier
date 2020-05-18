@@ -25,7 +25,6 @@ public class Athena extends God {
         Vector2 currPos= action.getWorker().getPosition();
         boolean res = super.move(action);
         int heightDiff = this.board.getHeight(action.getTargetPos())-this.board.getHeight(currPos);
-        System.out.println("Athena moves: "+res+" height diff: "+heightDiff);
         if(res && heightDiff > 0)
             this.board.setEffectActive(this.player, true);
         return res;

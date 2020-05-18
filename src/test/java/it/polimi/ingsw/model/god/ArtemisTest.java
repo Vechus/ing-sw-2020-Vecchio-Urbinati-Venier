@@ -49,8 +49,8 @@ public class ArtemisTest {
         assertTrue(god.chooseAction(firstAction));
         Action secondAction= new Action(worker, midPos, ActionType.MOVE);
         assertFalse(god.chooseAction(secondAction));
-        assertFalse(board.getWorker(midPos)==worker&&
-                board.getWorker(highPos)==null);
+        assertNull(board.getWorker(midPos));
+        assertEquals(board.getWorker(highPos), worker);
     }
 
     @Test

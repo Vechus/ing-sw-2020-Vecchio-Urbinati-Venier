@@ -169,7 +169,9 @@ public class GodTest {
     @Test
     void testEndTurnNotValid(){
         god.beginNewTurn();
-        assertFalse(god.endTurn());
+        Action actionEnd = new Action(null, null, ActionType.END_TURN);
+        assertFalse(god.chooseAction(actionEnd));
+        assertFalse(god.getHasFinishedTurn());
     }
 
     @Test
@@ -177,9 +179,11 @@ public class GodTest {
         god.beginNewTurn();
         Action actionMove=new Action(worker, highPos, ActionType.MOVE);
         Action actionBuild=new Action(worker, lowPos, ActionType.BUILD);
+        Action actionEnd = new Action(null, null, ActionType.END_TURN);
         assertTrue(god.chooseAction(actionMove));
         assertTrue(god.chooseAction(actionBuild));
-        assertTrue(god.endTurn());
+        assertTrue(god.chooseAction(actionEnd));
+        assertTrue(god.getHasFinishedTurn());
     }
 
 

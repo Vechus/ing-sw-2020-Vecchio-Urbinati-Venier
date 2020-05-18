@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Hestia extends God {
-
-    int counterHestiaBuilds=0;
-
     public Hestia(Board board, Player player) {
         super(board, player);
         this.buildBlockValidationFunctions = new ArrayList<>(
@@ -37,54 +34,21 @@ public class Hestia extends God {
     }
 
 
-    public  boolean chooseAction (Action action){
-        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
-
-        if(this.hasMoved ){
-           if(counterHestiaBuilds==0){
-               if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
-                   if(buildBlock(action)) {
-                       counterHestiaBuilds++;
-                       return true;
-                   }
-               }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
-                   if(buildDome(action)) {
-                       counterHestiaBuilds++;
-                       return true;
-                   }
-               }
-
-           } else if(counterHestiaBuilds==1){
-               if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
-                   if(buildBlock(action)) {
-                       return true;
-                   }
-               }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
-                   if(buildDome(action)) {
-                       return true;
-                   }
-               }
-           }
-
-        }else if (action.getType()== ActionType.MOVE&& chosenWorker==action.getWorker()&&counterHestiaBuilds==0) {
-            if (move(action)) {
-                this.hasMoved = true;
-                return true;
-            }
-        }
-        if(action.getType()== ActionType.END_TURN ) {
-            if (endTurn()) {
-                this.hasFinishedTurn = true;
-                return true;
-            }
-        }
-        return false;
+    @Override
+    protected void createActionGraph() {
+        super.createActionGraph();
+        int movedState = actionGraph.getNextState(actionGraph.INITIAL_STATE_IDX, ActionType.MOVE);
+        int builtState = actionGraph.getNextState(movedState, ActionType.BUILD);
+        int secondBuildState = actionGraph.addState();
+        actionGraph.addTransition(builtState, secondBuildState, ActionType.BUILD);
+        actionGraph.addTransition(builtState, secondBuildState, ActionType.BUILD_DOME);
+        actionGraph.addTransition(secondBuildState, actionGraph.FINAL_STATE_IDX, ActionType.END_TURN);
     }
 
 
     public boolean isBuildOffThePerimeter(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        return counterHestiaBuilds != 1 || (action.getTargetPos().getY() != 4 && action.getTargetPos().getX() != 4 && action.getTargetPos().getY() != 0 && action.getTargetPos().getX() != 0);
+        return buildCtr != 1 || (action.getTargetPos().getY() != 4 && action.getTargetPos().getX() != 4 && action.getTargetPos().getY() != 0 && action.getTargetPos().getX() != 0);
     }
 
 

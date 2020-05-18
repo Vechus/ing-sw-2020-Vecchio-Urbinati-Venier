@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.ActionType;
+import it.polimi.ingsw.util.Vector2;
 import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ public class God {
      * The Chosen worker.
      */
     protected Worker chosenWorker= null;
+    protected Vector2 initPos = null, buildPos = null;
+    protected int moveCtr = 0, buildCtr = 0;
+
+    protected int turnState;
 
     List<Function<Pair<Action, Board>, Boolean>> moveValidationFunctions = new ArrayList<>(
             Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
@@ -69,6 +74,8 @@ public class God {
                     GodValidationMethods::isBuildingHeightThree
             ));
 
+    TurnActionGraph actionGraph = new TurnActionGraph();
+
 
     /**
      * Instantiates a new God.
@@ -76,7 +83,9 @@ public class God {
      * @param board the board.
      */
      public God(Board board) {
-        this.board = board;
+         this.board = board;
+         turnState = actionGraph.INITIAL_STATE_IDX;
+         createActionGraph();
     }
 
     /**
@@ -86,7 +95,7 @@ public class God {
      * @param player the player.
      */
     public God(Board board, Player player){
-        this.board=board;
+        this(board);
         this.player=player;
     }
 
@@ -113,6 +122,14 @@ public class God {
     public boolean getHasFinishedTurn(){return hasFinishedTurn;}
 
 
+    protected void createActionGraph(){
+        int movedState = actionGraph.addState();
+        int builtState = actionGraph.addState();
+        actionGraph.addTransition(actionGraph.INITIAL_STATE_IDX, movedState, ActionType.MOVE);
+        actionGraph.addTransition(movedState, builtState, ActionType.BUILD);
+        actionGraph.addTransition(movedState, builtState, ActionType.BUILD_DOME);
+        actionGraph.addTransition(builtState, actionGraph.FINAL_STATE_IDX, ActionType.END_TURN);
+    }
 
     /**
      * Choose action. Given an Action this class calls the right function to execute.
@@ -120,34 +137,29 @@ public class God {
      * @param action the action
      * @return the boolean.
      */
-    public  boolean chooseAction (Action action){
+    public boolean chooseAction (Action action){
         if (chosenWorker==null){ chosenWorker=action.getWorker(); }
 
-        if(this.hasMoved ){
-            if(action.getType()== ActionType.BUILD && chosenWorker==action.getWorker()&& !hasBuilt){
-                if(buildBlock(action)) {
-                    this.hasBuilt=true;
-                    return true;
-                }
-            }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&& !hasBuilt){
-                if(buildDome(action)) {
-                    this.hasBuilt=true;
-                    return true;
-                }
-            }
-        }else if (action.getType()== ActionType.MOVE && chosenWorker==action.getWorker()&& !hasBuilt){
-            if (move(action)) {
-                this.hasMoved = true;
-                return true;
-            }
-        }
-        if(action.getType()== ActionType.END_TURN ) {
-            if (endTurn()) {
-                this.hasFinishedTurn = true;
-                return true;
-            }
-        }
-        return false;
+        int nextState = actionGraph.getNextState(turnState, action.getType());
+        if(nextState == -1 || action.getType() != ActionType.END_TURN && !chosenWorker.equals(action.getWorker()))
+            return false;
+
+        boolean res = true;
+        if(action.getType() == ActionType.MOVE)
+            res = move(action);
+        else if(action.getType() == ActionType.BUILD)
+            res = buildBlock(action);
+        else if(action.getType() == ActionType.BUILD_DOME)
+            res = buildDome(action);
+
+        if(!res)
+            return false;
+
+        if(nextState == actionGraph.FINAL_STATE_IDX)
+            hasFinishedTurn = true;
+
+        turnState = nextState;
+        return true;
     }
 
 
@@ -161,6 +173,8 @@ public class God {
         if(!this.isMoveValid(action)) {
             return false;
         }
+        if(initPos == null) initPos = action.getWorkerPos();
+        moveCtr++;
         this.board.moveWorker(action);
 
         return true;
@@ -184,6 +198,8 @@ public class God {
      */
     public boolean buildBlock (Action action){
         if(isBuildBlockValid(action)) {
+            if(buildPos == null) buildPos = action.getTargetPos();
+            buildCtr++;
             this.board.setHeight(action.getTargetPos(), board.getHeight(action.getTargetPos()) + 1);
             return true;
         }else{
@@ -213,6 +229,8 @@ public class God {
         if (!isBuildDomeValid(action)){
             return false;
         }else{
+            if(buildPos == null) buildPos = action.getTargetPos();
+            buildCtr++;
             this.board.setComplete(action.getTargetPos(), true);
             return true;
         }
@@ -246,21 +264,12 @@ public class God {
      * Begin a new turn. Initializes all the attributes needed.
      */
     public void beginNewTurn(){
-        this.hasMoved = false;
         this.hasFinishedTurn = false;
-        this.hasBuilt=false;
-    }
-
-
-    public boolean endTurn(){
-        return isEndTurnValid();
-    }
-
-    public boolean isEndTurnValid(){
-        if(!hasMoved){
-            return false;
-        }
-        return hasBuilt;
+        turnState = actionGraph.INITIAL_STATE_IDX;
+        initPos = null;
+        buildPos = null;
+        moveCtr = 0;
+        buildCtr = 0;
     }
 
     protected boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){

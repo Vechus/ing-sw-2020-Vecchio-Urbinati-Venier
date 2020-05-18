@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Artemis extends God {
-    private int counterArtemisMoves=0;
-    private Vector2 initialPos;
     public Artemis(Board board, Player player) {
         super(board, player);
 
@@ -27,51 +25,19 @@ public class Artemis extends God {
     }
 
     @Override
-    public boolean chooseAction (Action action){
-        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
-
-        if(counterArtemisMoves==0 && action.getType()== ActionType.MOVE&& !hasBuilt){
-            initialPos=action.getWorkerPos();
-            if (move(action)) {
-                this.hasMoved = true;
-                counterArtemisMoves++;
-                return true;
-            }
-        }
-        if(counterArtemisMoves>=1){
-            if(action.getType()== ActionType.MOVE && counterArtemisMoves == 1&& chosenWorker==action.getWorker()&& !hasBuilt){
-                if(move(action)) {
-                    this.hasMoved = true;
-                    counterArtemisMoves++;
-                    return true;
-                }
-            }
-            if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()&& !hasBuilt){
-                if(buildBlock(action)) {
-                    this.hasBuilt=true;
-                    return true;
-                }
-            }
-            if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()&& !hasBuilt) {
-                if (buildDome(action)) {
-                    this.hasBuilt=true;
-                    return true;
-                }
-            }
-        }if(action.getType()== ActionType.END_TURN ) {
-            if (endTurn()) {
-                this.hasFinishedTurn = true;
-                return true;
-            }
-        }
-        return false;
+    protected void createActionGraph() {
+        super.createActionGraph();
+        int secondMovedState = actionGraph.addState();
+        int movedState = actionGraph.getNextState(actionGraph.INITIAL_STATE_IDX, ActionType.MOVE);
+        int builtState = actionGraph.getNextState(movedState, ActionType.BUILD);
+        actionGraph.addTransition(movedState, secondMovedState, ActionType.MOVE);
+        actionGraph.addTransition(secondMovedState, builtState, ActionType.BUILD);
+        actionGraph.addTransition(secondMovedState, builtState, ActionType.BUILD_DOME);
     }
-
-
 
     public boolean isCellDifferentFromInitialSpace(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        return counterArtemisMoves != 1 || !action.getTargetPos().equals(initialPos);
+        return moveCtr != 1 || !action.getTargetPos().equals(initPos);
     }
 
 }
