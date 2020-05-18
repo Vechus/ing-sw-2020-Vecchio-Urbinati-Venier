@@ -1,0 +1,38 @@
+.redButton {
+    -fx-pref-width: 200;
+    -fx-background-image: url("../../images/btn_coral.png");
+    -fx-background-color: transparent;
+    -fx-background-size: stretch;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 25;
+}
+
+.redButton:pressed {
+    -fx-background-image: url("../../images/btn_coral_pressed.png");
+}
+
+.blueButton {
+    -fx-pref-width: 200;
+    -fx-background-image: url("../../images/btn_blue.png");
+    -fx-background-color: transparent;
+    -fx-background-size: stretch;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 25;
+}
+
+.blueButton:pressed {
+    -fx-background-image: url("../../images/btn_blue_pressed.png");
+}
+
+.greenButton {
+    -fx-pref-width: 200;
+    -fx-background-image: url("../../images/btn_green.png");
+    -fx-background-color: transparent;
+    -fx-background-size: stretch;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 25;
+}
+
+.greenButton:pressed {
+    -fx-background-image: url("../../images/btn_green_pressed.png");
+}

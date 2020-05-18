@@ -1,8 +1,10 @@
 package it.polimi.ingsw.client.gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 public class Panel2dController {
     @FXML
@@ -10,15 +12,24 @@ public class Panel2dController {
     @FXML
     private Label playerNameLabel;
     @FXML
-    private Label moveLabel;
+    private Button moveButton;
     @FXML
-    private Label buildLabel;
+    private Button buildButton;
     @FXML
-    private Label endLabel;
+    private Button endButton;
+
     @FXML
-    private ImageView moveButton;
+    public void handleMoveClicked(MouseEvent mouseEvent) {
+        //TODO
+    }
+
     @FXML
-    private ImageView buildButton;
+    public void handleBuildClicked(MouseEvent mouseEvent) {
+        //TODO
+    }
+
     @FXML
-    private ImageView endButton;
+    public void handleEndClicked(MouseEvent mouseEvent) {
+        //TODO
+    }
 }
