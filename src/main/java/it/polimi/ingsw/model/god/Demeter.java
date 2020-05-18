@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Demeter extends God {
-    private int counterDemeterBuild=0;
-    private Vector2 posFirstBuild;
-
     public Demeter(Board board, Player player) {
         super(board, player);
 
@@ -38,53 +35,19 @@ public class Demeter extends God {
     }
 
     @Override
-    public  boolean chooseAction (Action action){
-        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
-        if(this.hasMoved ){
-            if(counterDemeterBuild==0){
-
-                if(action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
-                    if(buildBlock(action)) {
-                        posFirstBuild=action.getTargetPos();
-                        counterDemeterBuild++;
-                        return true;
-                    }
-                }else if(action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
-                    if (buildDome(action)){
-                        counterDemeterBuild++;
-                        return true;
-                    }
-                }
-            }
-            if(counterDemeterBuild==1) {
-                if (action.getType() == ActionType.BUILD&& chosenWorker==action.getWorker()) {
-                    if (buildBlock(action)) {
-                        counterDemeterBuild++;
-                        return true;
-                    }
-                }else if (action.getType() == ActionType.BUILD_DOME&& chosenWorker==action.getWorker()) {
-                    if (buildDome(action)){
-                        counterDemeterBuild++;
-                        return true;
-                    }
-                }
-            }
-        }else if (action.getType()== ActionType.MOVE && chosenWorker==action.getWorker()&&counterDemeterBuild==0){
-            if(move(action)) {
-                this.hasMoved=true;
-                return true;
-            }
-        }if(action.getType()== ActionType.END_TURN ) {
-            if (endTurn()) {
-                this.hasFinishedTurn = true;
-                return true;
-            }
-        }
-        return false;
+    protected void createActionGraph() {
+        super.createActionGraph();
+        int movedState = actionGraph.getNextState(actionGraph.INITIAL_STATE_IDX, ActionType.MOVE);
+        int builtState = actionGraph.getNextState(movedState, ActionType.BUILD);
+        int secondBuildState = actionGraph.addState();
+        actionGraph.addTransition(builtState, secondBuildState, ActionType.BUILD);
+        actionGraph.addTransition(builtState, secondBuildState, ActionType.BUILD_DOME);
+        actionGraph.addTransition(secondBuildState, actionGraph.FINAL_STATE_IDX, ActionType.END_TURN);
     }
+
 
     public boolean isCellDifferentWhenBuilding(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        return counterDemeterBuild != 1 || !action.getTargetPos().equals(posFirstBuild);
+        return buildCtr != 1 || !action.getTargetPos().equals(buildPos);
     }
 }

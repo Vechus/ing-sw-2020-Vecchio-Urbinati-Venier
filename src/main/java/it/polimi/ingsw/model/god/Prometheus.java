@@ -20,54 +20,22 @@ public class Prometheus extends God {
                         GodValidationMethods::isTargetPosDomesFree,
                         GodValidationMethods::isTargetPosAdjacent,
                         GodValidationMethods::isMoveHeightLessThanOne,
-                        this::hasBuiltBefore
+                        this::noUpIfPrebuilt
                 ));
     }
 
     @Override
-    public  boolean chooseAction (Action action){
-        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
-        if(this.hasMoved ) {
-            if (action.getType() == ActionType.BUILD && chosenWorker == action.getWorker()) {
-                if (buildBlock(action)) {
-                    this.hasBuilt=true;
-                    return true;
-                }
-            } else if (action.getType() == ActionType.BUILD_DOME && chosenWorker == action.getWorker()) {
-                if (buildDome(action)) {
-                    this.hasBuilt=true;
-                    return true;
-                }
-            }
-
-
-        }else if (action.getType()== ActionType.MOVE&& chosenWorker==action.getWorker()) {
-            if (move(action)) {
-                this.hasMoved = true;
-                return true;
-            }
-        } else if(!hasBuilt && action.getType()== ActionType.BUILD&& chosenWorker==action.getWorker()){
-            if (buildBlock(action)){
-                this.hasBuilt=true;
-                return true;
-            }
-        } else if(!hasBuilt && action.getType()== ActionType.BUILD_DOME&& chosenWorker==action.getWorker()){
-            if (buildBlock(action)){
-                this.hasBuilt=true;
-                return true;
-            }
-        }
-        if(action.getType()== ActionType.END_TURN ) {
-            if (endTurn()) {
-                this.hasFinishedTurn = true;
-                return true;
-            }
-        }
-        return false;
+    protected void createActionGraph() {
+        super.createActionGraph();
+        int preBuiltState = actionGraph.addState();
+        actionGraph.addTransition(actionGraph.INITIAL_STATE_IDX, preBuiltState, ActionType.BUILD);
+        actionGraph.addTransition(actionGraph.INITIAL_STATE_IDX, preBuiltState, ActionType.BUILD_DOME);
+        int movedState = actionGraph.getNextState(actionGraph.INITIAL_STATE_IDX, ActionType.MOVE);
+        actionGraph.addTransition(preBuiltState, movedState, ActionType.MOVE);
     }
 
-    public boolean hasBuiltBefore (Pair<Action, Board> actionBoardPair){
+    public boolean noUpIfPrebuilt(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        return !hasBuilt || this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) <= 0;
+        return buildCtr == 0 || this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) <= 0;
     }
 }

@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Hephaestus extends God {
-    private Vector2 posFirstBuild;
-    private int counterHephaestusBuilds = 0;
-
     public Hephaestus(Board board, Player player) {
         super(board, player);
         this.buildBlockValidationFunctions = new ArrayList<>(
@@ -29,47 +26,19 @@ public class Hephaestus extends God {
     }
 
     @Override
-    public boolean chooseAction(Action action) {
-        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
-        if (this.hasMoved) {
-            if (counterHephaestusBuilds==0){
-                if (action.getType() == ActionType.BUILD) {
-                    if (buildBlock(action)) {
-                        posFirstBuild=action.getTargetPos();
-                        counterHephaestusBuilds++;
-                        return true;
-                    }
-                } else if (action.getType() == ActionType.BUILD_DOME) {
-                    if (buildDome(action)) {
-                        return true;
-                    }
-                }
-            }else if(counterHephaestusBuilds==1){
-                if (action.getType() == ActionType.BUILD) {
-                    if (buildBlock(action)) {
-                        counterHephaestusBuilds++;
-                        return true;
-                    }
-                }
-            }
-        } else if (action.getType() == ActionType.MOVE&&counterHephaestusBuilds==0) {
-            if (move(action)) {
-                this.hasMoved = true;
-                return true;
-            }
-        }if(action.getType()== ActionType.END_TURN ) {
-            if (endTurn()) {
-                this.hasFinishedTurn = true;
-                return true;
-            }
-        }
-        return false;
+    protected void createActionGraph() {
+        super.createActionGraph();
+        int movedState = actionGraph.getNextState(actionGraph.INITIAL_STATE_IDX, ActionType.MOVE);
+        int builtState = actionGraph.getNextState(movedState, ActionType.BUILD);
+        int secondBuildState = actionGraph.addState();
+        actionGraph.addTransition(builtState, secondBuildState, ActionType.BUILD);
+        actionGraph.addTransition(builtState, secondBuildState, ActionType.BUILD_DOME);
+        actionGraph.addTransition(secondBuildState, actionGraph.FINAL_STATE_IDX, ActionType.END_TURN);
     }
-
 
     public boolean isCellTheSame(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        return counterHephaestusBuilds != 1 || action.getTargetPos() == posFirstBuild;
+        return buildCtr != 1 || action.getTargetPos() == buildPos;
     }
 
 
