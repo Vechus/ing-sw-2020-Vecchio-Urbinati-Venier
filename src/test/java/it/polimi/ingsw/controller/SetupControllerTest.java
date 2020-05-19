@@ -21,8 +21,8 @@ public class SetupControllerTest {
     @BeforeEach
     void setup(){
         model = new Model();
-        pid1 = model.addNewPlayer(new God(model.getBoard()), "");
-        pid2 = model.addNewPlayer(new God(model.getBoard()), "");
+        pid1 = model.addNewPlayer("", "");
+        pid2 = model.addNewPlayer("", "");
         controller = new SetupController(model);
     }
 

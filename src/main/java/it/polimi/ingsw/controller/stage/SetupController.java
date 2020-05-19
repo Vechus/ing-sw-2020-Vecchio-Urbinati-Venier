@@ -12,6 +12,7 @@ public class SetupController extends GameStageController {
 
     @Override
     public boolean performAction(int playerId, Action a) {
+        System.out.println("[CONTROLLER] Placing stuff for player #"+playerId);
         if(!model.isPlayersTurn(playerId)) return false;
         if(a.getType() != ActionType.PLACE_WORKER) return false;
         if(!model.placeWorker(playerId, a.getTargetPos())) return false;
@@ -20,11 +21,13 @@ public class SetupController extends GameStageController {
         for(int i=0;i<model.getNumberOfPlayers();i++)
             full &= model.getPlayer(i).getNumWorkers() == 2;
         if(full) stageDone = true;
+        else model.sendPlaceRequest(model.getCurPlayer());
         return true;
     }
 
     @Override
     public GameStageController advance() {
+        model.sendActionRequest(model.getCurPlayer());
         return new MatchController(this.model);
     }
 }

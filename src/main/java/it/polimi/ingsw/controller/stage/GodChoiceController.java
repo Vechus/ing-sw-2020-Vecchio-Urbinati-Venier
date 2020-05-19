@@ -11,9 +11,9 @@ public class GodChoiceController extends GameStageController {
     }
 
     @Override
-    public boolean createPlayer(int playerId, God god, String name) {
+    public boolean createPlayer(int playerId, String godName, String name) {
         if(model.getNumberOfPlayers() != playerId) return false;
-        model.addNewPlayer(god, name);
+        model.addNewPlayer(godName, name);
         return true;
     }
 

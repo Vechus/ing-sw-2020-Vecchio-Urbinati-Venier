@@ -10,37 +10,21 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Queue;
 
-public class ServerConnection implements ClientServerInterface, Runnable {
+public class ServerConnection implements ClientServerInterface {
     String ip;
     int port;
     private ObjectOutputStream socketOut;
     private ObjectInputStream socketIn;
-    Queue<Message> outQueue;
-    boolean run = true;
 
     public ServerConnection(String ip, int port) {
         this.ip = ip;
         this.port = port;
-    }
 
-    /**
-     * We need to send the messages to the server asynchronously.
-     * Thus, we make a queue, which is iterated through and sent over in this thread.
-     * Only this object (thus only this thread) can access sendObject
-     */
-    @Override
-    public void run() {
         try {
             // Connect to server and setup streams
             Socket socket = new Socket(ip, port);
-            socketIn = new ObjectInputStream(socket.getInputStream());
             socketOut = new ObjectOutputStream(socket.getOutputStream());
-
-            while(run){
-                if(outQueue.isEmpty()) continue;
-                Message message = outQueue.remove();
-                sendObject(message);
-            }
+            socketIn = new ObjectInputStream(socket.getInputStream());
         }
         catch(IOException e){
             System.out.println("Error while communicating with server");
@@ -63,16 +47,34 @@ public class ServerConnection implements ClientServerInterface, Runnable {
     @Override
     public Message receiveMessage() throws IOException, ClassNotFoundException {
         Object o = socketIn.readObject();
-        socketOut.flush();
         return (Message) o;
     }
 
-    @Override
-    public void sendMessage(Message message) {
-        outQueue.add(message);
+    /**
+     * method that sends the object message
+     * @param message
+     */
+    private synchronized void send(Object message) {
+        try {
+            socketOut.reset();
+            socketOut.writeObject(message);
+            socketOut.flush();
+        } catch(IOException e){
+            System.err.println(e.getMessage());
+        }
     }
 
-    public void stop(){
-        run = false;
+    /**
+     * creates a new thread to send a messagge in order to not block the rest of the server while sent
+     * @param message
+     */
+    @Override
+    public void sendMessage(final Message message){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                send(message);
+            }
+        }).start();
     }
 }

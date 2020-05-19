@@ -26,7 +26,7 @@ public class Client {
     private ClientBoard gameState;
     private ClientUserInterface ui;
     private ClientServerInterface connection;
-    Thread uiThread, connectionThread;
+    Thread uiThread;
 
     /**
      * Instantiates a new Client.
@@ -87,8 +87,8 @@ public class Client {
 
         // setup connection with server
         connection = new ServerConnection(ip, port);
-        connectionThread = new Thread((Runnable) connection);
-        connectionThread.start();
+        // connectionThread = new Thread((Runnable) connection);
+        // connectionThread.start();
 
         // Handshake: add the player to a new or existing game
         String playerName = ui.getPlayerName();
@@ -101,19 +101,44 @@ public class Client {
             return;
         }
         if(resp.getStatus() == Message.Status.ERROR){
-            ui.showError("Error while starting/joining game: "+resp.getPayload());
+            ui.showError("Error while starting/joining game: "+resp);
             closeThreads();
             return;
+        }
+        else if(resp.getMessageType() == Message.MessageType.NUMBER_PLAYERS_REQ){
+            int num = ui.getPlayerNumber();
+            Message res = new Message();
+            res.setStatus(Message.Status.OK);
+            res.setMessageType(Message.MessageType.NUMBER_PLAYERS);
+            res.setPayload(String.valueOf(num));
+            connection.sendMessage(res);
+
+            Message ack;
+            try {
+                ack = connection.receiveMessage();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                closeThreads();
+                return;
+            }
+            if(ack.getStatus() == Message.Status.ERROR){
+                ui.showError("Error while starting/joining game: "+resp);
+                closeThreads();
+                return;
+            }
         }
 
         // Choose god: to do
 
+        System.out.println("Setup done, waiting for server...");
         // Game: respond to server move requests
         while(true){
             // Read message from server
             Message serverMessage;
             try {
+                System.out.println("[CLIENT] Waiting for message...");
                 serverMessage = connection.receiveMessage();
+                System.out.println("[CLIENT] Got one!");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 closeThreads();
@@ -122,36 +147,56 @@ public class Client {
 
             // Game is over, pack it up!
             if(serverMessage.getMessageType() == Message.MessageType.GAME_END){
+                System.out.println("[CLIENT] Game finished message received!");
                 String winnerName = serverMessage.getPayload();
                 ui.gameOver(winnerName);
                 break;
             }
             // Board state update
             else if(serverMessage.getMessageType() == Message.MessageType.BOARD_STATE){
+                System.out.println("[CLIENT] New board state received!");
                 BoardStateMessage boardStateMessage = (BoardStateMessage) serverMessage;
                 gameState = boardStateMessage.getGameState();
                 ui.showGameState(gameState);
             }
             // Server wants us to make a move
             else if(serverMessage.getMessageType() == Message.MessageType.ACTION_REQUEST){
+                System.out.println("[CLIENT] Action request message received!");
                 ActionRequestMessage actionRequestMessage = (ActionRequestMessage) serverMessage;
                 List<ActionType> allowedActions = actionRequestMessage.getAllowedActions();
 
-                ClientAction action = ui.getPlayerMove(allowedActions);
-                ActionMessage actionMessage = new ActionMessage();
-                actionMessage.setAction(action);
-                connection.sendMessage(actionMessage);
+                boolean moveAccepted = false;
+                do {
+                    ClientAction action = ui.getPlayerMove(allowedActions);
+                    ActionMessage actionMessage = new ActionMessage();
+                    actionMessage.setAction(action);
+                    connection.sendMessage(actionMessage);
 
-                Message ack;
-                try {
-                    ack = connection.receiveMessage();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    closeThreads();
-                    return;
-                }
-                if(ack.getStatus() == Message.Status.ERROR)
-                    ui.showError(ack.getPayload());
+                    Message ack;
+                    boolean ackReceived = false;
+                    do {
+                        try {
+                            ack = connection.receiveMessage();
+                        } catch (IOException | ClassNotFoundException e) {
+                            e.printStackTrace();
+                            closeThreads();
+                            return;
+                        }
+                        if (ack.getMessageType() == Message.MessageType.BOARD_STATE) {
+                            System.out.println("[CLIENT] New board state received!");
+                            BoardStateMessage boardStateMessage = (BoardStateMessage) ack;
+                            gameState = boardStateMessage.getGameState();
+                            ui.showGameState(gameState);
+                        }
+                        else {
+                            ackReceived = true;
+                            if (ack.getStatus() == Message.Status.ERROR)
+                                ui.showError(ack.toString());
+                            else if (ack.getStatus() == Message.Status.OK)
+                                moveAccepted = true;
+                        }
+                    } while(!ackReceived);
+                } while(!moveAccepted);
             }
             // You can never be sure
             else{
@@ -163,7 +208,6 @@ public class Client {
     void closeThreads(){
         try {
             uiThread.join();
-            connectionThread.join();
         }
         catch(InterruptedException e){
             System.out.println(e.getMessage());

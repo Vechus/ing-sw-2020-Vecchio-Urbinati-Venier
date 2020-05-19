@@ -5,12 +5,12 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.util.Vector2;
 
-public class Chronus extends God {
-    public Chronus(Board board, Player player) {
+public class Cronus extends God {
+    public Cronus(Board board, Player player) {
         super(board, player);
     }
 
-    public Chronus(Board board) {
+    public Cronus(Board board) {
         super(board);
     }
 

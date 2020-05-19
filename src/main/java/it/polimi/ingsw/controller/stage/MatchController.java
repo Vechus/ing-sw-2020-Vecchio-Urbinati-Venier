@@ -15,9 +15,12 @@ public class MatchController extends GameStageController {
         if(!model.executeAction(playerId, a)) return false;
         if(model.getPlayer(model.getCurPlayer()).checkWinCondition(a) || model.checkGameOver())
             stageDone = true;
-        if(model.getPlayer(model.getCurPlayer()).isFinished()) {
-            model.incrementCurPlayer();
-            model.beginNewTurn(model.getCurPlayer());
+        else {
+            if (model.getPlayer(model.getCurPlayer()).isFinished()) {
+                model.incrementCurPlayer();
+                model.beginNewTurn(model.getCurPlayer());
+            }
+            model.sendActionRequest(model.getCurPlayer());
         }
         return true;
     }

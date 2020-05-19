@@ -159,39 +159,4 @@ public class Board {
             if(!e.checkOwner(p) && e.isActive() && !e.checkOpponentWinCondition(a)) return false;
         return true;
     }
-
-    public void print() {
-        String block = ConsoleColor.WHITE_BACKGROUND + ConsoleColor.WHITE_BOLD + "█" + ConsoleColor.RESET;
-        System.out.println("  " + block.repeat(21));
-        for(int i = 0; i < 5; i++) {
-            StringBuilder topRow = new StringBuilder("  " + block);
-            StringBuilder centralRow = new StringBuilder("  " + block);
-            StringBuilder bottomRow = new StringBuilder("  " + block);
-            for(int j = 0; j < 5; j++) {
-                Vector2 pos = new Vector2(i,j);
-                Worker w = getWorker(pos);
-                if(w == null && !isComplete(pos)) {
-                    topRow.append("   ").append(block);
-                    centralRow.append(" ").append(getHeight(pos)).append(" ").append(block);
-                    bottomRow.append("   ").append(block);
-                } else if(w == null && isComplete(pos) && getHeight(pos) == 3) {
-                    topRow.append(ConsoleColor.WHITE_BACKGROUND_BRIGHT).append(ConsoleColor.BLACK_BOLD_BRIGHT).append("╭─╮").append(ConsoleColor.RESET).append(block);
-                    centralRow.append(ConsoleColor.WHITE_BACKGROUND_BRIGHT).append(ConsoleColor.BLACK_BOLD_BRIGHT).append("│").append(getHeight(pos)).append("│").append(ConsoleColor.RESET).append(block);
-                    bottomRow.append("   ").append(block);
-                } else if(w == null && isComplete(pos) && getHeight(pos) != 3){
-                    topRow.append(ConsoleColor.WHITE_BACKGROUND_BRIGHT).append(ConsoleColor.BLACK_BOLD_BRIGHT).append("╭─╮").append(ConsoleColor.RESET).append(block);
-                    centralRow.append(ConsoleColor.WHITE_BACKGROUND_BRIGHT).append(ConsoleColor.BLACK_BOLD_BRIGHT).append("│").append(getHeight(pos)).append("│").append(ConsoleColor.RESET).append(block);
-                    bottomRow.append("   ").append(block);
-                } else {
-                    topRow.append("   ").append(block);
-                    centralRow.append(" ").append(w.getOwner().getPlayerColor()).append(getHeight(pos)).append(ConsoleColor.RESET).append(" ").append(block);
-                    bottomRow.append("   ").append(block);
-                }
-            }
-            System.out.println(topRow);
-            System.out.println(centralRow);
-            System.out.println(bottomRow);
-            System.out.println("  " + block.repeat(21));
-        }
-    }
 }

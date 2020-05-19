@@ -1,8 +1,9 @@
 package it.polimi.ingsw.util;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Vector2 implements Cloneable{
+public class Vector2 implements Cloneable, Serializable {
     private int x;
     private int y;
 

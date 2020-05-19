@@ -20,9 +20,9 @@ public class Controller implements PlayerActionListener {
     }
 
     @Override
-    public void onPlayerCreate(int playerId, God god, String name) {
+    public void onPlayerCreate(int playerId, String godName, String name) {
         if(currentStage.getGameStage() != GameStage.GOD_CHOICE) return;
-        currentStage.createPlayer(playerId, god, name);
+        currentStage.createPlayer(playerId, godName, name);
         if(model.getNumberOfPlayers() == totalPlayers)
             currentStage.setStageDone(true);
         if(currentStage.isStageDone())
@@ -30,9 +30,10 @@ public class Controller implements PlayerActionListener {
     }
 
     @Override
-    public void onPlayerAction(int playerId, Action a) {
-        currentStage.performAction(playerId, a);
+    public boolean onPlayerAction(int playerId, Action a) {
+        boolean res = currentStage.performAction(playerId, a);
         if(currentStage.isStageDone())
             currentStage = currentStage.advance();
+        return res;
     }
 }

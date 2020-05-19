@@ -17,7 +17,7 @@ public abstract class GameStageController {
 
     public GameStage getGameStage(){ return this.stage; }
 
-    public boolean createPlayer(int playerId, God god, String name){ return false; }
+    public boolean createPlayer(int playerId, String godName, String name){ return false; }
 
     public abstract boolean performAction(int playerId, Action a);
 

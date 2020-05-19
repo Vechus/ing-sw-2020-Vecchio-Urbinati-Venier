@@ -2,7 +2,9 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.model.god.GodFactory;
 import it.polimi.ingsw.util.Action;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import it.polimi.ingsw.util.listeners.ModelChangeListener;
 
@@ -35,18 +37,21 @@ public class Model {
     public void addListener(ModelChangeListener listener){ listeners.add(listener); }
 
     /**
-     * Add a new player.
+     * Add a new player to the model
      *
-     * @param god the god.
-     *
-     * @return the index of the player
+     * @param godName the name of the player's god
+     * @param name the name of the player
+     * @return the integer id of the generated player
      */
-    public int addNewPlayer(God god, String name) {
-        Player player = new Player(god, this.board);
+    public int addNewPlayer(String godName, String name) {
+        Player player = new Player(board);
+        player.setPlayerName(name);
+        God god = GodFactory.createGod(godName, player, board);
         god.setPlayer(player);
+        player.setPlayerGod(god);
         this.players.add(player);
         int pid = this.players.size()-1;
-        this.players.get(pid).setPlayerId(pid);
+        player.setPlayerId(pid);
         return pid;
     }
 
@@ -86,8 +91,7 @@ public class Model {
     public boolean executeAction(int playerIndex, Action action) {
         // possible usage of InvalidMoveException
         boolean res = players.get(playerIndex).doAction(action);
-        for(ModelChangeListener listener : listeners)
-            listener.onModelChange(this);
+        if(res) updateClientModel();
         return res;
     }
 
@@ -98,6 +102,28 @@ public class Model {
      */
     public void beginNewTurn(int pid) {
         players.get(pid).beginNewTurn();
+    }
+
+    /**
+     * Sends an ActionRequest message to the appropriate player
+     * @param pid the id of the player to notify
+     */
+    public void sendActionRequest(int pid){
+        List<ActionType> allowedActions = players.get(pid).getPlayerGod().getAllowedActions();
+        if(pid < listeners.size())
+            listeners.get(pid).notifyActionRequired(allowedActions);
+    }
+
+    /**
+     * Sends an ActionRequest to the player with PLACE_WORKER, thus asking the player to place a worker
+     *
+     * @param pid the id of the player to notify
+     */
+    public void sendPlaceRequest(int pid){
+        List<ActionType> allowedActions = new ArrayList<>();
+        allowedActions.add(ActionType.PLACE_WORKER);
+        if(pid < listeners.size())
+            listeners.get(pid).notifyActionRequired(allowedActions);
     }
 
     /**
@@ -148,6 +174,13 @@ public class Model {
         Worker worker = new Worker(players.get(pid));
         if(!board.placeWorker(worker, initPos)) return false;
         players.get(pid).addWorker(worker);
+        updateClientModel();
         return true;
+    }
+
+    public void updateClientModel() {
+        System.out.println("[MODEL] Notifying listeners of board update");
+        for(ModelChangeListener listener : listeners)
+            listener.onModelChange(this);
     }
 }

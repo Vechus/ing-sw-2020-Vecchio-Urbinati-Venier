@@ -65,16 +65,14 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      */
     private void close() {
         closeConnection();
-        System.out.println("Deregistering client...");
+        System.out.println("[CONNECTION] Deregistering client...");
         server.deregisterConnection(this);
-        System.out.println("Done!");
     }
 
     /**
-     * method that tells closes the connection and communicates it to the client
+     * method that closes the connection and deregisters it
      */
     public synchronized void closeConnection() {
-        send("Connection closed!");
         try {
             socket.close();
         } catch (IOException e) {
@@ -106,17 +104,24 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         ObjectInputStream in;
         String name;
         try{
-            in = new ObjectInputStream(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
             Handshake message = (Handshake) in.readObject();
             name = message.getPlayerName();
             server.lobby(this, name);
             while(isActive()){
                 Message read = (Message) in.readObject();
-                listener.onMessageReceived(read);
+                if(read.getMessageType() == Message.MessageType.NUMBER_PLAYERS) {
+                    server.setGameSize(Integer.parseInt(read.getPayload()));
+                    Message ok = new Message();
+                    ok.setStatus(Message.Status.OK);
+                    asyncSend(ok);
+                }
+                else
+                    listener.onMessageReceived(read);
             }
         } catch (IOException | NoSuchElementException | ClassNotFoundException e) {
-            System.err.println("Error!" + e.getMessage());
+            System.err.println("Error! " + e.getMessage());
         }finally{
             close();
         }

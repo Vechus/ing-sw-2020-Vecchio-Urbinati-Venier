@@ -3,7 +3,9 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
-public class ClientAction {
+import java.io.Serializable;
+
+public class ClientAction implements Serializable {
     private Vector2 from, to;
     private ActionType type;
 

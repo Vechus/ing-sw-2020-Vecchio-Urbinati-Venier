@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class FinishedControllerTest {
     Model model = new Model();
     FinishedController controller = new FinishedController(model);
-    int pid = model.addNewPlayer(new God(model.getBoard()), "");
+    int pid = model.addNewPlayer("", "");
 
     @Test
     void testAction(){

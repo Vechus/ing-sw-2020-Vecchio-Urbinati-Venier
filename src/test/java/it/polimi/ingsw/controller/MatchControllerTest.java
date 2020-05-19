@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchControllerTest {
     Model model;
-    God god1, god2;
     int pid1, pid2;
     MatchController controller;
     Vector2 initPos = new Vector2(0, 0), oppPos = new Vector2(3, 3);
@@ -24,13 +23,11 @@ public class MatchControllerTest {
     void setup(){
         model = new Model();
 
-        god1 = new God(model.getBoard());
-        pid1 = model.addNewPlayer(god1, "");
+        pid1 = model.addNewPlayer("", "");
         model.placeWorker(pid1, initPos);
         worker1 = model.getBoard().getWorker(initPos);
 
-        god2 = new God(model.getBoard());
-        pid2 = model.addNewPlayer(god2, "");
+        pid2 = model.addNewPlayer("", "");
         model.placeWorker(pid2, oppPos);
         worker2 = model.getBoard().getWorker(oppPos);
 

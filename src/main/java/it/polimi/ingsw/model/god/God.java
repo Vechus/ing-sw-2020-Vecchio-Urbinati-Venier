@@ -280,5 +280,9 @@ public class God {
         }
         return true;
     }
+
+    public List<ActionType> getAllowedActions() {
+        return actionGraph.allowedActions(turnState);
+    }
 }
 

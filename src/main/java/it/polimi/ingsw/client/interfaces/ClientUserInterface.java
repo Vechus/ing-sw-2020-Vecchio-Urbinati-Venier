@@ -11,7 +11,7 @@ public interface ClientUserInterface {
     String getIP();
     int getPort();
     String getPlayerName();
-    int getGameID();
+    int getPlayerNumber();
 
     ClientAction getPlayerMove(List<ActionType> allowedActions);
     void showGameState(ClientBoard gameState);

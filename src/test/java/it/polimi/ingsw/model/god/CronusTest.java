@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class ChronusTest {
+public class CronusTest {
     Board board;
     Player player;
-    Chronus chronus;
+    Cronus chronus;
     Worker playerWorker;
 
     @BeforeEach
     void setup(){
         board = new Board();
         player = new Player();
-        chronus = new Chronus(board, player);
+        chronus = new Cronus(board, player);
         playerWorker = new Worker(player);
         board.placeWorker(playerWorker, new Vector2(0, 0));
 

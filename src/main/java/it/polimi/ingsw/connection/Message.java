@@ -1,14 +1,16 @@
 package it.polimi.ingsw.connection;
 
+import java.io.Serializable;
+
 /**
  * The type Message.
  */
-public class Message {
+public class Message implements Serializable {
     /**
      * The enum Payload type. It describes the status in detail.
      */
-    public enum ErrorType {GEN_ERROR, MOVE_INVALID, BUILD_INVALID, BUILD_DOME_INVALID, NOT_TURN_ERROR, GAME_ID_INVALID_ERROR, LOBBY_FULL_ERROR, CLOSE_SESSION}
-    public enum MessageType {GEN_MESSAGE, ACTION_REQUEST, ACTION, HANDSHAKE, BOARD_STATE, GAME_END}
+    public enum ErrorType {GEN_ERROR, MOVE_INVALID, LOBBY_FULL_ERROR}
+    public enum MessageType {ACTION_REQUEST, ACTION, NUMBER_PLAYERS_REQ, NUMBER_PLAYERS, HANDSHAKE, BOARD_STATE, GAME_END}
 
     /**
      * The enum Status.
@@ -96,9 +98,8 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "status=" + status +
-                (status == Status.OK ?
-                    ", messageType=" + messageType :
-                    ", errorType=" + errorType) +
+                ", messageType=" + messageType +
+                ", errorType=" + errorType +
                 ", payload='" + payload + '\'' +
                 '}';
     }

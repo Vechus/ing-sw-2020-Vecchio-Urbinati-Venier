@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.stage.GodChoiceController;
 import it.polimi.ingsw.model.Model;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.god.God;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,18 +21,15 @@ public class GodChoiceControllerTest {
 
     @Test
     void testValid(){
-        God god = new God(model.getBoard());
-        assertTrue(controller.createPlayer(0, god, ""));
-        assertEquals(god.getPlayer(), model.getPlayer(0));
-        assertEquals(model.getPlayer(0).getPlayerGod(), god);
+        assertTrue(controller.createPlayer(0, "", ""));
+        Player player = model.getPlayer(0);
+        assertEquals(player.getPlayerGod().getPlayer(), player);
     }
 
     @Test
     void testOutOfOrder(){
-        God god = new God(model.getBoard());
-        God god2 = new God(model.getBoard());
-        assertFalse(controller.createPlayer(1, god2, ""));
-        assertTrue(controller.createPlayer(0, god, ""));
-        assertTrue(controller.createPlayer(1, god2, ""));
+        assertFalse(controller.createPlayer(1, "", ""));
+        assertTrue(controller.createPlayer(0, "", ""));
+        assertTrue(controller.createPlayer(1, "", ""));
     }
 }
