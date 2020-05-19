@@ -134,7 +134,6 @@ public class Client {
 
         System.out.println("Setup done, waiting for server...");
         List<ActionType> lastAllowed = null;
-        boolean waitingForBoard = false, actionAfterBoard = false;
         // Game: respond to server move requests
         while(true){
             // Read message from server
@@ -158,23 +157,10 @@ public class Client {
                 BoardStateMessage boardStateMessage = (BoardStateMessage) serverMessage;
                 gameState = boardStateMessage.getGameState();
                 ui.showGameState(gameState);
-                if(actionAfterBoard){
-                    makeAction(lastAllowed);
-                    actionAfterBoard = false;
-                }
-                waitingForBoard = false;
-            }
-            // Server wants us to make a move
-            else if(serverMessage.getMessageType() == Message.MessageType.ACTION_REQUEST){
-                ActionRequestMessage actionRequestMessage = (ActionRequestMessage) serverMessage;
-                List<ActionType> allowedActions = actionRequestMessage.getAllowedActions();
+                List<ActionType> allowedActions = gameState.getAllowedMoves(playerName);
                 lastAllowed = allowedActions;
-
-                if(!waitingForBoard){
+                if(allowedActions.size() > 0)
                     makeAction(allowedActions);
-                    waitingForBoard = true;
-                }
-                else actionAfterBoard = true;
             }
             // Error from server
             else if(serverMessage.getStatus() == Message.Status.ERROR){

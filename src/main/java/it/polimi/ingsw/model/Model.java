@@ -73,7 +73,6 @@ public class Model {
      * @return the boolean
      */
     public boolean checkGameOver() {
-        System.out.println("Is everyone dead?");
         this.checkPlayersLoseCondition();
         int activePlayers = 0;
         for(Player p : this.players)
@@ -103,28 +102,6 @@ public class Model {
      */
     public void beginNewTurn(int pid) {
         players.get(pid).beginNewTurn();
-    }
-
-    /**
-     * Sends an ActionRequest message to the appropriate player
-     * @param pid the id of the player to notify
-     */
-    public void sendActionRequest(int pid){
-        List<ActionType> allowedActions = players.get(pid).getPlayerGod().getAllowedActions();
-        if(pid < listeners.size())
-            listeners.get(pid).notifyActionRequired(allowedActions);
-    }
-
-    /**
-     * Sends an ActionRequest to the player with PLACE_WORKER, thus asking the player to place a worker
-     *
-     * @param pid the id of the player to notify
-     */
-    public void sendPlaceRequest(int pid){
-        List<ActionType> allowedActions = new ArrayList<>();
-        allowedActions.add(ActionType.PLACE_WORKER);
-        if(pid < listeners.size())
-            listeners.get(pid).notifyActionRequired(allowedActions);
     }
 
     /**
@@ -185,7 +162,6 @@ public class Model {
         Worker worker = new Worker(players.get(pid));
         if(!board.placeWorker(worker, initPos)) return false;
         players.get(pid).addWorker(worker);
-        updateClientModel();
         return true;
     }
 

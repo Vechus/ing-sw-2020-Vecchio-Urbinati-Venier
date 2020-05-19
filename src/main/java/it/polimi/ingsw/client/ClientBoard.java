@@ -1,16 +1,22 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.util.Action;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ClientBoard implements Serializable {
     int[][] height;
     boolean[][] dome;
     int[][] workerPlayer;
     List<String> playerNames;
+    Map<String, List<ActionType>> allowedMoves;
+    String nextWorkerToPlace;
 
     public ClientBoard(){
         height = new int[5][5];
@@ -20,6 +26,7 @@ public class ClientBoard implements Serializable {
             for(int j=0;j<5;j++)
                 workerPlayer[i][j] = -1;
         playerNames = new ArrayList<>();
+        allowedMoves = new HashMap<>();
     }
 
     public int getHeight(Vector2 pos){return height[pos.getX()][pos.getY()];}
@@ -33,4 +40,10 @@ public class ClientBoard implements Serializable {
 
     public List<String> getPlayerNames(){return playerNames;}
     public void addPlayerName(String name){playerNames.add(name);}
+
+    public List<ActionType> getAllowedMoves(String name){return allowedMoves.get(name);}
+    public void setAllowedMoves(String name, List<ActionType> allowedMoves){this.allowedMoves.put(name, allowedMoves);}
+
+    public String getNextWorkerToPlace() {return nextWorkerToPlace;}
+    public void setNextWorkerToPlace(String nextWorkerToPlace) {this.nextWorkerToPlace = nextWorkerToPlace;}
 }

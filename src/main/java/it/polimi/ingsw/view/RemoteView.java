@@ -15,6 +15,7 @@ import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteView extends View {
@@ -38,6 +39,19 @@ public class RemoteView extends View {
             for(int i=0;i<player.getNumWorkers();i++)
                 clientBoard.setWorkerPlayer(player.getWorker(i).getPosition(), pid);
         }
+        for(int i=0;i<model.getNumberOfPlayers();i++) {
+            Player player = model.getPlayer(i);
+            String name = player.getPlayerName();
+            if(model.getCurPlayer() == i) {
+                if(player.getNumWorkers() < 2) {
+                    List<ActionType> allowed = new ArrayList<>();
+                    allowed.add(ActionType.PLACE_WORKER);
+                    clientBoard.setAllowedMoves(name, allowed);
+                }
+                else clientBoard.setAllowedMoves(name, model.getPlayer(i).getPlayerGod().getAllowedActions());
+            }
+            else clientBoard.setAllowedMoves(name, new ArrayList<>());
+        }
         message.setGameState(clientBoard);
         clientConnection.asyncSend(message);
     }
@@ -45,13 +59,6 @@ public class RemoteView extends View {
     @Override
     public void onModelChange(Model model) {
         super.onModelChange(model);
-    }
-
-    @Override
-    public void notifyActionRequired(List<ActionType> allowed) {
-        ActionRequestMessage message = new ActionRequestMessage();
-        message.setAllowedActions(allowed);
-        clientConnection.asyncSend(message);
     }
 
     @Override

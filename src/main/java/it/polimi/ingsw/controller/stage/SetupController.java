@@ -17,17 +17,14 @@ public class SetupController extends GameStageController {
         if(a.getType() != ActionType.PLACE_WORKER) return false;
         if(!model.placeWorker(playerId, a.getTargetPos())) return false;
         model.incrementCurPlayer();
-        boolean full = true;
-        for(int i=0;i<model.getNumberOfPlayers();i++)
-            full &= model.getPlayer(i).getNumWorkers() == 2;
-        if(full) stageDone = true;
-        else model.sendPlaceRequest(model.getCurPlayer());
+        model.updateClientModel();
+        if(model.getPlayer(model.getCurPlayer()).getNumWorkers() == 2)
+            stageDone = true;
         return true;
     }
 
     @Override
     public GameStageController advance() {
-        model.sendActionRequest(model.getCurPlayer());
         return new MatchController(this.model);
     }
 }

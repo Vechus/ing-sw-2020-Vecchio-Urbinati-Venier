@@ -139,7 +139,6 @@ public class Server {
             }
             model.updateClientModel();
             waitingGameSize = -1;
-            model.sendPlaceRequest(0);
             System.out.println("[SERVER] Let the games begin!");
         }
     }
