@@ -140,9 +140,7 @@ public class Client {
             // Read message from server
             Message serverMessage;
             try {
-                System.out.println("[CLIENT] Waiting for message...");
                 serverMessage = connection.receiveMessage();
-                System.out.println("[CLIENT] Got one!");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 closeThreads();

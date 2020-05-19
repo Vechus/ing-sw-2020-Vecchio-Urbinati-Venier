@@ -270,6 +270,7 @@ public class God {
         buildPos = null;
         moveCtr = 0;
         buildCtr = 0;
+        chosenWorker = null;
     }
 
     protected boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){
