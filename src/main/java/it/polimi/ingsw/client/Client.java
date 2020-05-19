@@ -131,6 +131,7 @@ public class Client {
         // Choose god: to do
 
         System.out.println("Setup done, waiting for server...");
+        List<ActionType> lastAllowed = null;
         // Game: respond to server move requests
         while(true){
             // Read message from server
@@ -164,43 +165,27 @@ public class Client {
                 System.out.println("[CLIENT] Action request message received!");
                 ActionRequestMessage actionRequestMessage = (ActionRequestMessage) serverMessage;
                 List<ActionType> allowedActions = actionRequestMessage.getAllowedActions();
+                lastAllowed = allowedActions;
 
-                boolean moveAccepted = false;
-                do {
-                    ClientAction action = ui.getPlayerMove(allowedActions);
-                    ActionMessage actionMessage = new ActionMessage();
-                    actionMessage.setAction(action);
-                    connection.sendMessage(actionMessage);
-
-                    Message ack;
-                    boolean ackReceived = false;
-                    do {
-                        try {
-                            ack = connection.receiveMessage();
-                        } catch (IOException | ClassNotFoundException e) {
-                            e.printStackTrace();
-                            closeThreads();
-                            return;
-                        }
-                        if (ack.getMessageType() == Message.MessageType.BOARD_STATE) {
-                            System.out.println("[CLIENT] New board state received!");
-                            BoardStateMessage boardStateMessage = (BoardStateMessage) ack;
-                            gameState = boardStateMessage.getGameState();
-                            ui.showGameState(gameState);
-                        }
-                        else {
-                            ackReceived = true;
-                            if (ack.getStatus() == Message.Status.ERROR)
-                                ui.showError(ack.toString());
-                            else if (ack.getStatus() == Message.Status.OK)
-                                moveAccepted = true;
-                        }
-                    } while(!ackReceived);
-                } while(!moveAccepted);
+                ClientAction action = ui.getPlayerMove(allowedActions);
+                ActionMessage actionMessage = new ActionMessage();
+                actionMessage.setAction(action);
+                connection.sendMessage(actionMessage);
             }
+            // Did we mess up a move? No problem, enter it again
+            else if(serverMessage.getStatus() == Message.Status.ERROR && serverMessage.getErrorType() == Message.ErrorType.MOVE_INVALID && lastAllowed != null){
+                ui.showError("Move was invalid! "+serverMessage.getPayload());
+                ClientAction action = ui.getPlayerMove(lastAllowed);
+                ActionMessage actionMessage = new ActionMessage();
+                actionMessage.setAction(action);
+                connection.sendMessage(actionMessage);
+            }
+            // Success! Whatever that might mean
+            else if(serverMessage.getStatus() == Message.Status.OK)
+                System.out.println("[CLIENT] Success! "+serverMessage.getPayload());
             // You can never be sure
             else{
-                System.err.println("Unexpected message type: "+serverMessage);
+                System.err.println("[CLIENT] Unexpected message: "+serverMessage);
             }
         }
     }
