@@ -159,7 +159,7 @@ public class Client {
                 ui.showGameState(gameState);
                 List<ActionType> allowedActions = gameState.getAllowedMoves(playerName);
                 lastAllowed = allowedActions;
-                if(allowedActions.size() > 0)
+                if(gameState.getcurrentPlayer().equals(playerName))
                     makeAction(allowedActions);
             }
             // Error from server

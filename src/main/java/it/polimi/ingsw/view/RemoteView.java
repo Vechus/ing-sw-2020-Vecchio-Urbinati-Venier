@@ -42,16 +42,14 @@ public class RemoteView extends View {
         for(int i=0;i<model.getNumberOfPlayers();i++) {
             Player player = model.getPlayer(i);
             String name = player.getPlayerName();
-            if(model.getCurPlayer() == i) {
-                if(player.getNumWorkers() < 2) {
-                    List<ActionType> allowed = new ArrayList<>();
-                    allowed.add(ActionType.PLACE_WORKER);
-                    clientBoard.setAllowedMoves(name, allowed);
-                }
-                else clientBoard.setAllowedMoves(name, model.getPlayer(i).getPlayerGod().getAllowedActions());
+            if(player.getNumWorkers() < 2) {
+                List<ActionType> allowed = new ArrayList<>();
+                allowed.add(ActionType.PLACE_WORKER);
+                clientBoard.setAllowedMoves(name, allowed);
             }
-            else clientBoard.setAllowedMoves(name, new ArrayList<>());
+            else clientBoard.setAllowedMoves(name, model.getPlayer(i).getPlayerGod().getAllowedActions());
         }
+        clientBoard.setcurrentPlayer(model.getPlayer(model.getCurPlayer()).getPlayerName());
         message.setGameState(clientBoard);
         clientConnection.asyncSend(message);
     }

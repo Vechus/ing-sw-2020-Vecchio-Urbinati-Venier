@@ -16,7 +16,7 @@ public class ClientBoard implements Serializable {
     int[][] workerPlayer;
     List<String> playerNames;
     Map<String, List<ActionType>> allowedMoves;
-    String nextWorkerToPlace;
+    String currentPlayer;
 
     public ClientBoard(){
         height = new int[5][5];
@@ -44,6 +44,6 @@ public class ClientBoard implements Serializable {
     public List<ActionType> getAllowedMoves(String name){return allowedMoves.get(name);}
     public void setAllowedMoves(String name, List<ActionType> allowedMoves){this.allowedMoves.put(name, allowedMoves);}
 
-    public String getNextWorkerToPlace() {return nextWorkerToPlace;}
-    public void setNextWorkerToPlace(String nextWorkerToPlace) {this.nextWorkerToPlace = nextWorkerToPlace;}
+    public String getcurrentPlayer() {return currentPlayer;}
+    public void setcurrentPlayer(String currentPlayer) {this.currentPlayer = currentPlayer;}
 }
