@@ -254,9 +254,9 @@ public class God {
      * @return the boolean.
      */
     public boolean checkWinCondition(Action action){
-        return this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) > 0
-                && this.board.getHeight(action.getTargetPos()) == 3
-                && action.getType() == ActionType.MOVE;
+        return action.getType() == ActionType.MOVE
+                && this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) > 0
+                && this.board.getHeight(action.getTargetPos()) == 3;
     }
 
 

@@ -73,6 +73,7 @@ public class Model {
      * @return the boolean
      */
     public boolean checkGameOver() {
+        System.out.println("Is everyone dead?");
         this.checkPlayersLoseCondition();
         int activePlayers = 0;
         for(Player p : this.players)
@@ -124,6 +125,16 @@ public class Model {
         allowedActions.add(ActionType.PLACE_WORKER);
         if(pid < listeners.size())
             listeners.get(pid).notifyActionRequired(allowedActions);
+    }
+
+    /**
+     * Sends a message to the views, saying that the game has ended
+     *
+     * @param winnerPid the id of the winner
+     */
+    public void sendGameOver(int winnerPid){
+        for(ModelChangeListener listener : listeners)
+            listener.notifyGameOver(players.get(winnerPid).getPlayerName());
     }
 
     /**

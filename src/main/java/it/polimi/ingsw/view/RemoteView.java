@@ -55,6 +55,14 @@ public class RemoteView extends View {
     }
 
     @Override
+    public void notifyGameOver(String winner) {
+        Message msg = new Message();
+        msg.setMessageType(Message.MessageType.GAME_END);
+        msg.setPayload(winner);
+        clientConnection.asyncSend(msg);
+    }
+
+    @Override
     public void onMessageReceived(Message message) {
         System.out.println("[REMOTEVIEW] Processing message");
         if(message instanceof ActionMessage){
@@ -67,7 +75,7 @@ public class RemoteView extends View {
             }
             else {
                 Worker worker = model.getBoard().getWorker(clientAction.getFrom());
-                if (worker == null || worker.getOwner().equals(model.getPlayer(playerId))) {
+                if (worker == null || !worker.getOwner().equals(model.getPlayer(playerId))) {
                     Message error = new Message();
                     error.setStatus(Message.Status.ERROR);
                     error.setErrorType(Message.ErrorType.MOVE_INVALID);
@@ -84,6 +92,7 @@ public class RemoteView extends View {
             if(!res){
                 clientMess.setStatus(Message.Status.ERROR);
                 clientMess.setErrorType(Message.ErrorType.MOVE_INVALID);
+                clientMess.setPayload("Move is invalid! Enter a new move.");
             }
             else clientMess.setStatus(Message.Status.OK);
             clientConnection.asyncSend(clientMess);

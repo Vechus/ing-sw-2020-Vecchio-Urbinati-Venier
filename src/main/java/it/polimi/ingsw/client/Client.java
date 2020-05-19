@@ -134,6 +134,7 @@ public class Client {
 
         System.out.println("Setup done, waiting for server...");
         List<ActionType> lastAllowed = null;
+        boolean waitingForBoard = false, actionAfterBoard = false;
         // Game: respond to server move requests
         while(true){
             // Read message from server
@@ -161,6 +162,11 @@ public class Client {
                 BoardStateMessage boardStateMessage = (BoardStateMessage) serverMessage;
                 gameState = boardStateMessage.getGameState();
                 ui.showGameState(gameState);
+                if(actionAfterBoard){
+                    makeAction(lastAllowed);
+                    actionAfterBoard = false;
+                }
+                waitingForBoard = false;
             }
             // Server wants us to make a move
             else if(serverMessage.getMessageType() == Message.MessageType.ACTION_REQUEST){
@@ -169,10 +175,11 @@ public class Client {
                 List<ActionType> allowedActions = actionRequestMessage.getAllowedActions();
                 lastAllowed = allowedActions;
 
-                ClientAction action = ui.getPlayerMove(allowedActions);
-                ActionMessage actionMessage = new ActionMessage();
-                actionMessage.setAction(action);
-                connection.sendMessage(actionMessage);
+                if(!waitingForBoard){
+                    makeAction(allowedActions);
+                    waitingForBoard = true;
+                }
+                else actionAfterBoard = true;
             }
             // Did we mess up a move? No problem, enter it again
             else if(serverMessage.getStatus() == Message.Status.ERROR && serverMessage.getErrorType() == Message.ErrorType.MOVE_INVALID && lastAllowed != null){
@@ -193,6 +200,13 @@ public class Client {
                 System.err.println("[CLIENT] Unexpected message: "+serverMessage);
             }
         }
+    }
+
+    void makeAction(List<ActionType> allowedActions){
+        ClientAction action = ui.getPlayerMove(allowedActions);
+        ActionMessage actionMessage = new ActionMessage();
+        actionMessage.setAction(action);
+        connection.sendMessage(actionMessage);
     }
 
     void closeThreads(){

@@ -8,4 +8,5 @@ import java.util.List;
 public interface ModelChangeListener {
     void onModelChange(Model model);
     void notifyActionRequired(List<ActionType> allowed);
+    void notifyGameOver(String winner);
 }
