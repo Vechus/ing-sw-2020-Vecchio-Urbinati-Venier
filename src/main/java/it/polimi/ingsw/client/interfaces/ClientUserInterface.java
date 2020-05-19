@@ -14,8 +14,11 @@ public interface ClientUserInterface {
     int getPlayerNumber();
 
     ClientAction getPlayerMove(List<ActionType> allowedActions);
+
     void showGameState(ClientBoard gameState);
     void showError(String message);
+    void showMessage(String s);
 
     void gameOver(String winnerName);
+
 }

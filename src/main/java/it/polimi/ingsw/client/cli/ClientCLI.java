@@ -45,12 +45,14 @@ public class ClientCLI implements ClientUserInterface, Runnable {
 
     @Override
     public String getIP() {
-        return "127.0.0.1";
+        System.out.println("Enter the server address. [default=127.0.0.1]");
+        return stdin.next();
     }
 
     @Override
     public int getPort() {
-        return 27000;
+        System.out.println("Which port are you using? [default=27000]");
+        return stdin.nextInt();
     }
 
     @Override
@@ -141,6 +143,11 @@ public class ClientCLI implements ClientUserInterface, Runnable {
     @Override
     public void showError(String message) {
         System.out.println(ConsoleColor.RED_BOLD + message + ConsoleColor.RESET);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        System.out.println(message);
     }
 
     @Override

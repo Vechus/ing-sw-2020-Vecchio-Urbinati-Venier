@@ -149,14 +149,12 @@ public class Client {
 
             // Game is over, pack it up!
             if(serverMessage.getMessageType() == Message.MessageType.GAME_END){
-                System.out.println("[CLIENT] Game finished message received!");
                 String winnerName = serverMessage.getPayload();
                 ui.gameOver(winnerName);
                 break;
             }
             // Board state update
             else if(serverMessage.getMessageType() == Message.MessageType.BOARD_STATE){
-                System.out.println("[CLIENT] New board state received!");
                 BoardStateMessage boardStateMessage = (BoardStateMessage) serverMessage;
                 gameState = boardStateMessage.getGameState();
                 ui.showGameState(gameState);
@@ -168,7 +166,6 @@ public class Client {
             }
             // Server wants us to make a move
             else if(serverMessage.getMessageType() == Message.MessageType.ACTION_REQUEST){
-                System.out.println("[CLIENT] Action request message received!");
                 ActionRequestMessage actionRequestMessage = (ActionRequestMessage) serverMessage;
                 List<ActionType> allowedActions = actionRequestMessage.getAllowedActions();
                 lastAllowed = allowedActions;
@@ -179,20 +176,16 @@ public class Client {
                 }
                 else actionAfterBoard = true;
             }
-            // Did we mess up a move? No problem, enter it again
-            else if(serverMessage.getStatus() == Message.Status.ERROR && serverMessage.getErrorType() == Message.ErrorType.MOVE_INVALID && lastAllowed != null){
-                ui.showError("Move was invalid! "+serverMessage.getPayload());
-                ClientAction action = ui.getPlayerMove(lastAllowed);
-                ActionMessage actionMessage = new ActionMessage();
-                actionMessage.setAction(action);
-                connection.sendMessage(actionMessage);
+            // Error from server
+            else if(serverMessage.getStatus() == Message.Status.ERROR){
+                ui.showError(serverMessage.getPayload());
+                // Did we mess up a move? No problem, enter it again
+                if(serverMessage.getErrorType() == Message.ErrorType.MOVE_INVALID && lastAllowed != null)
+                    makeAction(lastAllowed);
             }
             // Success! Whatever that might mean
             else if(serverMessage.getStatus() == Message.Status.OK)
-                System.out.println("[CLIENT] Success! "+serverMessage.getPayload());
-            // Some generic error
-            else if(serverMessage.getStatus() == Message.Status.ERROR)
-                ui.showError("["+serverMessage.getErrorType()+"] "+serverMessage.getPayload());
+                ui.showMessage("Successful!");
             // You can never be sure
             else{
                 System.err.println("[CLIENT] Unexpected message: "+serverMessage);
