@@ -138,10 +138,8 @@ public class God {
      * @return the boolean.
      */
     public boolean chooseAction (Action action){
-        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
-
         int nextState = actionGraph.getNextState(turnState, action.getType());
-        if(nextState == -1 || action.getType() != ActionType.END_TURN && !chosenWorker.equals(action.getWorker()))
+        if(nextState == -1 || action.getType() != ActionType.END_TURN && chosenWorker != null && !chosenWorker.equals(action.getWorker()))
             return false;
 
         boolean res = true;
@@ -155,6 +153,7 @@ public class God {
         if(!res)
             return false;
 
+        if (chosenWorker==null){ chosenWorker=action.getWorker(); }
         if(nextState == actionGraph.FINAL_STATE_IDX)
             hasFinishedTurn = true;
 
