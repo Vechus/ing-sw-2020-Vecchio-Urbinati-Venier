@@ -8,6 +8,7 @@ public class Pan extends God {
 
     public Pan(Board board, Player player) {
         super(board, player);
+        name = "Pan";
     }
 
     @Override

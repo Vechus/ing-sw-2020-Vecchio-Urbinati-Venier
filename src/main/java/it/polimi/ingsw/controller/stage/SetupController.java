@@ -12,7 +12,6 @@ public class SetupController extends GameStageController {
 
     @Override
     public boolean performAction(int playerId, Action a) {
-        System.out.println("[CONTROLLER] Placing stuff for player #"+playerId);
         if(!model.isPlayersTurn(playerId)) return false;
         if(a.getType() != ActionType.PLACE_WORKER) return false;
         if(!model.placeWorker(playerId, a.getTargetPos())) return false;

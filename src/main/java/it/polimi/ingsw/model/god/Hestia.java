@@ -12,6 +12,8 @@ import java.util.Arrays;
 public class Hestia extends God {
     public Hestia(Board board, Player player) {
         super(board, player);
+        name = "Hestia";
+
         this.buildBlockValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
                         GodValidationMethods::isCellWorkersFree,

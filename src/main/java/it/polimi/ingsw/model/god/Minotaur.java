@@ -19,6 +19,7 @@ public class Minotaur extends God {
 
     public Minotaur(Board board, Player player) {
         super(board, player);
+        name = "Minotaur";
 
         this.pushValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,

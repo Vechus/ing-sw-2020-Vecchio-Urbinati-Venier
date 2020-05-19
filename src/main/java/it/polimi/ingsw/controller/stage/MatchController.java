@@ -15,7 +15,7 @@ public class MatchController extends GameStageController {
         if(!model.executeAction(playerId, a)) return false;
         System.out.println("[CONTROLLER] Action "+a.getType()+" done successfully");
         if(model.getPlayer(model.getCurPlayer()).checkWinCondition(a) || model.checkGameOver()) {
-            System.out.println("[CONTROLLER] It's over");
+            System.out.println("[CONTROLLER] Game over!");
             model.sendGameOver(playerId);
             stageDone = true;
         }
@@ -24,7 +24,7 @@ public class MatchController extends GameStageController {
                 model.incrementCurPlayer();
                 model.beginNewTurn(model.getCurPlayer());
             }
-            System.out.println("[CONTROLLER] Sent out the request");
+            model.updateClientModel();
         }
         return true;
     }

@@ -9,14 +9,14 @@ import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.ConsoleColor;
 import it.polimi.ingsw.util.Vector2;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ClientCLI implements ClientUserInterface, Runnable {
     private final Scanner stdin = new Scanner(System.in);
     private String playerName;
     List<String> playerColors = new ArrayList<>(), playerColorsUnderlined = new ArrayList<>();
+
+    Map<ActionType, String> actionNames = new HashMap<>();
 
     public ClientCLI () {
         playerColors.add(ConsoleColor.RED);
@@ -25,6 +25,12 @@ public class ClientCLI implements ClientUserInterface, Runnable {
         playerColorsUnderlined.add(ConsoleColor.RED_UNDERLINED);
         playerColorsUnderlined.add(ConsoleColor.GREEN_UNDERLINED);
         playerColorsUnderlined.add(ConsoleColor.BLUE_UNDERLINED);
+
+        actionNames.put(ActionType.PLACE_WORKER, "Place worker");
+        actionNames.put(ActionType.MOVE, "Move");
+        actionNames.put(ActionType.BUILD, "Build block");
+        actionNames.put(ActionType.BUILD_DOME, "Build dome");
+        actionNames.put(ActionType.END_TURN, "Finish turn");
     }
 
     @Override
@@ -71,14 +77,29 @@ public class ClientCLI implements ClientUserInterface, Runnable {
         return num;
     }
 
+    int chooseFromList(List<String> list){
+        for(int i=0;i<list.size();i++)
+            System.out.println("("+(i+1)+") "+list.get(i));
+        int id;
+        do id = stdin.nextInt() - 1;
+        while(id < 0 || id >= list.size());
+        return id;
+    }
+
+    @Override
+    public String chooseGod(List<String> gods) {
+        System.out.println("Choose a god among the following: [Enter 1-"+gods.size());
+        return gods.get(chooseFromList(gods));
+    }
+
     @Override
     public ClientAction getPlayerMove(List<ActionType> allowedActions) {
         System.out.println("What is your move? [Enter 1 to "+allowedActions.size()+"]");
-        for(int i=0;i<allowedActions.size();i++)
-            System.out.println("("+(i+1)+") "+allowedActions.get(i));
-        int type = -1;
-        do type = stdin.nextInt() - 1;
-        while(type < 0 || type >= allowedActions.size());
+        List<String> strings = new ArrayList<>();
+        for (ActionType allowedAction : allowedActions)
+            strings.add(actionNames.get(allowedAction));
+        int type = chooseFromList(strings);
+
         if(allowedActions.get(type) == ActionType.END_TURN) return new ClientAction(null, null, ActionType.END_TURN);
         int xi = -1, yi = -1;
         if(allowedActions.get(type) != ActionType.PLACE_WORKER) {
@@ -102,11 +123,13 @@ public class ClientCLI implements ClientUserInterface, Runnable {
         String block = ConsoleColor.WHITE_BACKGROUND + ConsoleColor.WHITE_BOLD + "█" + ConsoleColor.RESET;
         List<String> names = gameState.getPlayerNames();
         System.out.print("Players: ");
-        for(int i=0;i<names.size();i++)
-            if(names.get(i).equals(playerName))
-                System.out.print(playerColorsUnderlined.get(i)+names.get(i)+ConsoleColor.RESET+" ");
+        for(int i=0;i<names.size();i++) {
+            String player = names.get(i) + "(" + gameState.getGod(names.get(i)) + ")";
+            if (names.get(i).equals(playerName))
+                System.out.print(playerColorsUnderlined.get(i) + player + ConsoleColor.RESET + " ");
             else
-                System.out.print(playerColors.get(i)+names.get(i)+ConsoleColor.RESET+" ");
+                System.out.print(playerColors.get(i) + player + ConsoleColor.RESET + " ");
+        }
         System.out.println();
         System.out.println("  " + block.repeat(21));
         for(int i = 0; i < 5; i++) {

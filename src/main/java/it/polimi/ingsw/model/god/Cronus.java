@@ -8,10 +8,7 @@ import it.polimi.ingsw.util.Vector2;
 public class Cronus extends God {
     public Cronus(Board board, Player player) {
         super(board, player);
-    }
-
-    public Cronus(Board board) {
-        super(board);
+        name = "Cronus";
     }
 
     @Override

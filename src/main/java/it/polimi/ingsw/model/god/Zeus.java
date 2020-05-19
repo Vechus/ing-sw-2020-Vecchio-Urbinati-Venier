@@ -11,6 +11,8 @@ import java.util.Arrays;
 public class Zeus extends God {
     public Zeus(Board board, Player player) {
         super(board, player);
+        name = "Zeus";
+
         this.buildBlockValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
                         this::isCellOtherWorkersFree,

@@ -110,8 +110,7 @@ class PlayerTest {
 
     @Test
     void getPlayerColor() {
-        God g = new God(board);
-        Player p = new Player(g, board);
+        Player p = new Player(board);
         p.setPlayerColor(ConsoleColor.GREEN);
         assertEquals(p.getPlayerColor(), ConsoleColor.GREEN);
     }

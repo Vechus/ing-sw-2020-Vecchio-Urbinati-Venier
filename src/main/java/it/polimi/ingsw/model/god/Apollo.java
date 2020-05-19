@@ -13,6 +13,8 @@ public class Apollo extends God {
 
     public Apollo(Board board, Player player) {
         super(board, player);
+        name = "Apollo";
+
         this.moveValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
                         GodValidationMethods::isTargetPosOnDifferentCell,

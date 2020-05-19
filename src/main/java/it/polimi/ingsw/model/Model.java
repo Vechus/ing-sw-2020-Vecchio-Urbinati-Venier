@@ -4,7 +4,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.model.god.GodFactory;
 import it.polimi.ingsw.util.Action;
-import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import it.polimi.ingsw.util.listeners.ModelChangeListener;
 
@@ -18,7 +17,7 @@ public class Model {
     private Board board;
     private List<Player> players;
     private List<ModelChangeListener> listeners;
-    int curPlayer = 0;
+    private int curPlayer = 0;
 
     /**
      * Instantiates a new Model.
@@ -89,10 +88,7 @@ public class Model {
      * @return was the action executed successfully
      */
     public boolean executeAction(int playerIndex, Action action) {
-        // possible usage of InvalidMoveException
-        boolean res = players.get(playerIndex).doAction(action);
-        if(res) updateClientModel();
-        return res;
+        return players.get(playerIndex).doAction(action);
     }
 
     /**

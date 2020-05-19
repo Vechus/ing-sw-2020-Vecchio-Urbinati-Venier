@@ -3,10 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.cli.ClientCLI;
 import it.polimi.ingsw.client.interfaces.ClientServerInterface;
 import it.polimi.ingsw.client.interfaces.ClientUserInterface;
-import it.polimi.ingsw.connection.ActionMessage;
-import it.polimi.ingsw.connection.ActionRequestMessage;
-import it.polimi.ingsw.connection.BoardStateMessage;
-import it.polimi.ingsw.connection.Message;
+import it.polimi.ingsw.connection.*;
 import it.polimi.ingsw.util.ActionType;
 
 import java.io.IOException;
@@ -92,47 +89,46 @@ public class Client {
 
         // Handshake: add the player to a new or existing game
         String playerName = ui.getPlayerName();
-        Message resp;
-        try {
-            resp = connection.handshake(playerName);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            closeThreads();
-            return;
-        }
-        if(resp.getStatus() == Message.Status.ERROR){
-            ui.showError("Error while starting/joining game: ");
-            ui.showError("["+resp.getErrorType()+"] "+resp.getPayload());
-            closeThreads();
-            return;
-        }
-        else if(resp.getMessageType() == Message.MessageType.NUMBER_PLAYERS_REQ){
-            int num = ui.getPlayerNumber();
-            Message res = new Message();
-            res.setStatus(Message.Status.OK);
-            res.setMessageType(Message.MessageType.NUMBER_PLAYERS);
-            res.setPayload(String.valueOf(num));
-            connection.sendMessage(res);
-
-            Message ack;
+        boolean godSelected = false;
+        Handshake handshake = new Handshake();
+        handshake.setPlayerName(playerName);
+        connection.sendMessage(handshake);
+        while(!godSelected) {
+            Message resp;
             try {
-                ack = connection.receiveMessage();
+                resp = connection.receiveMessage();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 closeThreads();
                 return;
             }
-            if(ack.getStatus() == Message.Status.ERROR){
+            if (resp.getStatus() == Message.Status.ERROR) {
                 ui.showError("Error while starting/joining game: ");
-                ui.showError("["+ack.getErrorType()+"] "+ack.getPayload());
+                ui.showError("[" + resp.getErrorType() + "] " + resp.getPayload());
                 closeThreads();
                 return;
+            } else if (resp.getMessageType() == Message.MessageType.NUMBER_PLAYERS_REQ) {
+                int num = ui.getPlayerNumber();
+                Message res = new Message();
+                res.setStatus(Message.Status.OK);
+                res.setMessageType(Message.MessageType.NUMBER_PLAYERS);
+                res.setPayload(String.valueOf(num));
+                connection.sendMessage(res);
+            }
+            // What gods are available?
+            else if(resp.getMessageType() == Message.MessageType.AVAILABLE_GODS){
+                AvailableGodsMessage availableGodsMessage = (AvailableGodsMessage) resp;
+                if(availableGodsMessage.getCurPlayer().equals(playerName)){
+                    godSelected = true;
+                    Message message = new Message();
+                    message.setMessageType(Message.MessageType.GOD_CHOICE);
+                    message.setPayload(ui.chooseGod(availableGodsMessage.getGods()));
+                    connection.sendMessage(message);
+                }
             }
         }
 
-        // Choose god: to do
-
-        System.out.println("Setup done, waiting for server...");
+        System.out.println("Setup done, waiting for the game to start...");
         List<ActionType> lastAllowed = null;
         // Game: respond to server move requests
         while(true){
@@ -159,7 +155,7 @@ public class Client {
                 ui.showGameState(gameState);
                 List<ActionType> allowedActions = gameState.getAllowedMoves(playerName);
                 lastAllowed = allowedActions;
-                if(gameState.getcurrentPlayer().equals(playerName))
+                if(gameState.getCurrentPlayer().equals(playerName))
                     makeAction(allowedActions);
             }
             // Error from server
@@ -169,6 +165,8 @@ public class Client {
                 if(serverMessage.getErrorType() == Message.ErrorType.MOVE_INVALID && lastAllowed != null)
                     makeAction(lastAllowed);
             }
+            // We already chose a god, se we don't really care
+            else if(serverMessage.getMessageType() == Message.MessageType.AVAILABLE_GODS){}
             // Success! Whatever that might mean
             else if(serverMessage.getStatus() == Message.Status.OK)
                 ui.showMessage("Successful!");

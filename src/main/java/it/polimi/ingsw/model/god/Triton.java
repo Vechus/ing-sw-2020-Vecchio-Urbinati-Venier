@@ -12,6 +12,8 @@ import java.util.Arrays;
 public class Triton extends God {
     public Triton(Board board, Player player) {
         super(board, player);
+        name = "Triton";
+
         this.moveValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
                         GodValidationMethods::isCellWorkersFree,

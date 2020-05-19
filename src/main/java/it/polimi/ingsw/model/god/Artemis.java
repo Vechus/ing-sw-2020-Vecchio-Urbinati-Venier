@@ -12,6 +12,7 @@ import java.util.Arrays;
 public class Artemis extends God {
     public Artemis(Board board, Player player) {
         super(board, player);
+        name = "Artemis";
 
         this.moveValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,

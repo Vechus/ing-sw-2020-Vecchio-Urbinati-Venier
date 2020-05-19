@@ -18,6 +18,10 @@ import java.util.function.Function;
  */
 public class God {
     /**
+     * The name of the god, to be displayed to the user
+     */
+    String name;
+    /**
      * The Board.
      */
     protected Board board;
@@ -76,18 +80,6 @@ public class God {
 
     TurnActionGraph actionGraph = new TurnActionGraph();
 
-
-    /**
-     * Instantiates a new God.
-     *
-     * @param board the board.
-     */
-     public God(Board board) {
-         this.board = board;
-         turnState = actionGraph.INITIAL_STATE_IDX;
-         createActionGraph();
-    }
-
     /**
      * Instantiates a new God.
      *
@@ -95,8 +87,11 @@ public class God {
      * @param player the player.
      */
     public God(Board board, Player player){
-        this(board);
         this.player=player;
+        this.board = board;
+        name = "God";
+        turnState = actionGraph.INITIAL_STATE_IDX;
+        createActionGraph();
     }
 
     /**
@@ -283,6 +278,11 @@ public class God {
 
     public List<ActionType> getAllowedActions() {
         return actionGraph.allowedActions(turnState);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
 
