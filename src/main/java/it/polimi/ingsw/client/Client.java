@@ -101,7 +101,8 @@ public class Client {
             return;
         }
         if(resp.getStatus() == Message.Status.ERROR){
-            ui.showError("Error while starting/joining game: "+resp);
+            ui.showError("Error while starting/joining game: ");
+            ui.showError("["+resp.getErrorType()+"] "+resp.getPayload());
             closeThreads();
             return;
         }
@@ -122,7 +123,8 @@ public class Client {
                 return;
             }
             if(ack.getStatus() == Message.Status.ERROR){
-                ui.showError("Error while starting/joining game: "+resp);
+                ui.showError("Error while starting/joining game: ");
+                ui.showError("["+ack.getErrorType()+"] "+ack.getPayload());
                 closeThreads();
                 return;
             }
@@ -183,6 +185,9 @@ public class Client {
             // Success! Whatever that might mean
             else if(serverMessage.getStatus() == Message.Status.OK)
                 System.out.println("[CLIENT] Success! "+serverMessage.getPayload());
+            // Some generic error
+            else if(serverMessage.getStatus() == Message.Status.ERROR)
+                ui.showError("["+serverMessage.getErrorType()+"] "+serverMessage.getPayload());
             // You can never be sure
             else{
                 System.err.println("[CLIENT] Unexpected message: "+serverMessage);

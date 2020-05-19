@@ -80,6 +80,16 @@ public class Server {
      * @param name stands for the name of the player that wants to play
      */
     public synchronized void lobby(ClientConnection c, String name){
+        if(waitingConnection.containsKey(name)){
+            System.out.println("[SERVER] We already have a "+name+" in the lobby!");
+            Message err = new Message();
+            err.setStatus(Message.Status.ERROR);
+            err.setErrorType(Message.ErrorType.NAME_TAKEN_ERROR);
+            err.setPayload("Name "+name+" is already in the waiting lobby! Choose another name and reconnect");
+            c.send(err);
+            c.closeConnection();
+            return;
+        }
         System.out.println("[SERVER] Adding "+name+" to the lobby.");
         if(waitingConnection.size() == 0){
             System.out.println("[SERVER] Asking " + name + " for player number...");

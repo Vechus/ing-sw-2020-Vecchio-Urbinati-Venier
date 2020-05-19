@@ -50,7 +50,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
      * method that sends the object message
      * @param message
      */
-    private synchronized void send(Object message) {
+    public synchronized void send(Object message) {
         try {
             out.reset();
             out.writeObject(message);

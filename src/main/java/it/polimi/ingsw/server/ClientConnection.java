@@ -11,4 +11,5 @@ public interface ClientConnection{
     void addListener(ConnectionListener listener);
 
     void asyncSend(Object message);
+    void send(Object message);
 }
