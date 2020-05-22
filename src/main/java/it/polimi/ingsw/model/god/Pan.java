@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.util.ActionType;
 
 public class Pan extends God {
 
@@ -16,6 +17,6 @@ public class Pan extends God {
         if(super.checkWinCondition(action)){
             return true;
         }
-        return this.board.getHeight(action.getWorkerPos()) - this.board.getHeight(action.getTargetPos()) >= 2;
+        return action.getType() == ActionType.MOVE && this.board.getHeight(action.getWorkerPos()) - this.board.getHeight(action.getTargetPos()) >= 2;
     }
 }

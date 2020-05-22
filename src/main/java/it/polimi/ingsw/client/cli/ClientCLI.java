@@ -175,7 +175,9 @@ public class ClientCLI implements ClientUserInterface, Runnable {
 
     @Override
     public void gameOver(String winnerName) {
-        if(winnerName.equals(playerName))
+        if(winnerName.equals(""))
+            System.out.println("Nobody won! Game is a draw");
+        else if(winnerName.equals(playerName))
             System.out.println("You won! Congratulations :D");
         else
             System.out.println("Game is over! "+winnerName+" won, better luck next time!");

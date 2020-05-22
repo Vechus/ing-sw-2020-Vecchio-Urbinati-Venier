@@ -107,7 +107,7 @@ public class Model {
      */
     public void sendGameOver(int winnerPid){
         for(ModelChangeListener listener : listeners)
-            listener.notifyGameOver(players.get(winnerPid).getPlayerName());
+            listener.notifyGameOver(winnerPid == -1 ? "" : players.get(winnerPid).getPlayerName());
     }
 
     /**
