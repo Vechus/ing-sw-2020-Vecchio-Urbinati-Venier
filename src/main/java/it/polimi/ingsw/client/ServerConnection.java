@@ -37,14 +37,6 @@ public class ServerConnection implements ClientServerInterface {
     }
 
     @Override
-    public Message handshake(String playerName) throws IOException, ClassNotFoundException {
-        Handshake handshake = new Handshake();
-        handshake.setPlayerName(playerName);
-        sendObject(handshake);
-        return receiveMessage();
-    }
-
-    @Override
     public Message receiveMessage() throws IOException, ClassNotFoundException {
         Object o = socketIn.readObject();
         return (Message) o;
@@ -70,11 +62,6 @@ public class ServerConnection implements ClientServerInterface {
      */
     @Override
     public void sendMessage(final Message message){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                send(message);
-            }
-        }).start();
+        new Thread(() -> send(message)).start();
     }
 }

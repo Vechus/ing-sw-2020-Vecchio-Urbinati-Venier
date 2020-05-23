@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.client.ClientBoard;
 import it.polimi.ingsw.connection.ActionMessage;
-import it.polimi.ingsw.connection.ActionRequestMessage;
 import it.polimi.ingsw.connection.BoardStateMessage;
 import it.polimi.ingsw.connection.Message;
 import it.polimi.ingsw.model.Model;
@@ -35,21 +34,21 @@ public class RemoteView extends View {
             }
         for(int pid=0;pid<model.getNumberOfPlayers();pid++){
             Player player = model.getPlayer(pid);
-            clientBoard.addPlayerName(player.getPlayerName());
+            String name = player.getPlayerName();
+            clientBoard.addPlayerName(name);
+            clientBoard.setGod(name, player.getPlayerGod().toString());
+
             for(int i=0;i<player.getNumWorkers();i++)
                 clientBoard.setWorkerPlayer(player.getWorker(i).getPosition(), pid);
-        }
-        for(int i=0;i<model.getNumberOfPlayers();i++) {
-            Player player = model.getPlayer(i);
-            String name = player.getPlayerName();
+
             if(player.getNumWorkers() < 2) {
                 List<ActionType> allowed = new ArrayList<>();
                 allowed.add(ActionType.PLACE_WORKER);
                 clientBoard.setAllowedMoves(name, allowed);
             }
-            else clientBoard.setAllowedMoves(name, model.getPlayer(i).getPlayerGod().getAllowedActions());
+            else clientBoard.setAllowedMoves(name, model.getPlayer(pid).getPlayerGod().getAllowedActions());
         }
-        clientBoard.setcurrentPlayer(model.getPlayer(model.getCurPlayer()).getPlayerName());
+        clientBoard.setCurrentPlayer(model.getPlayer(model.getCurPlayer()).getPlayerName());
         message.setGameState(clientBoard);
         clientConnection.asyncSend(message);
     }
@@ -69,7 +68,7 @@ public class RemoteView extends View {
 
     @Override
     public void onMessageReceived(Message message) {
-        System.out.println("[REMOTEVIEW] Processing message");
+        System.out.println("[REMOTEVIEW] Received message from player "+playerId+": "+message.getMessageType());
         if(message instanceof ActionMessage){
             ActionMessage actionMessage = (ActionMessage) message;
             ClientAction clientAction = actionMessage.getAction();

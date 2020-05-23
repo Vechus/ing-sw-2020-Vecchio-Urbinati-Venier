@@ -10,6 +10,7 @@ public class Athena extends God {
 
     public Athena(Board board, Player player){
         super(board, player);
+        name = "Athena";
 
         this.board.addEffect(new AthenaEffect(this.board, this.player));
     }

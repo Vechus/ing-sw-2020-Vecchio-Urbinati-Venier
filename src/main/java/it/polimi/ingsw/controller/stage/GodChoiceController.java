@@ -24,6 +24,7 @@ public class GodChoiceController extends GameStageController {
 
     @Override
     public GameStageController advance() {
-        return new SetupController(this.model);
+        model.updateClientModel();
+        return new SetupController(model);
     }
 }

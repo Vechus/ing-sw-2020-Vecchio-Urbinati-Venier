@@ -29,11 +29,11 @@ public abstract class View implements ModelChangeListener, ConnectionListener {
     public void addListener(PlayerActionListener listener){ this.listener = listener; }
 
     public void processPlayerCreation(String godName, String name){
-        listener.onPlayerCreate(this.playerId, godName, name);
+        listener.onPlayerCreate(playerId, godName, name);
     }
 
     public boolean processAction(Action action){
-        return listener.onPlayerAction(this.playerId, action);
+        return listener.onPlayerAction(playerId, action);
     }
 
     public abstract void showModel(Model model);

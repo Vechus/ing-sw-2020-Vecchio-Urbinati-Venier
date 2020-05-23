@@ -13,6 +13,8 @@ public class Prometheus extends God {
 
     public Prometheus(Board board, Player player) {
         super(board, player);
+        name = "Prometheus";
+
         this.moveValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
                         GodValidationMethods::isCellWorkersFree,

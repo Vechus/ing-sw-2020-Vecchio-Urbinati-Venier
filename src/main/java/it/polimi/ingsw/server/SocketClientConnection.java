@@ -20,9 +20,10 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private boolean active = true;
 
     /**
-     * setter fo SocketClientConnection
-     * @param socket
-     * @param server
+     * Create a new SocketClientConnection
+     *
+     * @param socket the socket the connection is using
+     * @param server the server that manages the game
      */
     public SocketClientConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -47,8 +48,10 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
 
     /**
-     * method that sends the object message
-     * @param message
+     * Method that sends the object message.
+     * This method is blocking.
+     *
+     * @param message the object to send
      */
     public synchronized void send(Object message) {
         try {
@@ -70,7 +73,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     }
 
     /**
-     * method that closes the connection and deregisters it
+     * Closes the connection and removes it from the server
      */
     public synchronized void closeConnection() {
         try {
@@ -83,17 +86,13 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
 
     /**
-     * creates a new thread to send a messagge in order to not block the rest of the server while sent
-     * @param message
+     * Sends the message to the client asynchronously
+     *
+     * @param message the object to send
      */
     @Override
     public void asyncSend(final Object message){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                send(message);
-            }
-        }).start();
+        new Thread(() -> send(message)).start();
     }
 
     /**
@@ -111,12 +110,10 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             server.lobby(this, name);
             while(isActive()){
                 Message read = (Message) in.readObject();
-                if(read.getMessageType() == Message.MessageType.NUMBER_PLAYERS) {
+                if(read.getMessageType() == Message.MessageType.NUMBER_PLAYERS)
                     server.setGameSize(Integer.parseInt(read.getPayload()));
-                    Message ok = new Message();
-                    ok.setStatus(Message.Status.OK);
-                    asyncSend(ok);
-                }
+                else if(read.getMessageType() == Message.MessageType.GOD_CHOICE)
+                    server.selectGod(read.getPayload());
                 else
                     listener.onMessageReceived(read);
             }

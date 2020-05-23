@@ -13,6 +13,8 @@ public interface ClientUserInterface {
     String getPlayerName();
     int getPlayerNumber();
 
+    String chooseGod(List<String> gods);
+
     ClientAction getPlayerMove(List<ActionType> allowedActions);
 
     void showGameState(ClientBoard gameState);

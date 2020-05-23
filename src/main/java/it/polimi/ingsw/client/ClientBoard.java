@@ -16,6 +16,7 @@ public class ClientBoard implements Serializable {
     int[][] workerPlayer;
     List<String> playerNames;
     Map<String, List<ActionType>> allowedMoves;
+    Map<String, String> gods;
     String currentPlayer;
 
     public ClientBoard(){
@@ -27,6 +28,7 @@ public class ClientBoard implements Serializable {
                 workerPlayer[i][j] = -1;
         playerNames = new ArrayList<>();
         allowedMoves = new HashMap<>();
+        gods = new HashMap<>();
     }
 
     public int getHeight(Vector2 pos){return height[pos.getX()][pos.getY()];}
@@ -44,6 +46,9 @@ public class ClientBoard implements Serializable {
     public List<ActionType> getAllowedMoves(String name){return allowedMoves.get(name);}
     public void setAllowedMoves(String name, List<ActionType> allowedMoves){this.allowedMoves.put(name, allowedMoves);}
 
-    public String getcurrentPlayer() {return currentPlayer;}
-    public void setcurrentPlayer(String currentPlayer) {this.currentPlayer = currentPlayer;}
+    public String getGod(String name){return gods.get(name);}
+    public void setGod(String name, String god){this.gods.put(name, god);}
+
+    public String getCurrentPlayer() {return currentPlayer;}
+    public void setCurrentPlayer(String currentPlayer) {this.currentPlayer = currentPlayer;}
 }

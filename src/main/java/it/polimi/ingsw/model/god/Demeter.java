@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class Demeter extends God {
     public Demeter(Board board, Player player) {
         super(board, player);
+        name = "Demeter";
 
         this.buildBlockValidationFunctions = new ArrayList<>(
                 Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
