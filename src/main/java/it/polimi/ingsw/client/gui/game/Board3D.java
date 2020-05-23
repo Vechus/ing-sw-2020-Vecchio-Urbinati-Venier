@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.gui.game;
 
+import it.polimi.ingsw.client.ClientBoard;
+import it.polimi.ingsw.util.Vector2;
 import javafx.scene.Group;
 import javafx.scene.PointLight;
 import javafx.scene.image.Image;
@@ -8,9 +10,13 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.MeshView;
 import javafx.scene.transform.Rotate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board3D {
     private final Group group;
     private Building3D[][] board = new Building3D[5][5];
+    private List<Worker3D> playerWorkers = new ArrayList<>();
 
     public Board3D(Group group) {
         this.group = group;
@@ -28,15 +34,17 @@ public class Board3D {
         sun.translateZProperty().set(0);
     }
 
-    public void build(int x, int y) {
-        Building3D building3D = getBuilding(x, y);
+    public void build(Vector2 v) {
+        Building3D building3D = getBuilding(v);
         if(!building3D.hasDome())
             building3D.increaseHeight();
         else
             System.out.println("You can't build there, there is already a dome!");
     }
 
-    public Building3D getBuilding(int x, int y) {
+    public Building3D getBuilding(Vector2 v) {
+        int x = v.getX();
+        int y = v.getY();
         if(x < 0 || x > 4 || y < 0 || y > 4) {
             return null;
         } else {
@@ -50,6 +58,36 @@ public class Board3D {
                 building3D.unselect();
             }
         }
+    }
+
+    public void fromClientBoard(ClientBoard board) {
+        for(int i = 0; i < 5; i ++) {
+            for(int j = 0; j < 5; j ++) {
+                Vector2 v = new Vector2(i, j);
+                for(int k = 0; k < board.getHeight(v); k++) {
+                    getBuilding(v).increaseHeight();
+                }
+                if(board.getDome(v))
+                    getBuilding(v).buildDome();
+
+            }
+        }
+    }
+
+    public void addWorker(Vector2 pos, int id, boolean isWoman) {
+        Worker3D worker3D = new Worker3D(id, isWoman);
+        worker3D.setPosition(pos, getBuilding(pos).getHeight());
+        playerWorkers.add(worker3D);
+        group.getChildren().add(worker3D);
+    }
+
+    public Worker3D getWorkerAt(Vector2 pos) {
+        for(Worker3D worker3D: playerWorkers) {
+            if(worker3D.getPosition().equals(pos)) {
+                return worker3D;
+            }
+        }
+        return null;
     }
 
     private void prepareModel(String model, Group group, int x, int y, int z) {

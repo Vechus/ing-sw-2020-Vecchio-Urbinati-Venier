@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.game;
 
+import it.polimi.ingsw.util.Vector2;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -9,10 +10,9 @@ import javafx.scene.transform.Scale;
 
 public class BuildingBlock extends MeshView {
     private static final double BOARD_HEIGHT = -3;
-    private int coordX, coordY;
+    private Vector2 pos;
     public BuildingBlock(int coordX, int coordY, int height) {
-        this.coordX = coordX;
-        this.coordY = coordY;
+        this.pos = new Vector2(coordX, coordY);
 
         PhongMaterial material = new PhongMaterial();
         setMesh(Loader.loadObj(getClass().getResource("/models/BuildingBlock0" + height + ".obj").getPath()).getMesh());
@@ -33,11 +33,7 @@ public class BuildingBlock extends MeshView {
         getTransforms().add(new Scale(0.4, 0.4, 0.4));
     }
 
-    public int getCoordX() {
-        return coordX;
-    }
-
-    public int getCoordY() {
-        return coordY;
+    public Vector2 getPos() {
+        return pos;
     }
 }

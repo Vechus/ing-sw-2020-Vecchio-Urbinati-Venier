@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui.game;
 
 import javafx.scene.Group;
+import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +11,10 @@ public class Building3D {
     private double x;
     private double y;
     private double z;
-    private int coordX, coordY;
+    private final int coordX, coordY;
+    private final int rotFactor;
     private final BuildingCollider collider;
-    private List<BuildingBlock> pieces = new ArrayList<BuildingBlock>();
+    private final List<BuildingBlock> pieces = new ArrayList<BuildingBlock>();
     private boolean hasDome = false;
     Group group;
 
@@ -24,12 +26,14 @@ public class Building3D {
         this.z = j * 3.05 - 6.2;
         collider = new BuildingCollider(this.x, this.y, this.z, i, j);
         this.group = g;
+        rotFactor = (int)(Math.random() * 4) % 4;
         g.getChildren().add(collider);
     }
 
     public void increaseHeight() {
         if(!hasDome) {
             BuildingBlock block = new BuildingBlock(coordX, coordY, pieces.size() + 1);
+            block.getTransforms().add(new Rotate(90 * rotFactor, Rotate.Y_AXIS));
             pieces.add(block);
             this.group.getChildren().add(block);
             if (pieces.size() == 4) hasDome = true;
@@ -70,6 +74,10 @@ public class Building3D {
 
     public List<BuildingBlock> getPieces() {
         return pieces;
+    }
+
+    public int getHeight() {
+        return pieces.size();
     }
 
     public boolean hasDome() {
