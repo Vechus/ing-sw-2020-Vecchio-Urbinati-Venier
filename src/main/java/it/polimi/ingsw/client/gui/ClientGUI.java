@@ -19,16 +19,22 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientGUI extends Application implements ClientUserInterface {
     private final Parent mainMenu = FXMLLoader.load(getClass().getResource("/scenes/MainMenu.fxml"));
     private final Parent credits = FXMLLoader.load(getClass().getResource("/scenes/Credits.fxml"));
     private final Parent lobby = FXMLLoader.load(getClass().getResource("/scenes/Lobby.fxml"));
+    private final FXMLLoader afterLobbyLoader = new FXMLLoader(getClass().getResource("/scenes/AfterLobby.fxml"));
+    private AfterLobbyController afterLobbyController;
+    private Parent afterLobby;
+    private List<String> hostSelected;
     private String playerName;
     private String ip;
     private int port;
     private int playerNumber;
+    private String playerGod;
     private boolean sync = false;
     private ClientAction playerAction;
     private GameScene gameScene;
@@ -38,9 +44,12 @@ public class ClientGUI extends Application implements ClientUserInterface {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         mainStage = stage;
         Scene menuScene = new Scene(mainMenu, 1300, 750);
+
+        afterLobby = afterLobbyLoader.load();
+        afterLobbyController = afterLobbyLoader.getController();
 
         stage.addEventHandler(CustomEvent.CUSTOM_EVENT_TYPE, new CustomEventHandler() {
             @Override
@@ -84,6 +93,20 @@ public class ClientGUI extends Application implements ClientUserInterface {
             }
 
             @Override
+            public void onPlayerGodChange(String god) {
+                playerGod = god;
+                menuScene.setRoot(mainMenu);
+                sync = true;
+            }
+
+            @Override
+            public void onHostSelectGods(List<String> gods) {
+                hostSelected = gods;
+                menuScene.setRoot(mainMenu);
+                sync = true;
+            }
+
+            @Override
             public void onPlayerAction(ClientAction action) {
                 playerAction = action;
                 sync = true;
@@ -91,6 +114,36 @@ public class ClientGUI extends Application implements ClientUserInterface {
         });
         stage.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent ->{
             if(keyEvent.getCode() == KeyCode.NUMPAD1) stage.fireEvent(new ChangeSceneEvent("game"));
+            if(keyEvent.getCode() == KeyCode.NUMPAD4) {
+                ArrayList<String> gods = new ArrayList<>();
+                gods.add("Apollo");
+                gods.add("Hera");
+                gods.add("Minotaur");
+                gods.add("Artemis");
+                gods.add("Hestia");
+                gods.add("Demeter");
+                gods.add("Artemis");
+                gods.add("Hestia");
+                gods.add("Demeter");
+                gods.add("Artemis");
+                gods.add("Hestia");
+                gods.add("Demeter");
+                gods.add("Artemis");
+                playerNumber = 3;
+                afterLobbyController.displayGods(gods);
+                afterLobbyController.setNumber(playerNumber);
+                menuScene.setRoot(afterLobby);
+            }
+            if(keyEvent.getCode() == KeyCode.NUMPAD5) {
+                ArrayList<String> gods = new ArrayList<>();
+                gods.add("Apollo");
+                gods.add("Hera");
+
+                playerNumber = 3;
+                afterLobbyController.displayGods(gods);
+                afterLobbyController.setNumber(playerNumber);
+                menuScene.setRoot(afterLobby);
+            }
         });
 
         stage.setTitle("Santorini - GC18");
@@ -137,6 +190,19 @@ public class ClientGUI extends Application implements ClientUserInterface {
             if(sync) {
                 sync = false;
                 return playerNumber;
+            }
+        }
+    }
+
+    @Override
+    public String chooseGod(List<String> gods) {
+        mainStage.setScene(afterLobby.getScene());
+        afterLobbyController.displayGods(gods);
+        afterLobbyController.setNumber(playerNumber);
+        while(true) {
+            if(sync) {
+                sync = false;
+                return playerGod;
             }
         }
     }

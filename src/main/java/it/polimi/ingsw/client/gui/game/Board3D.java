@@ -72,6 +72,7 @@ public class Board3D {
 
             }
         }
+        // TODO: get workers
     }
 
     public void addWorker(Vector2 pos, int id, boolean isWoman) {

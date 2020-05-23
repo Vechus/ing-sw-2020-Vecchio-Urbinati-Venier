@@ -32,7 +32,7 @@ public class GameScene {
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 750;
     private static final double CAMERA_RAY = 50;
-    public enum ClientGameStage3D {CHOOSE_GOD, PLACE_WORKER, WAIT, TURN};
+    public enum ClientGameStage3D {PLACE_WORKER, WAIT, TURN};
     private ClientGameStage3D clientGameStage3D = ClientGameStage3D.PLACE_WORKER;
     private int cameraAngle = 0;
     private Label bottomMessage = new Label();
@@ -183,7 +183,6 @@ public class GameScene {
     }
 
     private void cameraRotationAnimation(int degrees) {
-        //if(clientGameStage3D == ClientGameStage3D.CHOOSE_GOD) return;
         Timeline rotPosAnimation = new Timeline(
                 new KeyFrame(
                         Duration.seconds(0),
@@ -211,7 +210,10 @@ public class GameScene {
                 case PLACE_WORKER -> {
                     selected = target.getPos();
                     // spawn worker
-
+                    if(board3D.getWorkerAt(selected) == null) {
+                        // TODO
+                        board3D.addWorker(selected, 1, true);
+                    }
                     clientGameStage3D = ClientGameStage3D.WAIT;
                 }
             }

@@ -18,6 +18,11 @@ public class Panel2dController {
     @FXML
     private Button buttonThree;
 
+
+    public void addButton() {
+        Button button = new Button("Testodentro");
+        button.getStylesheets().add(getClass().getResource("/scenes/css/Buttons.css").toExternalForm());
+    }
     @FXML
     public void handleMoveClicked(MouseEvent mouseEvent) {
         //TODO

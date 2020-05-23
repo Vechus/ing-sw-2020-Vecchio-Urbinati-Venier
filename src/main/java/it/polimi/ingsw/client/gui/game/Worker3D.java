@@ -31,7 +31,7 @@ public class Worker3D extends MeshView {
         position = pos;
         translateXProperty().set(pos.getX() * 3.19 - 6.05);
         translateZProperty().set(pos.getY() * 3.05 - 6.2);
-        translateYProperty().set(BOARD_HEIGHT - (1.5 * (height-1)));
+        translateYProperty().set(BOARD_HEIGHT - (1.5 * (height)));
     }
 
     public Vector2 getPosition() {
