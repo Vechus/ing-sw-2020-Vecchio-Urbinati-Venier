@@ -23,6 +23,7 @@ public class Server {
     private Map<String, String> waitingPlayersGods = new HashMap<>();
     private Map<Integer, List<ClientConnection>> activeGames = new HashMap<>();
     private List<String> godSelectionQueue = new ArrayList<>();
+    private String host;
     private int waitingGameSize = -1;
 
     private List<String> availableGods = new ArrayList<>();
@@ -34,13 +35,25 @@ public class Server {
      */
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
-        resetAvailableGods();
     }
 
-    public synchronized void resetAvailableGods(){
+    /**
+     * Set the waiting game size
+     * @param num number of players we want to have in the game
+     */
+    public synchronized void setGameSize(int num){
+        System.out.println("[SERVER] Setting game size to "+num);
+        waitingGameSize = num;
+    }
+
+    /**
+     * Select the gods the players can choose from
+     *
+     * @param selected the list of available gods
+     */
+    public synchronized void setGods(List<String> selected){
         availableGods.clear();
-        availableGods.addAll(Arrays.asList("Apollo", "Artemis", "Athena", "Atlas", "Cronus", "Demeter",
-                "Hephaestus", "Hera", "Hestia", "Minotaur", "Pan", "Prometheus", "Triton", "Zeus"));
+        availableGods.addAll(selected);
     }
 
 
@@ -77,33 +90,25 @@ public class Server {
         }
     }
 
-    /**
-     * Set the waiting game size
-     * @param num number of players we want to have in the game
-     */
-    public synchronized void setGameSize(int num){
-        System.out.println("[SERVER] Setting game size to "+num);
-        waitingGameSize = num;
-        if(godSelectionQueue.size() > 0)
-            sendAvailableGods();
-    }
-
     private void sendAvailableGods(){
         AvailableGodsMessage availableGodsMessage = new AvailableGodsMessage();
         for(String god : availableGods)
             availableGodsMessage.addGod(god);
-        availableGodsMessage.setCurPlayer(godSelectionQueue.get(0));
+        if(godSelectionQueue.size() == 0)
+            availableGodsMessage.setCurPlayer(host);
+        else
+            availableGodsMessage.setCurPlayer(godSelectionQueue.get(0));
         for(String name : waitingConnection.keySet())
             waitingConnection.get(name).asyncSend(availableGodsMessage);
     }
 
-    public void selectGod(String godName){
-        waitingPlayersGods.put(godSelectionQueue.get(0), godName);
-        godSelectionQueue.remove(godSelectionQueue.get(0));
+    public void selectGod(String name, String godName){
+        waitingPlayersGods.put(name, godName);
+        godSelectionQueue.remove(name);
         availableGods.remove(godName);
-        if(godSelectionQueue.size() == 0 && waitingConnection.size() == waitingGameSize)
+        if(name.equals(host))
             setupGame();
-        else if(godSelectionQueue.size() > 0)
+        else if(godSelectionQueue.size() > 0 || availableGods.size() == 1)
             sendAvailableGods();
     }
 
@@ -131,7 +136,6 @@ public class Server {
         activeGames.put(activeGames.size(), connections);
         waitingConnection.clear();
         waitingPlayersGods.clear();
-        resetAvailableGods();
         waitingGameSize = -1;
 
         System.out.println("[SERVER] Let the games begin!");
@@ -162,12 +166,14 @@ public class Server {
         if(waitingConnection.size() == 0){
             System.out.println("[SERVER] Asking " + name + " for player number...");
             Message numReq = new Message();
-            numReq.setMessageType(Message.MessageType.NUMBER_PLAYERS_REQ);
+            numReq.setMessageType(Message.MessageType.SETUP_REQ);
             c.asyncSend(numReq);
         }
         if(waitingGameSize == -1){
-            if(waitingConnection.size() == 0)
-                addToLobby(name, c);
+            if(waitingConnection.size() == 0) {
+                waitingConnection.put(name, c);
+                host = name;
+            }
             else{
                 Message err = new Message();
                 err.setStatus(Message.Status.ERROR);

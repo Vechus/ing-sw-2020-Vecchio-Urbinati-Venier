@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SocketClientConnection implements ClientConnection, Runnable {
@@ -110,10 +112,18 @@ public class SocketClientConnection implements ClientConnection, Runnable {
             server.lobby(this, name);
             while(isActive()){
                 Message read = (Message) in.readObject();
-                if(read.getMessageType() == Message.MessageType.NUMBER_PLAYERS)
-                    server.setGameSize(Integer.parseInt(read.getPayload()));
+                if(read.getMessageType() == Message.MessageType.SETUP) {
+                    String payload = read.getPayload();
+                    int num = Integer.parseInt(read.getPayload().substring(0, 1));
+                    server.setGameSize(num);
+                    List<String> gods = new ArrayList<>();
+                    for(String s : payload.split(" "))
+                        if(s.length() > 1) gods.add(s);
+                    System.out.println("Received "+gods);
+                    server.setGods(gods);
+                }
                 else if(read.getMessageType() == Message.MessageType.GOD_CHOICE)
-                    server.selectGod(read.getPayload());
+                    server.selectGod(name, read.getPayload());
                 else
                     listener.onMessageReceived(read);
             }

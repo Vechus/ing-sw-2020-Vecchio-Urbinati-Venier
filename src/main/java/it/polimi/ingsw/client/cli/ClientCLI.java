@@ -77,19 +77,39 @@ public class ClientCLI implements ClientUserInterface, Runnable {
         return num;
     }
 
-    int chooseFromList(List<String> list){
+    @Override
+    public List<String> selectAvailableGods(int num) {
+        List<String> gods = Arrays.asList("Apollo", "Artemis", "Athena", "Atlas", "Cronus", "Demeter",
+                "Hephaestus", "Hera", "Hestia", "Minotaur", "Pan", "Prometheus", "Triton", "Zeus");
+        System.out.println("Select "+num+" gods [Enter 1-"+gods.size()+" "+num+" times]");
+        displaySelectionList(gods);
+        List<String> sel = new ArrayList<>();
+        while(sel.size() < num){
+            String g = gods.get(chooseInRange(gods.size()));
+            if(sel.contains(g))
+                System.out.println("God "+g+" has already been selected, choose another");
+            else sel.add(g);
+        }
+        return sel;
+    }
+
+    void displaySelectionList(List<String> list){
         for(int i=0;i<list.size();i++)
             System.out.println("("+(i+1)+") "+list.get(i));
+    }
+
+    int chooseInRange(int max){
         int id;
         do id = stdin.nextInt() - 1;
-        while(id < 0 || id >= list.size());
+        while(id < 0 || id >= max);
         return id;
     }
 
     @Override
     public String chooseGod(List<String> gods) {
         System.out.println("Choose a god among the following: [Enter 1-"+gods.size());
-        return gods.get(chooseFromList(gods));
+        displaySelectionList(gods);
+        return gods.get(chooseInRange(gods.size()));
     }
 
     @Override
@@ -98,7 +118,8 @@ public class ClientCLI implements ClientUserInterface, Runnable {
         List<String> strings = new ArrayList<>();
         for (ActionType allowedAction : allowedActions)
             strings.add(actionNames.get(allowedAction));
-        int type = chooseFromList(strings);
+        displaySelectionList(strings);
+        int type = chooseInRange(strings.size());
 
         if(allowedActions.get(type) == ActionType.END_TURN) return new ClientAction(null, null, ActionType.END_TURN);
         int xi = -1, yi = -1;

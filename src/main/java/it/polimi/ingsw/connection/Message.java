@@ -10,7 +10,7 @@ public class Message implements Serializable {
      * The enum Payload type. It describes the status in detail.
      */
     public enum ErrorType {MOVE_INVALID, LOBBY_ERROR, NAME_TAKEN_ERROR}
-    public enum MessageType {ACTION, NUMBER_PLAYERS_REQ, NUMBER_PLAYERS, AVAILABLE_GODS, GOD_CHOICE, HANDSHAKE, BOARD_STATE, GAME_END}
+    public enum MessageType {ACTION, SETUP_REQ, SETUP, AVAILABLE_GODS, GOD_CHOICE, HANDSHAKE, BOARD_STATE, GAME_END}
 
     /**
      * The enum Status.

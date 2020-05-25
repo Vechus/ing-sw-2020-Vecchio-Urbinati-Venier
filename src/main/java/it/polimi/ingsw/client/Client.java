@@ -107,12 +107,15 @@ public class Client {
                 ui.showError("[" + resp.getErrorType() + "] " + resp.getPayload());
                 closeThreads();
                 return;
-            } else if (resp.getMessageType() == Message.MessageType.NUMBER_PLAYERS_REQ) {
+            } else if (resp.getMessageType() == Message.MessageType.SETUP_REQ) {
                 int num = ui.getPlayerNumber();
+                List<String> gods = ui.selectAvailableGods(num);
                 Message res = new Message();
                 res.setStatus(Message.Status.OK);
-                res.setMessageType(Message.MessageType.NUMBER_PLAYERS);
-                res.setPayload(String.valueOf(num));
+                res.setMessageType(Message.MessageType.SETUP);
+                StringBuilder payload = new StringBuilder(String.valueOf(num));
+                for(String g : gods) payload.append(" ").append(g);
+                res.setPayload(payload.toString());
                 connection.sendMessage(res);
             }
             // What gods are available?

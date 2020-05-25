@@ -11,7 +11,9 @@ public interface ClientUserInterface {
     String getIP();
     int getPort();
     String getPlayerName();
+
     int getPlayerNumber();
+    List<String> selectAvailableGods(int num);
 
     String chooseGod(List<String> gods);
 
