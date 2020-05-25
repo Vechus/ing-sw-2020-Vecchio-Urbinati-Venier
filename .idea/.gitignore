@@ -2,6 +2,6 @@
 /workspace.xml
 /*.class
 /misc.xml
-/.idea
+.idea/
 /discord.xml
 /encodings.xml

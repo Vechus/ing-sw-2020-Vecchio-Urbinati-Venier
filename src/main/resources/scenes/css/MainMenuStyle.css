@@ -4,6 +4,11 @@
     -fx-background-repeat: round;
 }
 
+.godSelect {
+    -fx-background-image: url("../../images/Odyssey_UI_Backdrop.png");
+    -fx-background-size: stretch;
+}
+
 .title {
     -fx-alignment: center;
     -fx-background-image: url("../../images/santorini-logo.png");

@@ -9,10 +9,10 @@
    <Label layoutX="1.0" layoutY="35.0" text="Press A to rotate left" />
    <Label layoutX="1.0" layoutY="69.0" text="Press D to rotate right" />
    <ImageView fx:id="playerGodImage" fitHeight="428.0" fitWidth="250.0" layoutX="1.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../images/godCards/04.png" />
+      <Image url="@../images/godCards/Atlas.png" />
    </ImageView>
    <Label layoutX="1.0" layoutY="103.0" text="Your god is:" />
-   <Button fx:id="moveButton" layoutX="32.0" layoutY="578.0" mnemonicParsing="false" styleClass="blueButton" stylesheets="@css/Buttons.css" text="Move" />
-   <Button fx:id="buildButton" layoutX="31.0" layoutY="639.0" mnemonicParsing="false" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Build" />
-   <Button fx:id="endButton" layoutX="31.0" layoutY="698.0" mnemonicParsing="false" styleClass="redButton" stylesheets="@css/Buttons.css" text="End turn" />
+   <Button fx:id="buttonOne" layoutX="31.0" layoutY="578.0" mnemonicParsing="false" styleClass="blueButton" stylesheets="@css/Buttons.css" text="Move" />
+   <Button fx:id="buttonTwo" layoutX="31.0" layoutY="639.0" mnemonicParsing="false" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Build" />
+   <Button fx:id="buttonThree" layoutX="31.0" layoutY="698.0" mnemonicParsing="false" styleClass="redButton" stylesheets="@css/Buttons.css" text="End turn" />
 </AnchorPane>

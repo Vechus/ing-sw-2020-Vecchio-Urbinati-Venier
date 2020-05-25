@@ -1,9 +1,12 @@
 package it.polimi.ingsw.client.gui.game;
 
 import it.polimi.ingsw.client.events.ChangeSceneEvent;
+import it.polimi.ingsw.client.gui.Panel2dController;
+import it.polimi.ingsw.util.Vector2;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
@@ -22,30 +25,54 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import java.io.IOException;
+
+
 public class GameScene {
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 750;
     private static final double CAMERA_RAY = 50;
-    public enum ClientGameStage3D {CHOOSE_GOD, PLACE_WORKER, WAIT, TURN};
-    private ClientGameStage3D clientGameStage3D = ClientGameStage3D.CHOOSE_GOD;
+    public enum ClientGameStage3D {PLACE_WORKER, WAIT, TURN};
+    private ClientGameStage3D clientGameStage3D = ClientGameStage3D.PLACE_WORKER;
     private int cameraAngle = 0;
+    private Label bottomMessage = new Label();
     private final Board3D board3D;
     private final Group group;
+    private Group cameraGroup;
     private Camera camera;
     private SubScene subScene3D;
     private final BorderPane pane = new BorderPane();
-    private Scene scene;
+    private final Scene scene;
     private Rotate cameraRotate;
-    private Stage primaryStage;
+    private final Stage primaryStage;
+    private Vector2 selected;
+    private FXMLLoader loader;
+    private Parent panel2d = null;
+    private Panel2dController panel2dController;
 
-    public GameScene(Stage stage, Parent panel2d) {
+
+    public GameScene(Stage stage) {
         this.group = new Group();
         this.board3D = new Board3D(group);
         this.scene = new Scene(pane);
+        loader = new FXMLLoader(getClass().getResource("/scenes/Panel2d.fxml"));
+        try{
+            panel2d = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        panel2dController = loader.getController();
+        
         this.primaryStage = stage;
         scene.setFill(Color.STEELBLUE);
         initCamera();
         initSubScene(panel2d);
+        bottomMessage.getStylesheets().add(getClass().getResource("/scenes/css/MainMenuStyle.css").toExternalForm());
+        bottomMessage.prefHeight(300);
+        bottomMessage.prefWidth(150);
+        bottomMessage.setStyle("-fx-alignment: center");
+        pane.setBottom(bottomMessage);
+        askWorkerPlacement();
     }
 
     public Board3D getBoard3D() {
@@ -57,15 +84,17 @@ public class GameScene {
     }
 
     private void initCamera() {
+        cameraGroup = new Group();
         camera = new PerspectiveCamera(true);
         camera.setNearClip(1);
         camera.setFarClip(200);
+        cameraGroup.getChildren().add(camera);
         Translate cameraPivot = new Translate();
         cameraPivot.setX(0);
         cameraPivot.setY(3);
         cameraPivot.setZ(0);
         cameraRotate = new Rotate(0, Rotate.Y_AXIS);
-        camera.getTransforms().addAll(
+        cameraGroup.getTransforms().addAll(
                 cameraPivot,
                 cameraRotate,
                 new Rotate(-45, Rotate.X_AXIS),
@@ -75,6 +104,7 @@ public class GameScene {
 
     private void initSubScene(Parent panel2d) {
         pane.setRight(panel2d);
+
         pane.setStyle("-fx-background-color: transparent");
         subScene3D = new SubScene(this.group, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
         subScene3D.setFill(Color.LIGHTSKYBLUE);
@@ -93,21 +123,29 @@ public class GameScene {
             if(mouseEvent.getTarget() instanceof BuildingCollider) {
                 board3D.unselectBuildings();
                 BuildingCollider target = ((BuildingCollider) mouseEvent.getTarget());
-                target.select();
-                board3D.getBuilding(target.getCoordX(), target.getCoordY()).increaseHeight();
+                handleSelected(target);
             } else if(mouseEvent.getTarget() instanceof BuildingBlock) {
                 board3D.unselectBuildings();
                 BuildingBlock target = ((BuildingBlock) mouseEvent.getTarget());
-                board3D.getBuilding(target.getCoordX(), target.getCoordY()).increaseHeight();
+                selected = target.getPos();
+                handleSelected(board3D.getBuilding(target.getPos()).getCollider());
             }
             else {
                 board3D.unselectBuildings();
+                selected = null;
             }
         });
     }
 
+    private void askWorkerPlacement(){
+        bottomMessage.setText("Place a worker.");
+    }
+
+    private void cleanBottom() {
+        pane.setBottom(null);
+    }
+
     private void displayPauseMenu() {
-        // TODO
         pane.setEffect(new GaussianBlur());
 
         VBox pauseRoot = new VBox(5);
@@ -145,7 +183,6 @@ public class GameScene {
     }
 
     private void cameraRotationAnimation(int degrees) {
-        if(clientGameStage3D == ClientGameStage3D.CHOOSE_GOD) return;
         Timeline rotPosAnimation = new Timeline(
                 new KeyFrame(
                         Duration.seconds(0),
@@ -161,5 +198,26 @@ public class GameScene {
     }
     public Scene getScene() {
         return scene;
+    }
+
+    private void handleSelected(BuildingCollider target) {
+        board3D.unselectBuildings();
+
+        if(selected == null) {
+            selected = target.getPos();
+        } else {
+            switch (clientGameStage3D) {
+                case PLACE_WORKER -> {
+                    selected = target.getPos();
+                    // spawn worker
+                    if(board3D.getWorkerAt(selected) == null) {
+                        // TODO
+                        board3D.addWorker(selected, 1, true);
+                    }
+                    clientGameStage3D = ClientGameStage3D.WAIT;
+                }
+            }
+        }
+        getBoard3D().getBuilding(selected).select();
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.gui.game;
 
+import it.polimi.ingsw.util.Vector2;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -11,16 +12,14 @@ public class BuildingCollider extends Box {
     private double x;
     private double y;
     private double z;
-    private int coordX;
-    private int coordY;
+    private Vector2 pos;
     PhongMaterial colliderMaterial = new PhongMaterial();
 
     public BuildingCollider(double x, double y, double z, int i, int j) {
         this.x = x;
         this.y = y;
         this.z = z;
-        coordX = i;
-        coordY = j;
+        this.pos = new Vector2(i, j);
         translateXProperty().set(x);
         translateYProperty().set(y);
         translateZProperty().set(z);
@@ -41,11 +40,7 @@ public class BuildingCollider extends Box {
         colliderMaterial.setDiffuseColor(Color.TRANSPARENT);
     }
 
-    public int getCoordX() {
-        return coordX;
-    }
-
-    public int getCoordY() {
-        return coordY;
+    public Vector2 getPos() {
+        return pos;
     }
 }

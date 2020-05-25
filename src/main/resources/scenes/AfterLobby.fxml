@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane fx:id="anchor" prefHeight="750.0" prefWidth="1300.0" styleClass="godSelect" stylesheets="@css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.AfterLobbyController">
+    <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="432.0" pickOnBounds="true" preserveRatio="true" styleClass="title">
+        <Image url="@../images/santorini-logo.png" />
+    </ImageView>
+    <children>
+
+      <ImageView fitHeight="750.0" fitWidth="1300.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

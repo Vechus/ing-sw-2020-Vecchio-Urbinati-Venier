@@ -12,12 +12,17 @@ public class Panel2dController {
     @FXML
     private Label playerNameLabel;
     @FXML
-    private Button moveButton;
+    private Button buttonOne;
     @FXML
-    private Button buildButton;
+    private Button buttonTwo;
     @FXML
-    private Button endButton;
+    private Button buttonThree;
 
+
+    public void addButton() {
+        Button button = new Button("Testodentro");
+        button.getStylesheets().add(getClass().getResource("/scenes/css/Buttons.css").toExternalForm());
+    }
     @FXML
     public void handleMoveClicked(MouseEvent mouseEvent) {
         //TODO
