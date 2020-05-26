@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.events.ChangeSceneEvent;
+import it.polimi.ingsw.client.events.PlayerIpPortEvent;
 import it.polimi.ingsw.client.events.PlayerNameChangeEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
 
 public class LobbyController {
     @FXML
@@ -30,6 +32,16 @@ public class LobbyController {
     private ImageView errorImage;
     @FXML
     private TextField textField;
+    @FXML
+    private Button confirmIpButton;
+    @FXML
+    private Pane nameInputPane;
+    @FXML
+    private Pane ipPane;
+    @FXML
+    private TextField ip;
+    @FXML
+    private TextField port;
 
     @FXML
     public void handleBackClicked() {
@@ -42,6 +54,7 @@ public class LobbyController {
         String name = textField.getText();
         if(name.length() == 0) {
             errorImage.setVisible(true);
+            errorLabel.setText("Invalid username.");
             errorLabel.setVisible(true);
         } else {
             errorLabel.setVisible(false);
@@ -56,7 +69,26 @@ public class LobbyController {
     private void initLobbyScene() {
         lobbyPane.setVisible(false);
         insertPane.setVisible(true);
+        ipPane.setVisible(true);
+        nameInputPane.setVisible(false);
         errorLabel.setVisible(false);
         errorImage.setVisible(false);
+    }
+
+    @FXML
+    public void handleConfirmIp() {
+        String i = ip.getText();
+        try {
+            Integer p = Integer.valueOf(port.getText());
+            errorImage.setVisible(false);
+            errorLabel.setVisible(false);
+            ipPane.setVisible(false);
+            nameInputPane.setVisible(true);
+            ipPane.fireEvent(new PlayerIpPortEvent(new Pair<>(i, p)));
+        } catch (Exception e) {
+            errorImage.setVisible(true);
+            errorLabel.setText("Invalid port.");
+            errorLabel.setVisible(true);
+        }
     }
 }

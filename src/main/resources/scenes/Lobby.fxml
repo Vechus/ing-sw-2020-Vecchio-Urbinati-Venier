@@ -3,8 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="750.0" prefWidth="1300.0" styleClass="root" stylesheets="@/scenes/css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.LobbyController">
     <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="432.0" pickOnBounds="true" preserveRatio="true" styleClass="title">
@@ -58,15 +57,27 @@
                <Image url="@../images/frameName.png" />
             </image></ImageView>
          <Label layoutX="289.0" layoutY="38.0" text="Hey!" />
-         <Label layoutX="190.0" layoutY="96.0" text="Please input your name" />
-         <TextField fx:id="textField" layoutX="186.0" layoutY="130.0" prefHeight="34.0" prefWidth="266.0" />
          <ImageView fx:id="errorImage" fitHeight="69.0" fitWidth="239.0" layoutX="205.0" layoutY="263.0" pickOnBounds="true" rotate="180.0" visible="false">
             <image>
                <Image url="@../images/nomoves_dialog.png" />
             </image>
          </ImageView>
          <Label fx:id="errorLabel" layoutX="222.0" layoutY="281.0" text="Error: invalid name" textFill="RED" underline="true" visible="false" />
-         <Button fx:id="confirmButton" layoutX="219.0" layoutY="179.0" mnemonicParsing="false" onAction="#handleConfirmClicked" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
+         <Pane fx:id="nameInputPane" layoutX="66.0" layoutY="64.0" prefHeight="201.0" prefWidth="493.0" visible="false">
+            <children>
+               <Label layoutX="118.0" layoutY="32.0" text="Please input your name" />
+               <TextField fx:id="textField" layoutX="114.0" layoutY="66.0" prefHeight="34.0" prefWidth="266.0" />
+               <Button fx:id="confirmButton" layoutX="148.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleConfirmClicked" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
+            </children>
+         </Pane>
+         <Pane fx:id="ipPane" layoutX="68.0" layoutY="34.0" prefHeight="229.0" prefWidth="493.0">
+            <children>
+               <Label layoutX="102.0" layoutY="61.0" text="Please insert IP and port" />
+               <TextField fx:id="ip" layoutX="192.0" layoutY="90.0" prefHeight="25.0" prefWidth="109.0" promptText="IP address" />
+               <TextField fx:id="port" layoutX="192.0" layoutY="115.0" prefHeight="25.0" prefWidth="109.0" promptText="port" />
+               <Button fx:id="confirmIpButton" layoutX="147.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleConfirmIp" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
+            </children>
+         </Pane>
       </children>
    </Pane>
    <Button fx:id="backButton" layoutX="558.0" layoutY="656.0" mnemonicParsing="false" onAction="#handleBackClicked" styleClass="redButton" stylesheets="@css/Buttons.css" text="Back to Menu" />

@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.gui.game.ClientGuiGod;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.effect.Bloom;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -76,6 +77,7 @@ public class AfterLobbyController {
             if(selected.contains(god.getGodName()))
                 return;
             selected.add(god.getGodName());
+            god.setEffect(new Bloom());
             if(selected.size() == playerNumber) {
                 grid.getChildren().clear();
                 grid.fireEvent(new HostSelectGodsEvent(selected));

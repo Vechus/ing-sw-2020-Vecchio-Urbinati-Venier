@@ -8,6 +8,7 @@ public class ClientGuiGod extends ImageView {
 
     public ClientGuiGod (String godName) {
         this.godName = godName;
+
         setImage(new Image(String.valueOf(getClass().getResource("/images/godCards/" + godName + ".png"))));
     }
 

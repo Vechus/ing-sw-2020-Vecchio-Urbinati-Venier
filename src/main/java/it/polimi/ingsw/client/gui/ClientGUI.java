@@ -195,6 +195,12 @@ public class ClientGUI extends Application implements ClientUserInterface {
     }
 
     @Override
+    public List<String> selectAvailableGods(int num) {
+        // TODO
+        return null;
+    }
+
+    @Override
     public String chooseGod(List<String> gods) {
         mainStage.setScene(afterLobby.getScene());
         afterLobbyController.displayGods(gods);
