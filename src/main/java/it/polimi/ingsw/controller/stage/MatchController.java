@@ -33,7 +33,6 @@ public class MatchController extends GameStageController {
                 break;
             }
         }
-        model.updateClientModel();
         if(!stageDone) {
             if (model.getPlayer(model.getCurPlayer()).isFinished()) {
                 System.out.println("Passing turn...");
@@ -41,6 +40,7 @@ public class MatchController extends GameStageController {
                 model.beginNewTurn(model.getCurPlayer());
             }
         }
+        model.updateClientModel();
         return true;
     }
 
