@@ -14,9 +14,12 @@ import java.util.*;
 public class ClientCLI implements ClientUserInterface, Runnable {
     private final Scanner stdin = new Scanner(System.in);
     private String playerName;
-    List<String> playerColors = new ArrayList<>(), playerColorsUnderlined = new ArrayList<>();
+    private ClientBoard latestState;
+    private List<String> playerColors = new ArrayList<>(), playerColorsUnderlined = new ArrayList<>();
 
-    Map<ActionType, String> actionNames = new HashMap<>();
+    private Map<ActionType, String> actionNames = new HashMap<>();
+
+    private Vector2 workerPos = null, nextPos = null;
 
     public ClientCLI () {
         playerColors.add(ConsoleColor.RED);
@@ -114,21 +117,40 @@ public class ClientCLI implements ClientUserInterface, Runnable {
 
     @Override
     public ClientAction getPlayerMove(List<ActionType> allowedActions) {
+        if(allowedActions.size() == 1 && allowedActions.get(0) == ActionType.END_TURN)
+            return new ClientAction(null, null, ActionType.END_TURN);
+        // Choose type of action
         System.out.println("What is your move? [Enter 1 to "+allowedActions.size()+"]");
         List<String> strings = new ArrayList<>();
         for (ActionType allowedAction : allowedActions)
             strings.add(actionNames.get(allowedAction));
         displaySelectionList(strings);
         int type = chooseInRange(strings.size());
-
         if(allowedActions.get(type) == ActionType.END_TURN) return new ClientAction(null, null, ActionType.END_TURN);
-        int xi = -1, yi = -1;
-        if(allowedActions.get(type) != ActionType.PLACE_WORKER) {
-            System.out.println("Where is your worker? [Enter x and y coords, 0-4]");
-            do {
-                xi = stdin.nextInt();
-                yi = stdin.nextInt();
-            } while (xi < 0 || xi >= 5 || yi < 0 || yi >= 5);
+        // Get starting pos
+        Vector2 start;
+        if(workerPos != null) {
+            System.out.println("Using worker at "+workerPos.getX()+","+workerPos.getY());
+            start = workerPos;
+        }
+        else{
+            if (allowedActions.get(type) == ActionType.PLACE_WORKER)
+                start = null;
+            else{
+                System.out.println("Which worker do you want to use? [1 - 2]");
+                List<Vector2> pos = new ArrayList<>();
+                List<String> str = new ArrayList<>();
+                for(int i=0;i<5;i++)
+                    for(int j=0;j<5;j++){
+                        int playerId = latestState.getWorkerPlayer(new Vector2(i, j));
+                        if(playerId != -1 && latestState.getPlayerNames().get(playerId).equals(playerName)) {
+                            pos.add(new Vector2(i, j));
+                            str.add("(" + i + " " + j + ")");
+                        }
+                    }
+                displaySelectionList(str);
+                start = pos.get(chooseInRange(2));
+            }
         }
         System.out.println("What is your target? [Enter x and y coords, 0-4]");
         int xf, yf;
@@ -136,11 +158,23 @@ public class ClientCLI implements ClientUserInterface, Runnable {
             xf = stdin.nextInt();
             yf = stdin.nextInt();
         } while(xf < 0 || xf >= 5 || yf < 0 || yf >= 5);
-        return new ClientAction(new Vector2(xi, yi), new Vector2(xf, yf), allowedActions.get(type));
+        if(allowedActions.get(type) == ActionType.MOVE)
+            nextPos = new Vector2(xf, yf);
+        else if(allowedActions.get(type) == ActionType.PLACE_WORKER)
+            nextPos = null;
+        else nextPos = start;
+        return new ClientAction(start, new Vector2(xf, yf), allowedActions.get(type));
     }
 
     @Override
     public void showGameState(ClientBoard gameState) {
+        if(!gameState.getCurrentPlayer().equals(playerName)) {
+            workerPos = null;
+            nextPos = null;
+        }
+        else if(nextPos != null)
+            workerPos = nextPos;
+        latestState = gameState;
         String block = ConsoleColor.WHITE_BACKGROUND + ConsoleColor.WHITE_BOLD + "█" + ConsoleColor.RESET;
         List<String> names = gameState.getPlayerNames();
         System.out.print("Players: ");

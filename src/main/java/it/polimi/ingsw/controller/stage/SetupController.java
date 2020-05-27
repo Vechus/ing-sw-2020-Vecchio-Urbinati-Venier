@@ -15,7 +15,8 @@ public class SetupController extends GameStageController {
         if(!model.isPlayersTurn(playerId)) return false;
         if(a.getType() != ActionType.PLACE_WORKER) return false;
         if(!model.placeWorker(playerId, a.getTargetPos())) return false;
-        model.incrementCurPlayer();
+        if(model.getPlayer(model.getCurPlayer()).getNumWorkers() == 2)
+            model.incrementCurPlayer();
         model.updateClientModel();
         if(model.getPlayer(model.getCurPlayer()).getNumWorkers() == 2)
             stageDone = true;
