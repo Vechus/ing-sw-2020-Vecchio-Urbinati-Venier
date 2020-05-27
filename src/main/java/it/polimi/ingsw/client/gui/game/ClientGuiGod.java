@@ -10,6 +10,7 @@ public class ClientGuiGod extends ImageView {
         this.godName = godName;
 
         setImage(new Image(String.valueOf(getClass().getResource("/images/godCards/" + godName + ".png"))));
+        setStyle("-fx-max-width: 240px");
     }
 
     public String getGodName() {

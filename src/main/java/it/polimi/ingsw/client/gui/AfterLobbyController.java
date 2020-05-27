@@ -58,7 +58,7 @@ public class AfterLobbyController {
         pane.setPadding(new Insets(10, 10, 10, 10));
         ClientGuiGod guiGod = new ClientGuiGod(god);
         if(isHost) guiGod.setFitWidth((int)(2000 / size));
-        else guiGod.setFitWidth((int)(700/size));
+        else guiGod.setFitWidth(240);
         guiGod.setPreserveRatio(true);
         pane.getChildren().add(guiGod);
 
@@ -77,7 +77,7 @@ public class AfterLobbyController {
             if(selected.contains(god.getGodName()))
                 return;
             selected.add(god.getGodName());
-            god.setEffect(new Bloom());
+            god.setEffect(new Bloom(0.75));
             if(selected.size() == playerNumber) {
                 grid.getChildren().clear();
                 grid.fireEvent(new HostSelectGodsEvent(selected));

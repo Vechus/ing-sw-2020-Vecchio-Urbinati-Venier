@@ -112,6 +112,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
                 sync = true;
             }
         });
+        // testing only, REMOVE ON RELEASE
         stage.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent ->{
             if(keyEvent.getCode() == KeyCode.NUMPAD1) stage.fireEvent(new ChangeSceneEvent("game"));
             if(keyEvent.getCode() == KeyCode.NUMPAD4) {
@@ -119,16 +120,6 @@ public class ClientGUI extends Application implements ClientUserInterface {
                 gods.add("Apollo");
                 gods.add("Hera");
                 gods.add("Minotaur");
-                gods.add("Artemis");
-                gods.add("Hestia");
-                gods.add("Demeter");
-                gods.add("Artemis");
-                gods.add("Hestia");
-                gods.add("Demeter");
-                gods.add("Artemis");
-                gods.add("Hestia");
-                gods.add("Demeter");
-                gods.add("Artemis");
                 playerNumber = 3;
                 afterLobbyController.displayGods(gods);
                 afterLobbyController.setNumber(playerNumber);
