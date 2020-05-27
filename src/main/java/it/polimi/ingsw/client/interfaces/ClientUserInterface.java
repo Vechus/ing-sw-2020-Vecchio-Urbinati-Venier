@@ -24,5 +24,4 @@ public interface ClientUserInterface {
     void showMessage(String s);
 
     void gameOver(String winnerName);
-
 }

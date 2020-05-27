@@ -39,12 +39,12 @@ public class ClientGUI extends Application implements ClientUserInterface {
         add("Triton");
         add("Zeus");
     }};
-    private final Parent mainMenu = FXMLLoader.load(getClass().getResource("/scenes/MainMenu.fxml"));
-    private final Parent credits = FXMLLoader.load(getClass().getResource("/scenes/Credits.fxml"));
-    private final FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/scenes/Lobby.fxml"));
+    private Parent mainMenu;
+    private Parent credits;
+    private FXMLLoader lobbyLoader;
     private LobbyController lobbyController;
     private Parent lobby;
-    private final FXMLLoader afterLobbyLoader = new FXMLLoader(getClass().getResource("/scenes/AfterLobby.fxml"));
+    private FXMLLoader afterLobbyLoader;
     private AfterLobbyController afterLobbyController;
     private Parent afterLobby;
     private List<String> hostSelected;
@@ -58,11 +58,15 @@ public class ClientGUI extends Application implements ClientUserInterface {
     private GameScene gameScene;
     private Stage mainStage;
 
-    public ClientGUI() throws IOException {
-    }
+    public ClientGUI() { }
 
     @Override
     public void start(Stage stage) throws IOException {
+        mainMenu = FXMLLoader.load(getClass().getResource("/scenes/MainMenu.fxml"));
+        credits = FXMLLoader.load(getClass().getResource("/scenes/Credits.fxml"));
+        lobbyLoader = new FXMLLoader(getClass().getResource("/scenes/Lobby.fxml"));
+        afterLobbyLoader = new FXMLLoader(getClass().getResource("/scenes/AfterLobby.fxml"));
+
         mainStage = stage;
         Scene menuScene = new Scene(mainMenu, 1300, 750);
         lobby = lobbyLoader.load();
@@ -180,7 +184,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
 
     @Override
     public void setupInterface() {
-        launch();
+        Application.launch();
     }
 
     @Override

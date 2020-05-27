@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.cli.ClientCLI;
+import it.polimi.ingsw.client.gui.ClientGUI;
 import it.polimi.ingsw.client.interfaces.ClientServerInterface;
 import it.polimi.ingsw.client.interfaces.ClientUserInterface;
 import it.polimi.ingsw.connection.*;
@@ -23,59 +24,22 @@ public class Client {
     private ClientBoard gameState;
     private ClientUserInterface ui;
     private ClientServerInterface connection;
-    Thread uiThread;
+    private boolean useCli;
 
     /**
      * Instantiates a new Client.
      *
      */
-    public Client() {
-
-    }
-
-    /**
-     * Gets game id.
-     *
-     * @return the game id
-     */
-    public synchronized int getGameID() {
-        return gameID;
-    }
-
-    /**
-     * Sets game id.
-     *
-     * @param gameID the game id
-     */
-    public synchronized void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
-    /**
-     * Gets player name.
-     *
-     * @return the player name
-     */
-    public synchronized String getPlayerName() {
-        return playerName;
-    }
-
-    /**
-     * Sets player name.
-     *
-     * @param playerName the player name
-     */
-    public synchronized void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public Client(boolean useCli) {
+        this.useCli = useCli;
     }
 
     /**
      * Run.
      */
     public void run() {
-        ui = new ClientCLI();
-        uiThread = new Thread((Runnable) ui);
-        uiThread.start();
+        if (useCli) ui = new ClientCLI();
+        else ui = new ClientGUI();
 
         // get data to start the game
         ui.setupInterface();
@@ -99,13 +63,11 @@ public class Client {
                 resp = connection.receiveMessage();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                closeThreads();
                 return;
             }
             if (resp.getStatus() == Message.Status.ERROR) {
                 ui.showError("Error while starting/joining game: ");
                 ui.showError("[" + resp.getErrorType() + "] " + resp.getPayload());
-                closeThreads();
                 return;
             } else if (resp.getMessageType() == Message.MessageType.SETUP_REQ) {
                 int num = ui.getPlayerNumber();
@@ -141,7 +103,6 @@ public class Client {
                 serverMessage = connection.receiveMessage();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                closeThreads();
                 return;
             }
 
@@ -185,14 +146,5 @@ public class Client {
         ActionMessage actionMessage = new ActionMessage();
         actionMessage.setAction(action);
         connection.sendMessage(actionMessage);
-    }
-
-    void closeThreads(){
-        try {
-            uiThread.join();
-        }
-        catch(InterruptedException e){
-            System.out.println(e.getMessage());
-        }
     }
 }
