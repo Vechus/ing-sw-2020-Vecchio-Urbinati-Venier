@@ -41,7 +41,9 @@ public class ClientGUI extends Application implements ClientUserInterface {
     }};
     private final Parent mainMenu = FXMLLoader.load(getClass().getResource("/scenes/MainMenu.fxml"));
     private final Parent credits = FXMLLoader.load(getClass().getResource("/scenes/Credits.fxml"));
-    private final Parent lobby = FXMLLoader.load(getClass().getResource("/scenes/Lobby.fxml"));
+    private final FXMLLoader lobbyLoader = new FXMLLoader(getClass().getResource("/scenes/Lobby.fxml"));
+    private LobbyController lobbyController;
+    private Parent lobby;
     private final FXMLLoader afterLobbyLoader = new FXMLLoader(getClass().getResource("/scenes/AfterLobby.fxml"));
     private AfterLobbyController afterLobbyController;
     private Parent afterLobby;
@@ -63,7 +65,8 @@ public class ClientGUI extends Application implements ClientUserInterface {
     public void start(Stage stage) throws IOException {
         mainStage = stage;
         Scene menuScene = new Scene(mainMenu, 1300, 750);
-
+        lobby = lobbyLoader.load();
+        lobbyController = lobbyLoader.getController();
         afterLobby = afterLobbyLoader.load();
         afterLobbyController = afterLobbyLoader.getController();
 
@@ -93,24 +96,32 @@ public class ClientGUI extends Application implements ClientUserInterface {
             public void onPlayerIpPortChange(Pair<String, Integer> input) {
                 ip = input.getKey();
                 port = input.getValue();
+                System.out.println(ip + ":" + port);
                 sync = true;
             }
 
             @Override
             public void onPlayerNumberChange(int num) {
                 playerNumber = num;
+                System.out.println(num);
                 sync = true;
+                afterLobbyController.displayGods(allGods);
+                afterLobbyController.setNumber(playerNumber);
+                menuScene.setRoot(afterLobby);
             }
 
             @Override
             public void onPlayerNameChange(String playerName) {
                 setPlayerName(playerName);
+                System.out.println(playerName);
                 sync = true;
+                lobbyController.showHostPane();
             }
 
             @Override
             public void onPlayerGodChange(String god) {
                 playerGod = god;
+                System.out.println(god);
                 menuScene.setRoot(mainMenu);
                 sync = true;
             }
@@ -118,6 +129,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
             @Override
             public void onHostSelectGods(List<String> gods) {
                 hostSelected = gods;
+                gods.forEach(System.out::println);
                 menuScene.setRoot(lobby);
                 sync = true;
             }
@@ -193,6 +205,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
 
     @Override
     public int getPlayerNumber() {
+        lobbyController.showHostPane();
         while(true) {
             if(sync) {
                 sync = false;

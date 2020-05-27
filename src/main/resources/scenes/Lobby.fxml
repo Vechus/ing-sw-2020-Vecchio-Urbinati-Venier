@@ -80,6 +80,15 @@
          </Pane>
       </children>
    </Pane>
+   <Pane fx:id="hostPane" layoutX="904.0" layoutY="202.0" prefHeight="236.0" prefWidth="361.0" visible="false">
+      <children>
+         <Label layoutY="43.0" text="How much friends do you have?" />
+         <Label layoutY="14.0" text="You are the host!" />
+         <Label fx:id="playersNumberLabel" layoutX="172.0" layoutY="98.0" text="2" />
+         <Button fx:id="confirmPlayersButton" layoutX="79.0" layoutY="157.0" mnemonicParsing="false" onAction="#handleConfirmPlayers" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
+         <Button fx:id="decreaseButton" layoutX="67.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleDecrease" styleClass="arrowLeftButton" stylesheets="@css/Buttons.css" text="Button" />
+         <Button fx:id="increaseButton" layoutX="243.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleIncrease" styleClass="arrowRightButton" stylesheets="@css/Buttons.css" text="Button" />
+      </children></Pane>
    <Button fx:id="backButton" layoutX="558.0" layoutY="656.0" mnemonicParsing="false" onAction="#handleBackClicked" styleClass="redButton" stylesheets="@css/Buttons.css" text="Back to Menu" />
 
 </AnchorPane>

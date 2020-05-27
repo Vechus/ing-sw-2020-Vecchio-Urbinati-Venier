@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.events.ChangeSceneEvent;
 import it.polimi.ingsw.client.events.PlayerIpPortEvent;
 import it.polimi.ingsw.client.events.PlayerNameChangeEvent;
+import it.polimi.ingsw.client.events.PlayerNumberChangeEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,6 +43,16 @@ public class LobbyController {
     private TextField ip;
     @FXML
     private TextField port;
+    @FXML
+    private Label playersNumberLabel;
+    @FXML
+    private Button confirmPlayersButton;
+    @FXML
+    private Pane hostPane;
+    @FXML
+    private Button increaseButton;
+    @FXML
+    private Button decreaseButton;
 
     @FXML
     public void handleBackClicked() {
@@ -69,6 +80,7 @@ public class LobbyController {
     private void initLobbyScene() {
         lobbyPane.setVisible(false);
         insertPane.setVisible(true);
+        hostPane.setVisible(false);
         ipPane.setVisible(true);
         nameInputPane.setVisible(false);
         errorLabel.setVisible(false);
@@ -89,6 +101,30 @@ public class LobbyController {
             errorImage.setVisible(true);
             errorLabel.setText("Invalid port.");
             errorLabel.setVisible(true);
+        }
+    }
+
+    public void showHostPane() {
+        hostPane.setVisible(true);
+    }
+
+    @FXML
+    public void handleConfirmPlayers() {
+        hostPane.setVisible(false);
+        hostPane.fireEvent(new PlayerNumberChangeEvent(Integer.parseInt(playersNumberLabel.getText())));
+    }
+
+    @FXML
+    public void handleDecrease() {
+        if (Integer.parseInt(playersNumberLabel.getText()) == 3) {
+            playersNumberLabel.setText("2");
+        }
+    }
+
+    @FXML
+    public void handleIncrease() {
+        if (Integer.parseInt(playersNumberLabel.getText()) == 2) {
+            playersNumberLabel.setText("3");
         }
     }
 }

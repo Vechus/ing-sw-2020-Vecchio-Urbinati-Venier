@@ -36,3 +36,29 @@
 .greenButton:pressed {
     -fx-background-image: url("../../images/btn_green_pressed.png");
 }
+
+.arrowLeftButton {
+    -fx-pref-width: 50;
+    -fx-background-image: url("../../images/btn_arrow_left.png");
+    -fx-background-color: transparent;
+    -fx-background-size: stretch;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 25;
+}
+
+.arrowLeftButton:pressed {
+    -fx-background-image: url("../../images/btn_arrow_left_pressed.png");
+}
+
+.arrowRightButton {
+    -fx-pref-width: 50;
+    -fx-background-image: url("../../images/btn_arrow_right.png");
+    -fx-background-color: transparent;
+    -fx-background-size: stretch;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 25;
+}
+
+.arrowRightButton:pressed {
+    -fx-background-image: url("../../images/btn_arrow_right_pressed.png");
+}
