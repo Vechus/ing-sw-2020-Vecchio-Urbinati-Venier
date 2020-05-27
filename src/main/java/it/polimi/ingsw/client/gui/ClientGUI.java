@@ -23,6 +23,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientGUI extends Application implements ClientUserInterface {
+    private static final List<String> allGods = new ArrayList<>() {{
+        add("Apollo");
+        add("Artemis");
+        add("Athena");
+        add("Atlas");
+        add("Cronus");
+        add("Demeter");
+        add("Hephaestus");
+        add("Hera");
+        add("Hestia");
+        add("Minotaur");
+        add("Pan");
+        add("Prometheus");
+        add("Triton");
+        add("Zeus");
+    }};
     private final Parent mainMenu = FXMLLoader.load(getClass().getResource("/scenes/MainMenu.fxml"));
     private final Parent credits = FXMLLoader.load(getClass().getResource("/scenes/Credits.fxml"));
     private final Parent lobby = FXMLLoader.load(getClass().getResource("/scenes/Lobby.fxml"));
@@ -102,7 +118,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
             @Override
             public void onHostSelectGods(List<String> gods) {
                 hostSelected = gods;
-                menuScene.setRoot(mainMenu);
+                menuScene.setRoot(lobby);
                 sync = true;
             }
 
@@ -117,11 +133,11 @@ public class ClientGUI extends Application implements ClientUserInterface {
             if(keyEvent.getCode() == KeyCode.NUMPAD1) stage.fireEvent(new ChangeSceneEvent("game"));
             if(keyEvent.getCode() == KeyCode.NUMPAD4) {
                 ArrayList<String> gods = new ArrayList<>();
-                gods.add("Apollo");
+                /*gods.add("Apollo");
                 gods.add("Hera");
-                gods.add("Minotaur");
-                playerNumber = 3;
-                afterLobbyController.displayGods(gods);
+                gods.add("Minotaur");*/
+                playerNumber = 2;
+                afterLobbyController.displayGods(allGods);
                 afterLobbyController.setNumber(playerNumber);
                 menuScene.setRoot(afterLobby);
             }
@@ -187,8 +203,15 @@ public class ClientGUI extends Application implements ClientUserInterface {
 
     @Override
     public List<String> selectAvailableGods(int num) {
-        // TODO
-        return null;
+        mainStage.setScene(afterLobby.getScene());
+        afterLobbyController.displayGods(allGods);
+        afterLobbyController.setNumber(playerNumber);
+        while(true) {
+            if(sync) {
+                sync = false;
+                return hostSelected;
+            }
+        }
     }
 
     @Override
