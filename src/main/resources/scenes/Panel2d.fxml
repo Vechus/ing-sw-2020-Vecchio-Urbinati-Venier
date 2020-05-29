@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="750.0" prefWidth="250.0" style="-fx-background-color: steelblue;" stylesheets="@css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.Panel2dController">
+<?import javafx.scene.layout.VBox?>
+<AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="250.0" style="-fx-background-color: steelblue;" stylesheets="@css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.Panel2dController">
    <Label fx:id="playerNameLabel" layoutY="1.0" text="playerNameLabel" />
    <Label layoutX="1.0" layoutY="35.0" text="Press A to rotate left" />
    <Label layoutX="1.0" layoutY="69.0" text="Press D to rotate right" />
@@ -12,7 +13,5 @@
       <Image url="@../images/godCards/Atlas.png" />
    </ImageView>
    <Label layoutX="1.0" layoutY="103.0" text="Your god is:" />
-   <Button fx:id="buttonOne" layoutX="31.0" layoutY="578.0" mnemonicParsing="false" styleClass="blueButton" stylesheets="@css/Buttons.css" text="Move" />
-   <Button fx:id="buttonTwo" layoutX="31.0" layoutY="639.0" mnemonicParsing="false" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Build" />
-   <Button fx:id="buttonThree" layoutX="31.0" layoutY="698.0" mnemonicParsing="false" styleClass="redButton" stylesheets="@css/Buttons.css" text="End turn" />
+   <VBox fx:id="buttonBox" alignment="CENTER" layoutX="1.0" layoutY="570.0" prefHeight="180.0" prefWidth="250.0" style="-fx-spacing: 5;" stylesheets="@css/Buttons.css" />
 </AnchorPane>

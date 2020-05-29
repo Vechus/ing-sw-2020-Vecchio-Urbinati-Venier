@@ -9,6 +9,7 @@ import it.polimi.ingsw.client.events.NewAllowedActionsEvent;
 import it.polimi.ingsw.client.gui.game.GameScene;
 import it.polimi.ingsw.client.interfaces.ClientUserInterface;
 import it.polimi.ingsw.util.ActionType;
+import it.polimi.ingsw.util.ConsoleColor;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -258,22 +259,22 @@ public class ClientGUI extends Application implements ClientUserInterface {
 
     @Override
     public void showGameState(ClientBoard gameState) {
-
+        gameScene.updateBoard(gameState);
     }
 
     @Override
     public void showError(String message) {
-
+        System.err.println(message);
     }
 
     @Override
     public void showMessage(String s) {
-
+        System.out.println(ConsoleColor.GREEN + s);
     }
 
     @Override
     public void gameOver(String winnerName) {
-
+        System.out.println(ConsoleColor.CYAN_BOLD_BRIGHT + winnerName);
     }
 
     /*public static void main(String[] args) {

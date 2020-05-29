@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.gui.game;
 
+import it.polimi.ingsw.client.ClientBoard;
 import it.polimi.ingsw.client.events.ChangeSceneEvent;
+import it.polimi.ingsw.client.events.SelectOnGridEvent;
 import it.polimi.ingsw.client.gui.Panel2dController;
 import it.polimi.ingsw.util.Vector2;
 import javafx.animation.KeyFrame;
@@ -26,7 +28,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
-
 
 public class GameScene {
     private static final int WIDTH = 1100;
@@ -62,7 +63,8 @@ public class GameScene {
             e.printStackTrace();
         }
         panel2dController = loader.getController();
-        
+        panel2dController.init();
+
         this.primaryStage = stage;
         scene.setFill(Color.STEELBLUE);
         initCamera();
@@ -81,6 +83,10 @@ public class GameScene {
 
     public Group getGroup() {
         return group;
+    }
+
+    public void updateBoard(ClientBoard clientBoard) {
+        board3D.fromClientBoard(clientBoard);
     }
 
     private void initCamera() {
@@ -124,13 +130,14 @@ public class GameScene {
                 board3D.unselectBuildings();
                 BuildingCollider target = ((BuildingCollider) mouseEvent.getTarget());
                 handleSelected(target);
+                pane.fireEvent(new SelectOnGridEvent(target.getPos()));
             } else if(mouseEvent.getTarget() instanceof BuildingBlock) {
                 board3D.unselectBuildings();
                 BuildingBlock target = ((BuildingBlock) mouseEvent.getTarget());
                 selected = target.getPos();
                 handleSelected(board3D.getBuilding(target.getPos()).getCollider());
-            }
-            else {
+                pane.fireEvent(new SelectOnGridEvent(target.getPos()));
+            } else {
                 board3D.unselectBuildings();
                 selected = null;
             }
@@ -205,7 +212,7 @@ public class GameScene {
 
         if(selected == null) {
             selected = target.getPos();
-        } else {
+        } /*else {
             switch (clientGameStage3D) {
                 case PLACE_WORKER -> {
                     selected = target.getPos();
@@ -217,7 +224,7 @@ public class GameScene {
                     clientGameStage3D = ClientGameStage3D.WAIT;
                 }
             }
-        }
+        }*/
         getBoard3D().getBuilding(selected).select();
     }
 }
