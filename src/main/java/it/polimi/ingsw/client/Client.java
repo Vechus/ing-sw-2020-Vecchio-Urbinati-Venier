@@ -39,7 +39,11 @@ public class Client {
      */
     public void run() {
         if (useCli) ui = new ClientCLI();
-        else ui = new ClientGUI();
+        else{
+            ui = new ClientGUI();
+            Thread guiThread = new Thread((Runnable) ui);
+            guiThread.start();
+        }
 
         // get data to start the game
         ui.setupInterface();

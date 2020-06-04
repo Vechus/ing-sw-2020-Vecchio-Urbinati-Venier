@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientGUI extends Application implements ClientUserInterface {
+public class ClientGUI extends Application implements ClientUserInterface, Runnable {
     private static final List<String> allGods = new ArrayList<>() {{
         add("Apollo");
         add("Artemis");
@@ -40,26 +40,28 @@ public class ClientGUI extends Application implements ClientUserInterface {
         add("Triton");
         add("Zeus");
     }};
-    private Parent mainMenu;
-    private Parent credits;
-    private FXMLLoader lobbyLoader;
-    private LobbyController lobbyController;
-    private Parent lobby;
-    private FXMLLoader afterLobbyLoader;
-    private AfterLobbyController afterLobbyController;
-    private Parent afterLobby;
-    private List<String> hostSelected;
-    private String playerName;
-    private String ip;
-    private int port;
-    private int playerNumber;
-    private String playerGod;
-    private boolean sync = false;
-    private ClientAction playerAction;
-    private GameScene gameScene;
-    private Stage mainStage;
+    private static Parent mainMenu;
+    private static Parent credits;
+    private static FXMLLoader lobbyLoader;
+    private static LobbyController lobbyController;
+    private static Parent lobby;
+    private static FXMLLoader afterLobbyLoader;
+    private static AfterLobbyController afterLobbyController;
+    private static Parent afterLobby;
+    private static List<String> hostSelected;
+    private static String playerName;
+    private static String ip;
+    private static int port;
+    private static int playerNumber;
+    private static String playerGod;
+    private static boolean sync = false;
+    private static ClientAction playerAction;
+    private static GameScene gameScene;
+    private static Stage mainStage;
 
-    public ClientGUI() { }
+    public ClientGUI() {
+        initParameters();
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -185,16 +187,24 @@ public class ClientGUI extends Application implements ClientUserInterface {
 
     @Override
     public void setupInterface() {
-        Application.launch();
+
+    }
+
+    void loopWait(){
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public String getIP() {
         while(true) {
             if(sync) {
-                sync = false;
                 return ip;
             }
+            loopWait();
         }
     }
 
@@ -205,6 +215,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
                 sync = false;
                 return port;
             }
+            loopWait();
         }
     }
 
@@ -216,6 +227,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
                 sync = false;
                 return playerNumber;
             }
+            loopWait();
         }
     }
 
@@ -229,6 +241,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
                 sync = false;
                 return hostSelected;
             }
+            loopWait();
         }
     }
 
@@ -242,6 +255,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
                 sync = false;
                 return playerGod;
             }
+            loopWait();
         }
     }
 
@@ -254,6 +268,7 @@ public class ClientGUI extends Application implements ClientUserInterface {
                 sync = false;
                 return playerAction;
             }
+            loopWait();
         }
     }
 
@@ -277,12 +292,14 @@ public class ClientGUI extends Application implements ClientUserInterface {
         System.out.println(ConsoleColor.CYAN_BOLD_BRIGHT + winnerName);
     }
 
-    /*public static void main(String[] args) {
-        launch(args);
-    }*/
-
     public String getPlayerName() {
-        return playerName;
+        while(true) {
+            if(sync) {
+                sync = false;
+                return playerName;
+            }
+            loopWait();
+        }
     }
 
     public void setPlayerName(String playerName) {
@@ -303,5 +320,10 @@ public class ClientGUI extends Application implements ClientUserInterface {
 
     public GameScene getGameScene() {
         return gameScene;
+    }
+
+    @Override
+    public void run() {
+        Application.launch();
     }
 }
