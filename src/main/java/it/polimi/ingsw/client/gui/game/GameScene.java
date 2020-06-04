@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientBoard;
 import it.polimi.ingsw.client.events.ChangeSceneEvent;
 import it.polimi.ingsw.client.events.SelectOnGridEvent;
 import it.polimi.ingsw.client.gui.Panel2dController;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -28,13 +29,14 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.List;
 
 public class GameScene {
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 750;
     private static final double CAMERA_RAY = 50;
-    public enum ClientGameStage3D {PLACE_WORKER, WAIT, TURN};
-    private ClientGameStage3D clientGameStage3D = ClientGameStage3D.PLACE_WORKER;
+    public enum ClientGameStage3D {ACTION, WAIT, TURN};
+    private ClientGameStage3D clientGameStage3D = ClientGameStage3D.ACTION;
     private int cameraAngle = 0;
     private Label bottomMessage = new Label();
     private final Board3D board3D;
@@ -125,7 +127,7 @@ public class GameScene {
             }
         });
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            System.out.println("mouse click " + mouseEvent.getTarget());
+            System.out.println("DEBUG: mouse click " + mouseEvent.getTarget());
             if(mouseEvent.getTarget() instanceof BuildingCollider) {
                 board3D.unselectBuildings();
                 BuildingCollider target = ((BuildingCollider) mouseEvent.getTarget());
@@ -207,24 +209,30 @@ public class GameScene {
         return scene;
     }
 
+    public void getAllowedActions(List<ActionType> allowedActions) {
+        panel2dController.addButtons(allowedActions);
+        panel2dController.setPos(null);
+        panel2dController.setSelected(null);
+        clientGameStage3D = ClientGameStage3D.ACTION;
+    }
+
     private void handleSelected(BuildingCollider target) {
         board3D.unselectBuildings();
 
-        if(selected == null) {
-            selected = target.getPos();
-        } /*else {
-            switch (clientGameStage3D) {
-                case PLACE_WORKER -> {
+        switch (clientGameStage3D) {
+            case ACTION -> {
+                if(selected == null && getBoard3D().getWorkerAt(target.getPos()) != null) {
                     selected = target.getPos();
-                    // spawn worker
-                    if(board3D.getWorkerAt(selected) == null) {
-                        // TODO
-                        board3D.addWorker(selected, 1, true);
-                    }
-                    clientGameStage3D = ClientGameStage3D.WAIT;
+                    panel2dController.setPos(selected);
+                    panel2dController.setSelected(null);
+                } else {
+                    selected = target.getPos();
+                    panel2dController.setSelected(selected);
                 }
             }
-        }*/
+            case WAIT -> selected = target.getPos();
+        }
+
         getBoard3D().getBuilding(selected).select();
     }
 }

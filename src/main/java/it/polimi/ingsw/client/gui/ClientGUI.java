@@ -5,12 +5,12 @@ import it.polimi.ingsw.client.ClientBoard;
 import it.polimi.ingsw.client.events.ChangeSceneEvent;
 import it.polimi.ingsw.client.events.CustomEvent;
 import it.polimi.ingsw.client.events.CustomEventHandler;
-import it.polimi.ingsw.client.events.NewAllowedActionsEvent;
 import it.polimi.ingsw.client.gui.game.GameScene;
 import it.polimi.ingsw.client.interfaces.ClientUserInterface;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.ConsoleColor;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -58,6 +58,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
     private static ClientAction playerAction;
     private static GameScene gameScene;
     private static Stage mainStage;
+    private static Scene menuScene;
 
     public ClientGUI() {
         initParameters();
@@ -71,7 +72,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
         afterLobbyLoader = new FXMLLoader(getClass().getResource("/scenes/AfterLobby.fxml"));
 
         mainStage = stage;
-        Scene menuScene = new Scene(mainMenu, 1300, 750);
+        menuScene = new Scene(mainMenu, 1300, 750);
         lobby = lobbyLoader.load();
         lobbyController = lobbyLoader.getController();
         afterLobby = afterLobbyLoader.load();
@@ -87,10 +88,6 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
                         menuScene.setRoot(mainMenu);
                     }
                     case "lobby" -> menuScene.setRoot(lobby);
-                    case "game" -> {
-                        gameScene = new GameScene(stage);
-                        stage.setScene(gameScene.getScene());
-                    }
                     case "gameToMenu" -> {
                         menuScene.setRoot(mainMenu);
                         initParameters();
@@ -112,9 +109,6 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
                 playerNumber = num;
                 System.out.println(num);
                 sync = true;
-                afterLobbyController.displayGods(allGods);
-                afterLobbyController.setNumber(playerNumber);
-                menuScene.setRoot(afterLobby);
             }
 
             @Override
@@ -122,14 +116,13 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
                 setPlayerName(playerName);
                 System.out.println(playerName);
                 sync = true;
-                lobbyController.showHostPane();
             }
 
             @Override
             public void onPlayerGodChange(String god) {
                 playerGod = god;
                 System.out.println(god);
-                menuScene.setRoot(mainMenu);
+                menuScene.setRoot(lobby);
                 sync = true;
             }
 
@@ -145,31 +138,12 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
             public void onPlayerAction(ClientAction action) {
                 playerAction = action;
                 sync = true;
+                System.out.println("new action!!");
             }
         });
         // testing only, REMOVE ON RELEASE
         stage.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent ->{
             if(keyEvent.getCode() == KeyCode.NUMPAD1) stage.fireEvent(new ChangeSceneEvent("game"));
-            if(keyEvent.getCode() == KeyCode.NUMPAD4) {
-                ArrayList<String> gods = new ArrayList<>();
-                /*gods.add("Apollo");
-                gods.add("Hera");
-                gods.add("Minotaur");*/
-                playerNumber = 2;
-                afterLobbyController.displayGods(allGods);
-                afterLobbyController.setNumber(playerNumber);
-                menuScene.setRoot(afterLobby);
-            }
-            if(keyEvent.getCode() == KeyCode.NUMPAD5) {
-                ArrayList<String> gods = new ArrayList<>();
-                gods.add("Apollo");
-                gods.add("Hera");
-
-                playerNumber = 3;
-                afterLobbyController.displayGods(gods);
-                afterLobbyController.setNumber(playerNumber);
-                menuScene.setRoot(afterLobby);
-            }
         });
 
         stage.setTitle("Santorini - GC18");
@@ -233,9 +207,11 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     @Override
     public List<String> selectAvailableGods(int num) {
-        mainStage.setScene(afterLobby.getScene());
-        afterLobbyController.displayGods(allGods);
-        afterLobbyController.setNumber(playerNumber);
+        Platform.runLater(() -> {
+            afterLobbyController.displayGods(allGods);
+            afterLobbyController.setNumber(playerNumber);
+            menuScene.setRoot(afterLobby);
+        });
         while(true) {
             if(sync) {
                 sync = false;
@@ -247,9 +223,11 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     @Override
     public String chooseGod(List<String> gods) {
-        mainStage.setScene(afterLobby.getScene());
-        afterLobbyController.displayGods(gods);
-        afterLobbyController.setNumber(playerNumber);
+        Platform.runLater(() -> {
+            afterLobbyController.displayGods(gods);
+            afterLobbyController.setNumber(playerNumber);
+            menuScene.setRoot(afterLobby);
+        });
         while(true) {
             if(sync) {
                 sync = false;
@@ -262,7 +240,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
     @Override
     public ClientAction getPlayerMove(List<ActionType> allowedActions) {
         // notify GameScene
-        mainStage.fireEvent(new NewAllowedActionsEvent(allowedActions));
+        Platform.runLater(() -> gameScene.getAllowedActions(allowedActions));
         while(true) {
             if(sync) {
                 sync = false;
@@ -274,7 +252,13 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     @Override
     public void showGameState(ClientBoard gameState) {
-        gameScene.updateBoard(gameState);
+        Platform.runLater(() -> {
+            if(gameScene == null) {
+                gameScene = new GameScene(mainStage);
+                mainStage.setScene(gameScene.getScene());
+            }
+            gameScene.updateBoard(gameState);
+        });
     }
 
     @Override
