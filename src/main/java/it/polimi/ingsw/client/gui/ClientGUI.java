@@ -138,7 +138,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
             public void onPlayerAction(ClientAction action) {
                 playerAction = action;
                 sync = true;
-                System.out.println("New action: " + action.getType().name() + " from " + action.getFrom().toString() + " to " + action.getTo().toString());
+                //System.out.println("New action: " + action.getType() + " from " + action.getFrom().toString() + " to " + action.getTo().toString());
             }
         });
         // testing only, REMOVE ON RELEASE

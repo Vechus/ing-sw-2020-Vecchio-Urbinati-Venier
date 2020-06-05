@@ -20,15 +20,16 @@ public class BuildingBlock extends MeshView {
             translateYProperty().set(BOARD_HEIGHT - (1.5 * (height-1)));
             material.setDiffuseMap(new Image(String.valueOf(getClass().getResource("/textures/BuildingBlock0" + height + ".png"))));
             material.setSpecularColor(Color.WHITE);
+            translateXProperty().set(coordX * 3.19 - 6.2);
         }
         else {
             material.setSpecularColor(Color.DARKGREY);
             material.setDiffuseColor(Color.ROYALBLUE);
             translateYProperty().set(BOARD_HEIGHT - 4.1);
+            translateXProperty().set(coordX * 3.19 - 6.15);
         }
         setMaterial(material);
         getTransforms().add(new Rotate(180, Rotate.X_AXIS));
-        translateXProperty().set(coordX * 3.19 - 6.05);
         translateZProperty().set(coordY * 3.05 - 6.2);
         getTransforms().add(new Scale(0.4, 0.4, 0.4));
     }

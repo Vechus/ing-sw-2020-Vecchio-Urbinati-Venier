@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.gui.game;
 
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,8 @@ public class Building3D {
     public void buildDome() {
         BuildingBlock dome = new BuildingBlock(coordX, coordY, 4);
         this.group.getChildren().add(dome);
-        dome.translateYProperty().set(pieces.size() * 5);
+        dome.getTransforms().add(new Rotate(90 * rotFactor, Rotate.Y_AXIS));
+        dome.getTransforms().add(new Translate(0, - (3.14 * (3 - getHeight())), 0));
         pieces.add(dome);
         this.hasDome = true;
     }

@@ -22,7 +22,7 @@ public class Worker3D extends MeshView {
             case 1 -> material.setSpecularColor(Color.GREEN);
             case 2 -> material.setSpecularColor(Color.BLUE);
         }
-        material.setSpecularPower(.1);
+        material.setSpecularPower(.05);
         setMaterial(material);
         getTransforms().add(new Rotate(180, Rotate.X_AXIS));
     }
