@@ -75,36 +75,43 @@ public class Board3D {
         for(int i = 0; i < 5; i ++) {
             for(int j = 0; j < 5; j ++) {
                 Vector2 v = new Vector2(i, j);
-                for(int k = 0; k < board.getHeight(v); k++) {
+                // building differences
+                for(int k = getBuilding(v).getHeight(); k < board.getHeight(v); k++) {
                     getBuilding(v).increaseHeight();
                 }
-                if(board.getDome(v))
+                if(board.getDome(v) && !getBuilding(v).hasDome())
                     getBuilding(v).buildDome();
+                // workers movement difference tracking
                 if(board.getWorkerPlayer(v) != (getWorkerAt(v) == null ? -1 : getWorkerAt(v).getWorkerId())) {
-                    if(diff == null)
+                    if(diff == null) {
                         // difference point 1 found
                         diff = v;
+                    }
                     else {
                         // difference point 2 found
                         hasDiff = true;
+                        if(getWorkerAt(diff) != null) {
+                            // move from diff to v or switch places between the two
+                            if(getWorkerAt(v) != null) {
+                                Vector2 tmp = new Vector2(-1, -1);
+                                getWorkerAt(v).setPosition(tmp, -5);
+                                getWorkerAt(diff).setPosition(v, getBuilding(v).getHeight());
+                                getWorkerAt(tmp).setPosition(diff, getBuilding(diff).getHeight());
+                            } else
+                                getWorkerAt(diff).setPosition(v, getBuilding(v).getHeight());
+                        } else {
+                            // move from v to diff
+                            if(getWorkerAt(v) != null)
+                                getWorkerAt(v).setPosition(diff, getBuilding(diff).getHeight());
+                            else {
+                                // new pair of workers (should not happen)
+                                System.err.println("Double workers parsed from ClientBoard");
+                            }
+                        }
                         if(getWorkerAt(v) != null && getWorkerAt(diff) != null && board.getWorkerPlayer(v) == -1 && board.getWorkerPlayer(diff) == -1) {
+                            // double worker removal
                             removeWorker(v);
                             removeWorker(diff);
-                        }
-                        if(getWorkerAt(v) != null) {
-                            if(getWorkerAt(diff) != null) {
-                                // workers on diff and v, so switch their position
-                                getWorkerAt(diff).setPosition(v, getBuilding(v).getHeight());
-                            }
-                            // else move worker on v to diff
-                            getWorkerAt(v).setPosition(diff, getBuilding(diff).getHeight());
-                        } else if(getWorkerAt(diff) != null) {
-                            // worker on v has moved on diff
-                            getWorkerAt(v).setPosition(diff, getBuilding(diff).getHeight());
-                        } else {
-                            // new pair of workers has been added (SHOULD NOT HAPPEN THOUGH)
-                            addWorker(v, board.getWorkerPlayer(v), false);
-                            addWorker(diff, board.getWorkerPlayer(diff), true);
                         }
                     }
                 }
@@ -114,9 +121,14 @@ public class Board3D {
             if(board.getWorkerPlayer(diff) != -1) {
                 // new single worker
                 Vector2 finalDiff = diff;
-                Worker3D worker3D = new Worker3D(board.getWorkerPlayer(diff), playerWorkers.stream()
+                addWorker(diff, board.getWorkerPlayer(diff), playerWorkers.stream()
+                        .filter(w -> w.getWorkerId() == board.getWorkerPlayer(finalDiff))
+                        .count() == 1);
+                /*Worker3D worker3D = new Worker3D(board.getWorkerPlayer(diff), playerWorkers.stream()
                         .filter(w -> w.getWorkerId() == board.getWorkerPlayer(finalDiff)).count() == 1);
                 worker3D.setPosition(diff, getBuilding(diff).getHeight());
+                playerWorkers.add(worker3D);
+                group.getChildren().add(worker3D);*/
             } else {
                 // single worker deleted (should it happen? not very convenient imo)
                 removeWorker(diff);

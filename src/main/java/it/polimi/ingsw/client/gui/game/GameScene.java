@@ -132,16 +132,14 @@ public class GameScene {
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             System.out.println("DEBUG: mouse click " + mouseEvent.getTarget());
             if(mouseEvent.getTarget() instanceof BuildingCollider) {
-                board3D.unselectBuildings();
                 BuildingCollider target = ((BuildingCollider) mouseEvent.getTarget());
                 handleSelected(target);
                 pane.fireEvent(new SelectOnGridEvent(target.getPos()));
             } else if(mouseEvent.getTarget() instanceof BuildingBlock) {
-                board3D.unselectBuildings();
-                BuildingBlock target = ((BuildingBlock) mouseEvent.getTarget());
-                selected = target.getPos();
-                handleSelected(board3D.getBuilding(target.getPos()).getCollider());
-                pane.fireEvent(new SelectOnGridEvent(target.getPos()));
+                handleSelected(board3D.getBuilding(((BuildingBlock) mouseEvent.getTarget()).getPos()).getCollider());
+                pane.fireEvent(new SelectOnGridEvent(((BuildingBlock) mouseEvent.getTarget()).getPos()));
+            } else if(mouseEvent.getTarget() instanceof Worker3D) {
+                handleSelected(board3D.getBuilding(((Worker3D)(mouseEvent.getTarget())).getPosition()).getCollider());
             } else {
                 board3D.unselectBuildings();
                 selected = null;
