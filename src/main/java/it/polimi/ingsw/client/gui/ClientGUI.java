@@ -255,6 +255,8 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
         Platform.runLater(() -> {
             if(gameScene == null) {
                 gameScene = new GameScene(mainStage);
+                gameScene.setPlayerGod(playerGod);
+                gameScene.setPlayerName(playerName);
                 mainStage.setScene(gameScene.getScene());
             }
             gameScene.updateBoard(gameState);
@@ -273,7 +275,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     @Override
     public void gameOver(String winnerName) {
-        System.out.println(ConsoleColor.CYAN_BOLD_BRIGHT + winnerName);
+        System.out.println(ConsoleColor.CYAN_BOLD_BRIGHT + winnerName + " won!");
     }
 
     public String getPlayerName() {

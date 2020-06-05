@@ -15,8 +15,8 @@ import java.util.List;
 
 public class Board3D {
     private final Group group;
-    private Building3D[][] board = new Building3D[5][5];
-    private List<Worker3D> playerWorkers = new ArrayList<>();
+    private final Building3D[][] board = new Building3D[5][5];
+    private final List<Worker3D> playerWorkers = new ArrayList<>();
 
     public Board3D(Group group) {
         this.group = group;
@@ -56,6 +56,14 @@ public class Board3D {
         for (Building3D[] building3DS : board) {
             for (Building3D building3D: building3DS) {
                 building3D.unselect();
+            }
+        }
+    }
+
+    public void unselectNotRedBuildings() {
+        for (Building3D[] building3DS : board) {
+            for (Building3D building3D: building3DS) {
+                building3D.unselectNotRed();
             }
         }
     }
@@ -135,6 +143,10 @@ public class Board3D {
             }
         }
         return null;
+    }
+
+    public int getPlayerWorkersSize() {
+        return playerWorkers.size();
     }
 
     private void prepareModel(String model, Group group, int x, int y, int z) {

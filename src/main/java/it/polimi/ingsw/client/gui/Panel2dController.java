@@ -3,7 +3,9 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.client.events.GameEvent;
 import it.polimi.ingsw.client.events.GameEventHandler;
+import it.polimi.ingsw.client.events.PlaceWorkerEvent;
 import it.polimi.ingsw.client.events.PlayerActionEvent;
+import it.polimi.ingsw.client.gui.game.ClientGuiGod;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import javafx.fxml.FXML;
@@ -81,9 +83,10 @@ public class Panel2dController {
                     button.setText("Place worker");
                     button.getStyleClass().add("greenButton");
                     button.setOnAction(actionEvent -> {
-                        if(selected != null) {
+                        if(pos != null) {
                             buttonBox.getChildren().clear();
-                            ClientAction clientAction = new ClientAction(selected != null ? selected:pos, selected != null ? selected:pos, ActionType.PLACE_WORKER);
+                            buttonBox.fireEvent(new PlaceWorkerEvent(pos));
+                            ClientAction clientAction = new ClientAction(pos, pos, ActionType.PLACE_WORKER);
                             buttonBox.fireEvent(new PlayerActionEvent(clientAction));
                         }
                     });
@@ -102,6 +105,15 @@ public class Panel2dController {
             buttonBox.getChildren().add(button);
         }
         //Button button = new Button("Testodentro");
+    }
+
+    public void setPlayerNameLabel(String playerName) {
+        this.playerNameLabel.setText(playerName);
+    }
+
+    public void setPlayerGodImage(String god) {
+        ClientGuiGod guiGod = new ClientGuiGod(god);
+        this.playerGodImage.setImage(guiGod.getImage());
     }
 
     public void setSelected(Vector2 selected) {

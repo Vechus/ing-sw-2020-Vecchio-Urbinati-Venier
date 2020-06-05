@@ -36,11 +36,21 @@ public class BuildingCollider extends Box {
         colliderMaterial.setDiffuseColor(Color.YELLOW);
     }
 
+    public void selectRed() {
+        colliderMaterial.setDiffuseColor(Color.RED);
+    }
+
     public void unselect() {
         colliderMaterial.setDiffuseColor(Color.TRANSPARENT);
     }
 
     public Vector2 getPos() {
         return pos;
+    }
+
+    public void unselectNotRed() {
+        if(colliderMaterial.getDiffuseColor() != Color.RED) {
+            colliderMaterial.setDiffuseColor(Color.TRANSPARENT);
+        }
     }
 }

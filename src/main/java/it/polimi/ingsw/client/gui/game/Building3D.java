@@ -92,7 +92,15 @@ public class Building3D {
         collider.select();
     }
 
+    public void selectRed() {
+        collider.selectRed();
+    }
+
     public void unselect() {
         collider.unselect();
+    }
+
+    public void unselectNotRed() {
+        collider.unselectNotRed();
     }
 }

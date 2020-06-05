@@ -2,6 +2,8 @@ package it.polimi.ingsw.client.gui.game;
 
 import it.polimi.ingsw.client.ClientBoard;
 import it.polimi.ingsw.client.events.ChangeSceneEvent;
+import it.polimi.ingsw.client.events.GameEvent;
+import it.polimi.ingsw.client.events.GameEventHandler;
 import it.polimi.ingsw.client.events.SelectOnGridEvent;
 import it.polimi.ingsw.client.gui.Panel2dController;
 import it.polimi.ingsw.util.ActionType;
@@ -35,8 +37,8 @@ public class GameScene {
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 750;
     private static final double CAMERA_RAY = 50;
-    public enum ClientGameStage3D {ACTION, WAIT, TURN};
-    private ClientGameStage3D clientGameStage3D = ClientGameStage3D.ACTION;
+    public enum ClientGameStage3D {PLACE_FIRST_WORKER, PLACE_SECOND_WORKER, ACTION, WAIT, TURN};
+    private ClientGameStage3D clientGameStage3D = ClientGameStage3D.PLACE_FIRST_WORKER;
     private int cameraAngle = 0;
     private Label bottomMessage = new Label();
     private final Board3D board3D;
@@ -52,6 +54,7 @@ public class GameScene {
     private FXMLLoader loader;
     private Parent panel2d = null;
     private Panel2dController panel2dController;
+    private int playerID;
 
 
     public GameScene(Stage stage) {
@@ -144,6 +147,21 @@ public class GameScene {
                 selected = null;
             }
         });
+        pane.addEventHandler(GameEvent.GAME_EVENT_TYPE, new GameEventHandler() {
+            @Override
+            public void onSelectGrid(Vector2 pos) {}
+
+            @Override
+            public void onPlaceWorker(Vector2 pos) {
+                if(clientGameStage3D == ClientGameStage3D.PLACE_FIRST_WORKER)
+                    playerID = board3D.getPlayerWorkersSize() / 2;
+                board3D.addWorker(pos, playerID, clientGameStage3D == ClientGameStage3D.PLACE_SECOND_WORKER);
+                if(clientGameStage3D == ClientGameStage3D.PLACE_FIRST_WORKER)
+                    clientGameStage3D = ClientGameStage3D.PLACE_SECOND_WORKER;
+                else
+                    clientGameStage3D = ClientGameStage3D.WAIT;
+            }
+        });
     }
 
     private void askWorkerPlacement(){
@@ -213,26 +231,56 @@ public class GameScene {
         panel2dController.addButtons(allowedActions);
         panel2dController.setPos(null);
         panel2dController.setSelected(null);
-        clientGameStage3D = ClientGameStage3D.ACTION;
+        board3D.unselectBuildings();
+        if(clientGameStage3D == ClientGameStage3D.WAIT)
+            clientGameStage3D = ClientGameStage3D.ACTION;
+    }
+
+    public void setPlayerGod(String god) {
+        panel2dController.setPlayerGodImage(god);
+    }
+
+    public void setPlayerName(String playerName) {
+        panel2dController.setPlayerNameLabel(playerName);
     }
 
     private void handleSelected(BuildingCollider target) {
-        board3D.unselectBuildings();
-
         switch (clientGameStage3D) {
-            case ACTION -> {
-                if(selected == null && getBoard3D().getWorkerAt(target.getPos()) != null) {
+            case PLACE_FIRST_WORKER, PLACE_SECOND_WORKER -> {
+                board3D.unselectBuildings();
+                if(getBoard3D().getWorkerAt(target.getPos()) == null) {
                     selected = target.getPos();
                     panel2dController.setPos(selected);
                     panel2dController.setSelected(null);
+                    board3D.getBuilding(selected).selectRed();
                 } else {
-                    selected = target.getPos();
-                    panel2dController.setSelected(selected);
+                    selected = null;
                 }
             }
-            case WAIT -> selected = target.getPos();
+            case WAIT -> {
+                board3D.unselectBuildings();
+                selected = target.getPos();
+                board3D.getBuilding(selected).select();
+            }
+            case ACTION -> {
+                board3D.unselectNotRedBuildings();
+                // if first select or the player **decides to reset**
+                if(selected == null || (panel2dController.getPos() != null && panel2dController.getSelected() != null)) {
+                    selected = target.getPos();
+                    panel2dController.setPos(null);
+                    panel2dController.setSelected(null);
+                    if(getBoard3D().getWorkerAt(selected) != null) {
+                        if (getBoard3D().getWorkerAt(selected).getWorkerId() == playerID) {
+                            getBoard3D().getBuilding(selected).selectRed();
+                            panel2dController.setPos(selected);
+                        }
+                    }
+                } else if(panel2dController.getPos() != null) {
+                    selected = target.getPos();
+                    panel2dController.setSelected(selected);
+                    board3D.getBuilding(selected).select();
+                }
+            }
         }
-
-        getBoard3D().getBuilding(selected).select();
     }
 }
