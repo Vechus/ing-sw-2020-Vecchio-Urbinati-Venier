@@ -23,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.MeshView;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Modality;
@@ -37,7 +38,7 @@ public class GameScene {
     private static final int WIDTH = 1100;
     private static final int HEIGHT = 750;
     private static final double CAMERA_RAY = 50;
-    public enum ClientGameStage3D {PLACE_FIRST_WORKER, PLACE_SECOND_WORKER, ACTION, WAIT, TURN};
+    public enum ClientGameStage3D {PLACE_FIRST_WORKER, PLACE_SECOND_WORKER, ACTION, WAIT};
     private ClientGameStage3D clientGameStage3D = ClientGameStage3D.PLACE_FIRST_WORKER;
     private int cameraAngle = 0;
     private Label bottomMessage = new Label();
@@ -78,8 +79,8 @@ public class GameScene {
         bottomMessage.prefHeight(300);
         bottomMessage.prefWidth(150);
         bottomMessage.setStyle("-fx-alignment: center");
+        bottomMessage.setStyle("-fx-font-weight: bolder");
         pane.setBottom(bottomMessage);
-        askWorkerPlacement();
     }
 
     public Board3D getBoard3D() {
@@ -130,17 +131,17 @@ public class GameScene {
             }
         });
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            System.out.println("DEBUG: mouse click " + mouseEvent.getTarget());
-            if(mouseEvent.getTarget() instanceof BuildingCollider) {
+            //System.out.println("DEBUG: mouse click " + mouseEvent.getTarget());
+            if (mouseEvent.getTarget() instanceof BuildingCollider) {
                 BuildingCollider target = ((BuildingCollider) mouseEvent.getTarget());
                 handleSelected(target);
                 pane.fireEvent(new SelectOnGridEvent(target.getPos()));
-            } else if(mouseEvent.getTarget() instanceof BuildingBlock) {
+            } else if (mouseEvent.getTarget() instanceof BuildingBlock) {
                 handleSelected(board3D.getBuilding(((BuildingBlock) mouseEvent.getTarget()).getPos()).getCollider());
                 pane.fireEvent(new SelectOnGridEvent(((BuildingBlock) mouseEvent.getTarget()).getPos()));
-            } else if(mouseEvent.getTarget() instanceof Worker3D) {
-                handleSelected(board3D.getBuilding(((Worker3D)(mouseEvent.getTarget())).getPosition()).getCollider());
-            } else {
+            } else if (mouseEvent.getTarget() instanceof Worker3D) {
+                handleSelected(board3D.getBuilding(((Worker3D) (mouseEvent.getTarget())).getPosition()).getCollider());
+            } else if (mouseEvent.getTarget() instanceof MeshView) {
                 board3D.unselectBuildings();
                 selected = null;
             }
@@ -162,10 +163,6 @@ public class GameScene {
         });
     }
 
-    private void askWorkerPlacement(){
-        bottomMessage.setText("Place a worker.");
-    }
-
     private void cleanBottom() {
         pane.setBottom(null);
     }
@@ -175,7 +172,7 @@ public class GameScene {
 
         VBox pauseRoot = new VBox(5);
         pauseRoot.setAlignment(Pos.CENTER);
-        pauseRoot.setStyle("-fx-background-color: rgba(46, 62, 180, 0.4);");
+        pauseRoot.setStyle("-fx-background-color: rgba(46, 62, 180, 0.5);");
         pauseRoot.setPadding(new Insets(20));
         Label pauseLabel = new Label("Paused");
         pauseLabel.getStylesheets().add(getClass().getResource("/scenes/css/MainMenuStyle.css").toExternalForm());
@@ -227,9 +224,15 @@ public class GameScene {
 
     public void getAllowedActions(List<ActionType> allowedActions) {
         panel2dController.addButtons(allowedActions);
-        panel2dController.setPos(null);
-        panel2dController.setSelected(null);
-        board3D.unselectBuildings();
+        unselectAll();
+        bottomMessage.setTextFill(Color.BLACK);
+        allowedActions.forEach(a -> {
+            switch (a) {
+                case PLACE_WORKER -> bottomMessage.setText("Place a worker.");
+                case END_TURN -> bottomMessage.setText("You can end your turn.");
+                default -> bottomMessage.setText("Select a worker to move or build.");
+            }
+        });
         if(clientGameStage3D == ClientGameStage3D.WAIT)
             clientGameStage3D = ClientGameStage3D.ACTION;
     }
@@ -240,6 +243,26 @@ public class GameScene {
 
     public void setPlayerName(String playerName) {
         panel2dController.setPlayerNameLabel(playerName);
+    }
+
+    public void setClientGameStage3D(ClientGameStage3D clientGameStage3D) {
+        this.clientGameStage3D = clientGameStage3D;
+    }
+
+    public ClientGameStage3D getClientGameStage3D() {
+        return clientGameStage3D;
+    }
+
+    public void displayBottomMessage(String message, Color color) {
+        bottomMessage.setText(message);
+        bottomMessage.setTextFill(color);
+    }
+
+    public void unselectAll() {
+        selected = null;
+        board3D.unselectBuildings();
+        panel2dController.setPos(null);
+        panel2dController.setSelected(null);
     }
 
     private void handleSelected(BuildingCollider target) {
@@ -257,8 +280,7 @@ public class GameScene {
             }
             case WAIT -> {
                 board3D.unselectBuildings();
-                selected = target.getPos();
-                board3D.getBuilding(selected).select();
+                board3D.getBuilding(target.getPos()).select();
             }
             case ACTION -> {
                 board3D.unselectNotRedBuildings();

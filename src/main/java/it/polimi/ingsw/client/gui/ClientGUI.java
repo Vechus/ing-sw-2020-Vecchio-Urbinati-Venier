@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.client.ClientBoard;
-import it.polimi.ingsw.client.events.ChangeSceneEvent;
 import it.polimi.ingsw.client.events.CustomEvent;
 import it.polimi.ingsw.client.events.CustomEventHandler;
 import it.polimi.ingsw.client.gui.game.GameScene;
@@ -14,8 +13,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -136,14 +134,12 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
             @Override
             public void onPlayerAction(ClientAction action) {
+                if(gameScene.getClientGameStage3D() == GameScene.ClientGameStage3D.ACTION)
+                    gameScene.setClientGameStage3D(GameScene.ClientGameStage3D.WAIT);
+                gameScene.unselectAll();
                 playerAction = action;
                 sync = true;
-                //System.out.println("New action: " + action.getType() + " from " + action.getFrom().toString() + " to " + action.getTo().toString());
             }
-        });
-        // testing only, REMOVE ON RELEASE
-        stage.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent ->{
-            if(keyEvent.getCode() == KeyCode.NUMPAD1) stage.fireEvent(new ChangeSceneEvent("game"));
         });
 
         stage.setTitle("Santorini - GC18");
@@ -265,12 +261,12 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     @Override
     public void showError(String message) {
-        System.err.println(message);
+        Platform.runLater(() -> gameScene.displayBottomMessage(message, Color.RED));
     }
 
     @Override
     public void showMessage(String s) {
-        System.out.println(ConsoleColor.GREEN + s);
+        Platform.runLater(() -> gameScene.displayBottomMessage(s, Color.WHITE));
     }
 
     @Override
@@ -289,7 +285,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
     }
 
     public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+        ClientGUI.playerName = playerName;
     }
 
     public Parent getMainMenu() {
