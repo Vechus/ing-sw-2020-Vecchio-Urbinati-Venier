@@ -70,7 +70,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
         afterLobbyLoader = new FXMLLoader(getClass().getResource("/scenes/AfterLobby.fxml"));
 
         mainStage = stage;
-        menuScene = new Scene(mainMenu, 1300, 750);
+        menuScene = new Scene(mainMenu, 1200, 700);
         lobby = lobbyLoader.load();
         lobbyController = lobbyLoader.getController();
         afterLobby = afterLobbyLoader.load();

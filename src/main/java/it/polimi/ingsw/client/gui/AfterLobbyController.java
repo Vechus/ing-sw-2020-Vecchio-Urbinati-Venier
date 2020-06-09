@@ -27,7 +27,7 @@ public class AfterLobbyController {
         grid = new GridPane();
         selected = new ArrayList<>();
         anchor.getChildren().add(grid);
-        grid.setPrefSize(1300, 750);
+        grid.setPrefSize(1200, 700);
         grid.setAlignment(Pos.CENTER);
 
         grid.setLayoutY(50);

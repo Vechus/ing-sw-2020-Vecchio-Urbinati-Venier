@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="750.0" prefWidth="1300.0" styleClass="root" stylesheets="@/scenes/css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.LobbyController">
-    <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="432.0" pickOnBounds="true" preserveRatio="true" styleClass="title">
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" styleClass="root" stylesheets="@/scenes/css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.LobbyController">
+    <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="382.0" pickOnBounds="true" preserveRatio="true" styleClass="title">
         <Image url="@../images/santorini-logo.png" />
     </ImageView>
-   <Pane fx:id="lobbyPane" layoutX="480.0" layoutY="161.0" prefHeight="477.0" prefWidth="338.0" visible="false">
+   <Pane fx:id="lobbyPane" layoutX="431.0" layoutY="161.0" prefHeight="477.0" prefWidth="338.0" visible="false">
       <children>
          <ImageView fitHeight="417.0" fitWidth="411.0" layoutX="20.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -46,7 +47,7 @@
          </Label>
       </children>
    </Pane>
-   <Pane fx:id="insertPane" layoutX="332.0" layoutY="178.0" prefHeight="409.0" prefWidth="649.0">
+   <Pane fx:id="insertPane" layoutX="276.0" layoutY="178.0" prefHeight="409.0" prefWidth="649.0">
       <children>
          <ImageView fitHeight="493.0" fitWidth="238.0" layoutX="195.0" layoutY="-91.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
             <image>
@@ -75,20 +76,20 @@
                <Label layoutX="102.0" layoutY="61.0" text="Please insert IP and port" />
                <TextField fx:id="ip" layoutX="192.0" layoutY="90.0" prefHeight="25.0" prefWidth="109.0" promptText="IP address" />
                <TextField fx:id="port" layoutX="192.0" layoutY="115.0" prefHeight="25.0" prefWidth="109.0" promptText="port" />
-               <Button fx:id="confirmIpButton" layoutX="147.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleConfirmIp" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
+               <Button fx:id="confirmIpButton" layoutX="147.0" layoutY="147.0" mnemonicParsing="false" onAction="#handleConfirmIp" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
             </children>
          </Pane>
       </children>
    </Pane>
-   <Pane fx:id="hostPane" layoutX="904.0" layoutY="202.0" prefHeight="236.0" prefWidth="361.0" visible="false">
+   <Pane fx:id="hostPane" layoutX="864.0" layoutY="232.0" prefHeight="236.0" prefWidth="322.0" visible="false">
       <children>
-         <Label layoutY="43.0" text="How much friends do you have?" />
+         <Label layoutY="43.0" text="Select the number of players" />
          <Label layoutY="14.0" text="You are the host!" />
          <Label fx:id="playersNumberLabel" layoutX="172.0" layoutY="98.0" text="2" />
          <Button fx:id="confirmPlayersButton" layoutX="79.0" layoutY="157.0" mnemonicParsing="false" onAction="#handleConfirmPlayers" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
          <Button fx:id="decreaseButton" layoutX="67.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleDecrease" styleClass="arrowLeftButton" stylesheets="@css/Buttons.css" text="Button" />
          <Button fx:id="increaseButton" layoutX="243.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleIncrease" styleClass="arrowRightButton" stylesheets="@css/Buttons.css" text="Button" />
       </children></Pane>
-   <Button fx:id="backButton" layoutX="558.0" layoutY="656.0" mnemonicParsing="false" onAction="#handleBackClicked" styleClass="redButton" stylesheets="@css/Buttons.css" text="Back to Menu" />
+   <Button fx:id="backButton" layoutX="500.0" layoutY="572.0" mnemonicParsing="false" onAction="#handleBackClicked" styleClass="redButton" stylesheets="@css/Buttons.css" text="Back to Menu" />
 
 </AnchorPane>

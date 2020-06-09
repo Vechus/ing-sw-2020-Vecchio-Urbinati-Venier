@@ -1,7 +1,6 @@
 .root {
     -fx-background-image: url("../../images/bg_modeselect.png");
-    -fx-background-size: auto;
-    -fx-background-repeat: round;
+    -fx-background-size: stretch;
 }
 
 .godSelect {
