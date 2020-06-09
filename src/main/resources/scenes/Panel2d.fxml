@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<AnchorPane fx:id="anchorPane" prefHeight="750.0" prefWidth="250.0" style="-fx-background-color: steelblue;" stylesheets="@css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.Panel2dController">
-   <Label fx:id="playerNameLabel" layoutY="1.0" text="playerNameLabel" />
-   <Label layoutX="1.0" layoutY="35.0" text="Press A to rotate left" />
-   <Label layoutX="1.0" layoutY="69.0" text="Press D to rotate right" />
-   <ImageView fx:id="playerGodImage" fitHeight="428.0" fitWidth="250.0" layoutX="1.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+<?import javafx.scene.text.Font?>
+<AnchorPane fx:id="anchorPane" minWidth="-Infinity" prefHeight="750.0" prefWidth="200.0" style="-fx-background-color: steelblue;" stylesheets="@css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.Panel2dController">
+   <Label fx:id="playerNameLabel" layoutY="1.0" style="-fx-font-size: 20;" text="playerNameLabel">
+      <font>
+         <Font size="10.0" />
+      </font></Label>
+   <Label layoutX="1.0" layoutY="35.0" style="-fx-font-size: 20;" text="Press A to rotate left">
+      <font>
+         <Font size="10.0" />
+      </font></Label>
+   <Label layoutX="1.0" layoutY="69.0" prefHeight="34.0" prefWidth="200.0" style="-fx-font-size: 20;" text="Press D to rotate right">
+      <font>
+         <Font size="10.0" />
+      </font></Label>
+   <ImageView fx:id="playerGodImage" fitHeight="332.0" fitWidth="200.0" layoutX="1.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../images/godCards/Atlas.png" />
    </ImageView>
-   <Label layoutX="1.0" layoutY="103.0" text="Your god is:" />
-   <VBox fx:id="buttonBox" alignment="CENTER" layoutX="1.0" layoutY="570.0" prefHeight="180.0" prefWidth="250.0" style="-fx-spacing: 5;" stylesheets="@css/Buttons.css" />
+   <Label layoutX="1.0" layoutY="129.0" style="-fx-font-size: 20;" text="Your god is:">
+      <font>
+         <Font size="10.0" />
+      </font></Label>
+   <VBox fx:id="buttonBox" alignment="CENTER" layoutX="1.0" layoutY="513.0" prefHeight="240.0" prefWidth="200.0" style="-fx-spacing: 5;" stylesheets="@css/Buttons.css" />
 </AnchorPane>
