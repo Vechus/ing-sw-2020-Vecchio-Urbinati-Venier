@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -10,7 +9,6 @@
    <Label layoutX="1.0" layoutY="35.0" text="Press A to rotate left" />
    <Label layoutX="1.0" layoutY="69.0" text="Press D to rotate right" />
    <ImageView fx:id="playerGodImage" fitHeight="428.0" fitWidth="250.0" layoutX="1.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../images/godCards/Atlas.png" />
    </ImageView>
    <Label layoutX="1.0" layoutY="103.0" text="Your god is:" />
    <VBox fx:id="buttonBox" alignment="CENTER" layoutX="1.0" layoutY="570.0" prefHeight="180.0" prefWidth="250.0" style="-fx-spacing: 5;" stylesheets="@css/Buttons.css" />
