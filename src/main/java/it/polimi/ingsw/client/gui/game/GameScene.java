@@ -75,12 +75,12 @@ public class GameScene {
         scene.setFill(Color.STEELBLUE);
         initCamera();
         initSubScene(panel2d);
-        bottomMessage.getStylesheets().add(getClass().getResource("/scenes/css/MainMenuStyle.css").toExternalForm());
+        /*bottomMessage.getStylesheets().add(getClass().getResource("/scenes/css/MainMenuStyle.css").toExternalForm());
         bottomMessage.prefHeight(300);
         bottomMessage.prefWidth(150);
         bottomMessage.setStyle("-fx-alignment: center");
         bottomMessage.setStyle("-fx-font-weight: bolder");
-        pane.setBottom(bottomMessage);
+        pane.setBottom(bottomMessage);*/
     }
 
     public Board3D getBoard3D() {
@@ -225,14 +225,14 @@ public class GameScene {
     public void getAllowedActions(List<ActionType> allowedActions) {
         panel2dController.addButtons(allowedActions);
         unselectAll();
-        bottomMessage.setTextFill(Color.BLACK);
+        /*bottomMessage.setTextFill(Color.BLACK);
         allowedActions.forEach(a -> {
             switch (a) {
                 case PLACE_WORKER -> bottomMessage.setText("Place a worker.");
                 case END_TURN -> bottomMessage.setText("You can end your turn.");
                 default -> bottomMessage.setText("Select a worker to move or build.");
             }
-        });
+        });*/
         if(clientGameStage3D == ClientGameStage3D.WAIT)
             clientGameStage3D = ClientGameStage3D.ACTION;
     }
