@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.effect.OpponentEffect;
-import it.polimi.ingsw.util.Action;+
+import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.util.Vector2;
 
 import java.util.ArrayList;

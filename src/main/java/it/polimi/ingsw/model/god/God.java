@@ -32,12 +32,12 @@ public class God {
     /**
      * Has the player moved.
      */
-    /**protected boolean hasMoved= false;
+    protected boolean hasMoved= false;
 
     protected boolean hasBuilt=false;
 
     public boolean getHasMoved(){return hasMoved;  }
-    public boolean getHasBuilt(){ return hasBuilt; }**/
+    public boolean getHasBuilt(){ return hasBuilt; }
     /**
      * Has the player finished turn.
      */

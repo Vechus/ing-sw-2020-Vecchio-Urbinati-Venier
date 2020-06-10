@@ -8,8 +8,7 @@ import it.polimi.ingsw.util.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class
-Player {
+public class Player {
     private List<Worker> workers;
     private God playerGod;
     private boolean isSpectator;
