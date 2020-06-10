@@ -18,7 +18,6 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private ObjectOutputStream out;
     private Server server;
     private ConnectionListener listener;
-
     private boolean active = true;
 
     /**

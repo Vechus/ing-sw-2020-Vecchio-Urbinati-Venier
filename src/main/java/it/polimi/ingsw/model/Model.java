@@ -33,6 +33,7 @@ public class Model {
      *
      * @param listener the listener to add
      */
+
     public void addListener(ModelChangeListener listener){ listeners.add(listener); }
 
     /**

@@ -96,6 +96,10 @@ public class ClientCLI implements ClientUserInterface, Runnable {
         return sel;
     }
 
+    /**
+     * 
+     * @param list
+     */
     void displaySelectionList(List<String> list){
         for(int i=0;i<list.size();i++)
             System.out.println("("+(i+1)+") "+list.get(i));

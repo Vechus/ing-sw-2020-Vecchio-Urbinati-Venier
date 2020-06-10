@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.effect.OpponentEffect;
-import it.polimi.ingsw.util.Action;
-import it.polimi.ingsw.util.ConsoleColor;
+import it.polimi.ingsw.util.Action;+
 import it.polimi.ingsw.util.Vector2;
 
 import java.util.ArrayList;
@@ -50,7 +49,8 @@ public class Board {
     }
 
     /**
-     * Is a complete building boolean. Returns true if the building is complete.
+     * Is a complete building boolean. Returns true if the
+     * is complete.
      *
      * @param pos the pos
      * @return the boolean.

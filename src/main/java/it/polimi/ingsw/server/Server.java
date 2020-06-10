@@ -25,7 +25,6 @@ public class Server {
     private List<String> godSelectionQueue = new ArrayList<>();
     private String host;
     private int waitingGameSize = -1;
-
     private List<String> availableGods = new ArrayList<>();
 
     /**
