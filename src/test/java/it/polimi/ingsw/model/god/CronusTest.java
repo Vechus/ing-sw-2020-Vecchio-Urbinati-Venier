@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CronusTest {
     Board board;
@@ -29,11 +30,19 @@ public class CronusTest {
             board.setHeight(new Vector2(0, i), 3);
             board.setComplete(new Vector2(0, i), true);
         }
+        board.setHeight(new Vector2(1, 0), 3);
+    }
+
+    @Test
+    void testWinTrue(){
+        board.setComplete(new Vector2(1, 0), true);
+        Action action = new Action(null, null, ActionType.END_TURN);
+        assertTrue(chronus.checkWinCondition(action));
     }
 
     @Test
     void testWinFalse(){
-        Action action = new Action(playerWorker, new Vector2(0, 1), ActionType.MOVE);
+        Action action = new Action(null, null, ActionType.END_TURN);
         assertFalse(chronus.checkWinCondition(action));
     }
 }

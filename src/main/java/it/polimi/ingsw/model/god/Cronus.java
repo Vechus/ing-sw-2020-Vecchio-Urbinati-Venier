@@ -13,9 +13,8 @@ public class Cronus extends God {
 
     @Override
     public boolean checkWinCondition(Action action){
-        if(!super.checkWinCondition(action)){
-            return false;
-        }
+        if(super.checkWinCondition(action))
+            return true;
         int counterBuildings=0;
         for (int i=0;i<5; i++ ){
             for(int j=0; j<5;j++){
