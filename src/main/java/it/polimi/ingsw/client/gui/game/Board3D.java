@@ -167,7 +167,7 @@ public class Board3D {
         meshView = Loader.loadObj(getClass().getResource("/models/" + model + ".obj").getPath());
         material.setDiffuseMap(new Image(String.valueOf(getClass().getResource("/textures/" + model + ".png"))));
         if(model.equals("Cliff")) {
-            material.setSpecularMap(new Image(String.valueOf(getClass().getResource("/textures/Cliff_Emission.png"))));
+            //material.setSpecularMap(new Image(String.valueOf(getClass().getResource("/textures/Cliff_Emission.png"))));
             meshView.setScaleX(10);
             meshView.setScaleY(10);
             meshView.setScaleZ(10);
