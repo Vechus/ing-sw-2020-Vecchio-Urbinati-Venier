@@ -18,6 +18,8 @@ public abstract class Loader{
      * @return The mesh of the selected file.
      **/
     public static MeshView loadObj(String path){
+        if(path.startsWith("file:"))
+            path = path.substring(6);
         TriangleMesh mesh = new TriangleMesh(VertexFormat.POINT_NORMAL_TEXCOORD);
         ArrayList<String> lines = readTextFile(path);
         for(int x = 0; x < lines.size(); x++){
@@ -111,6 +113,7 @@ public abstract class Loader{
             return lines;
         }catch(Exception e){
             error("readTextFile", "Exception thrown when reading `" + path + "`");
+            e.printStackTrace();
         }
         return null;
     }
