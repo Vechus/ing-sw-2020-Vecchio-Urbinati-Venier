@@ -121,7 +121,7 @@
               <configuration>
                   <archive>
                       <manifest>
-                          <mainClass>it.polimi.ingsw.ClientApp</mainClass>
+                          <mainClass>it.polimi.ingsw.SantoriniLauncher</mainClass>
                       </manifest>
                   </archive>
                   <descriptorRefs>
