@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
-import org.testng.internal.collections.Pair;
+import it.polimi.ingsw.util.Pair;
 
 
 public class GodValidationMethods {

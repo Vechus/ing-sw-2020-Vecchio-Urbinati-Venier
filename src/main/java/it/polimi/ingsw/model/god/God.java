@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.ActionType;
+import it.polimi.ingsw.util.Pair;
 import it.polimi.ingsw.util.Vector2;
-import org.testng.internal.collections.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;

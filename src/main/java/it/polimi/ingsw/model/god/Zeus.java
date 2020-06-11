@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
-import org.testng.internal.collections.Pair;
+import it.polimi.ingsw.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
