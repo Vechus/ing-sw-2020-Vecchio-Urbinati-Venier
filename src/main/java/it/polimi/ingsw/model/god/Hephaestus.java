@@ -40,7 +40,7 @@ public class Hephaestus extends God {
 
     public boolean isCellTheSame(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
-        return buildCtr != 1 || action.getTargetPos().equals(action.getTargetPos());
+        return buildCtr != 1 || action.getTargetPos().equals(buildPos);
     }
 
 

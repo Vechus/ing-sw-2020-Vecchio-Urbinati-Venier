@@ -14,7 +14,7 @@ public class Worker3D extends MeshView {
 
     public Worker3D(int id, boolean isWoman) {
         this.id = id;
-        setMesh(Loader.loadObj(getClass().getResource("/models/" + (isWoman ? "FemaleBuilder" : "MaleBuilder") + ".obj").getPath()).getMesh());
+        setMesh(Loader.loadObj("/models/" + (isWoman ? "FemaleBuilder" : "MaleBuilder") + ".obj").getMesh());
         PhongMaterial material = new PhongMaterial();
         material.setDiffuseMap(new Image(String.valueOf(getClass().getResource("/textures/" + (isWoman ? "FemaleBuilder_" : "MaleBuilder_") + id + ".png"))));
         switch (id) {

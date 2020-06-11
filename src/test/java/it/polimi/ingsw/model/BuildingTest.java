@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class BuildingTest {
@@ -8,18 +8,18 @@ public class BuildingTest {
     @Test
     void testComplete(){
         final Building building = new Building();
-        Assert.assertFalse(building.isComplete());
+        assertFalse(building.isComplete());
         building.setComplete(true);
-        Assert.assertTrue(building.isComplete());
+        assertTrue(building.isComplete());
     }
 
     @Test
     void testHeightValid(){
         final Building building = new Building();
-        Assert.assertEquals(building.getHeight(), 0);
+        assertEquals(building.getHeight(), 0);
         for(int i=0;i<=3;i++){
             building.setHeight(i);
-            Assert.assertEquals(building.getHeight(), i);
+            assertEquals(building.getHeight(), i);
         }
     }
 
@@ -27,8 +27,8 @@ public class BuildingTest {
     void testHeightInvalid(){
         final Building building = new Building();
         building.setHeight(4);
-        Assert.assertEquals(building.getHeight(), 0);
+        assertEquals(building.getHeight(), 0);
         building.setHeight(-1);
-        Assert.assertEquals(building.getHeight(), 0);
+        assertEquals(building.getHeight(), 0);
     }
 }

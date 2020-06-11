@@ -15,7 +15,7 @@ public class BuildingBlock extends MeshView {
         this.pos = new Vector2(coordX, coordY);
 
         PhongMaterial material = new PhongMaterial();
-        setMesh(Loader.loadObj(getClass().getResource("/models/BuildingBlock0" + height + ".obj").getPath()).getMesh());
+        setMesh(Loader.loadObj("/models/BuildingBlock0" + height + ".obj").getMesh());
         if(height != 4) {
             translateYProperty().set(BOARD_HEIGHT - (1.5 * (height-1)));
             material.setDiffuseMap(new Image(String.valueOf(getClass().getResource("/textures/BuildingBlock0" + height + ".png"))));

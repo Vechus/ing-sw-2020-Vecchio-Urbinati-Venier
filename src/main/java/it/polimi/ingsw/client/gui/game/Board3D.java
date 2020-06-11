@@ -164,7 +164,7 @@ public class Board3D {
     private void prepareModel(String model, Group group, int x, int y, int z) {
         MeshView meshView;
         PhongMaterial material = new PhongMaterial();
-        meshView = Loader.loadObj(getClass().getResource("/models/" + model + ".obj").getPath());
+        meshView = Loader.loadObj("/models/" + model + ".obj");
         material.setDiffuseMap(new Image(String.valueOf(getClass().getResource("/textures/" + model + ".png"))));
         if(model.equals("Cliff")) {
             //material.setSpecularMap(new Image(String.valueOf(getClass().getResource("/textures/Cliff_Emission.png"))));

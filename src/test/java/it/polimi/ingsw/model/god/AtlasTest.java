@@ -8,8 +8,8 @@ import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.testng.Assert.assertTrue;
 
 public class AtlasTest {
     Board board;

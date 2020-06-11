@@ -4,10 +4,8 @@ import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class ModelTest {
     final Model model = new Model();
@@ -15,7 +13,7 @@ class ModelTest {
     @Test
     void addNewPlayer() {
         model.addNewPlayer("", "");
-        Assert.assertEquals(1, model.getNumberOfPlayers());
+        assertEquals(1, model.getNumberOfPlayers());
     }
 
     @Test
@@ -37,9 +35,9 @@ class ModelTest {
     @Test
     void checkGameOver() {
         int pid1 = model.addNewPlayer("", "");
-        Assert.assertTrue(model.checkGameOver());
+        assertTrue(model.checkGameOver());
         int pid2 = model.addNewPlayer("", "");
-        Assert.assertFalse(model.checkGameOver());
+        assertFalse(model.checkGameOver());
     }
 
     @Test
@@ -60,8 +58,8 @@ class ModelTest {
     @Test
     void getNumberOfPlayers() {
         model.addNewPlayer("", "");
-        Assert.assertEquals(model.getNumberOfPlayers(), 1);
+        assertEquals(model.getNumberOfPlayers(), 1);
         model.addNewPlayer("", "");
-        Assert.assertEquals(model.getNumberOfPlayers(), 2);
+        assertEquals(model.getNumberOfPlayers(), 2);
     }
 }

@@ -6,6 +6,8 @@ import javafx.scene.shape.VertexFormat;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public abstract class Loader{
@@ -18,10 +20,11 @@ public abstract class Loader{
      * @return The mesh of the selected file.
      **/
     public static MeshView loadObj(String path){
-        if(path.startsWith("file:"))
-            path = path.substring(6);
+        InputStream in = Loader.class.getResourceAsStream(path);
+        /*if(path.startsWith("file:"))
+            path = path.substring(6);*/
         TriangleMesh mesh = new TriangleMesh(VertexFormat.POINT_NORMAL_TEXCOORD);
-        ArrayList<String> lines = readTextFile(path);
+        ArrayList<String> lines = readTextFile(in);
         for(int x = 0; x < lines.size(); x++){
             String line = lines.get(x);
             if(line != null){
@@ -103,8 +106,8 @@ public abstract class Loader{
         return new MeshView(mesh);
     }
 
-    public static ArrayList<String> readTextFile(String path){
-        try(BufferedReader br = new BufferedReader(new FileReader(path))){
+    public static ArrayList<String> readTextFile(InputStream inputStream){
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))){
             ArrayList<String> lines = new ArrayList<String>();
             lines.add(br.readLine());
             while(lines.get(lines.size() - 1) != null){
@@ -112,7 +115,7 @@ public abstract class Loader{
             }
             return lines;
         }catch(Exception e){
-            error("readTextFile", "Exception thrown when reading `" + path + "`");
+            error("readTextFile", "Exception thrown when reading `" + inputStream + "`");
             e.printStackTrace();
         }
         return null;

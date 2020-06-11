@@ -33,8 +33,8 @@ public class SetupControllerTest {
         assertFalse(controller.performAction(pid2, action));
         assertTrue(controller.performAction(pid1, action));
         action = new Action(null, new Vector2(0, 0), ActionType.PLACE_WORKER);
-        assertFalse(controller.performAction(pid1, action));
-        assertTrue(controller.performAction(pid2, action));
+        assertFalse(controller.performAction(pid2, action));
+        assertTrue(controller.performAction(pid1, action));
     }
 
     @Test
@@ -58,11 +58,11 @@ public class SetupControllerTest {
         Action a = new Action(null, new Vector2(0, 0), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid1, a));
         assertFalse(controller.isStageDone());
-        a = new Action(null, new Vector2(0, 1), ActionType.PLACE_WORKER);
-        assertTrue(controller.performAction(pid2, a));
-        assertFalse(controller.isStageDone());
         a = new Action(null, new Vector2(1, 0), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid1, a));
+        assertFalse(controller.isStageDone());
+        a = new Action(null, new Vector2(0, 1), ActionType.PLACE_WORKER);
+        assertTrue(controller.performAction(pid2, a));
         assertFalse(controller.isStageDone());
         a = new Action(null, new Vector2(1, 1), ActionType.PLACE_WORKER);
         assertTrue(controller.performAction(pid2, a));
