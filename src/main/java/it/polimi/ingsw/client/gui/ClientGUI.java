@@ -7,13 +7,13 @@ import it.polimi.ingsw.client.events.CustomEventHandler;
 import it.polimi.ingsw.client.gui.game.GameScene;
 import it.polimi.ingsw.client.interfaces.ClientUserInterface;
 import it.polimi.ingsw.util.ActionType;
-import it.polimi.ingsw.util.ConsoleColor;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -271,7 +271,14 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     @Override
     public void showError(String message) {
-        Platform.runLater(() -> gameScene.displayBottomMessage(message, Color.RED));
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Something is wrong!");
+            alert.setContentText(message);
+
+            alert.showAndWait();
+        });
     }
 
     @Override
@@ -281,7 +288,14 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     @Override
     public void gameOver(String winnerName) {
-        System.out.println(ConsoleColor.CYAN_BOLD_BRIGHT + winnerName + " won!");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Game Over");
+            alert.setHeaderText("The game is now over, " + (playerName.equals(winnerName) ? " you win!" : " you lose!"));
+            alert.setContentText(winnerName + " won!");
+
+            alert.showAndWait();
+        });
     }
 
     public String getPlayerName() {
