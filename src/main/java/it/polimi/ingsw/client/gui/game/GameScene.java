@@ -154,7 +154,7 @@ public class GameScene {
             public void onPlaceWorker(Vector2 pos) {
                 if(clientGameStage3D == ClientGameStage3D.PLACE_FIRST_WORKER)
                     playerID = board3D.getPlayerWorkersSize() / 2;
-                board3D.addWorker(pos, playerID, clientGameStage3D == ClientGameStage3D.PLACE_SECOND_WORKER);
+                //board3D.addWorker(pos, playerID, clientGameStage3D == ClientGameStage3D.PLACE_SECOND_WORKER);
                 if(clientGameStage3D == ClientGameStage3D.PLACE_FIRST_WORKER)
                     clientGameStage3D = ClientGameStage3D.PLACE_SECOND_WORKER;
                 else
