@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" styleClass="root" stylesheets="@/scenes/css/MainMenuStyle.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.LobbyController">
     <ImageView fitHeight="161.0" fitWidth="454.0" layoutX="382.0" pickOnBounds="true" preserveRatio="true" styleClass="title">
         <Image url="@../images/santorini-logo.png" />
     </ImageView>
-   <Pane fx:id="lobbyPane" layoutX="431.0" layoutY="161.0" prefHeight="477.0" prefWidth="338.0" visible="false">
+   <Pane fx:id="lobbyPane" layoutX="276.0" layoutY="178.0" prefHeight="409.0" prefWidth="649.0" visible="false">
       <children>
-         <ImageView fitHeight="417.0" fitWidth="411.0" layoutX="20.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+         <ImageView fitHeight="493.0" fitWidth="238.0" layoutX="195.0" layoutY="-91.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
             <image>
-               <Image url="@../images/clp_bg.png" />
-            </image>
-         </ImageView>
-         <ImageView fitHeight="171.0" fitWidth="265.0" layoutX="39.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../images/pause_back.png" />
+            </image></ImageView>
+         <ImageView fitHeight="69.0" fitWidth="283.0" layoutX="210.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../images/frameName.png" />
-            </image>
-         </ImageView>
-         <Label layoutX="138.0" layoutY="17.0" text="Lobby" textAlignment="CENTER">
+            </image></ImageView>
+         <Label layoutX="271.0" layoutY="38.0" text="Waiting" textAlignment="CENTER">
             <effect>
                <Glow />
             </effect>
@@ -30,17 +27,12 @@
                <Font size="14.0" />
             </font>
          </Label>
-         <Label fx:id="firstPlayer" layoutX="67.0" layoutY="121.0" text="empty">
+         <Label fx:id="firstPlayer" alignment="CENTER" layoutX="130.0" layoutY="90.0" prefHeight="78.0" prefWidth="367.0" text="empty">
             <effect>
                <Glow />
             </effect>
          </Label>
-         <Label fx:id="secondPlayer" layoutX="67.0" layoutY="191.0" text="empty">
-            <effect>
-               <Glow />
-            </effect>
-         </Label>
-         <Label fx:id="thirdPlayer" layoutX="67.0" layoutY="263.0" text="empty">
+         <Label alignment="CENTER" layoutX="129.0" layoutY="179.0" prefHeight="52.0" prefWidth="367.0" text="Waiting for other players...">
             <effect>
                <Glow />
             </effect>
@@ -68,15 +60,15 @@
             <children>
                <Label layoutX="118.0" layoutY="32.0" text="Please input your name" />
                <TextField fx:id="textField" layoutX="114.0" layoutY="66.0" prefHeight="34.0" prefWidth="266.0" />
-               <Button fx:id="confirmButton" layoutX="148.0" layoutY="110.0" mnemonicParsing="false" onAction="#handleConfirmClicked" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
+               <Button fx:id="confirmButton" layoutX="147.0" layoutY="122.0" mnemonicParsing="false" onAction="#handleConfirmClicked" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
             </children>
          </Pane>
-         <Pane fx:id="ipPane" layoutX="68.0" layoutY="34.0" prefHeight="229.0" prefWidth="493.0">
+         <Pane fx:id="ipPane" layoutX="67.0" layoutY="41.0" prefHeight="229.0" prefWidth="493.0">
             <children>
                <Label layoutX="102.0" layoutY="61.0" text="Please insert IP and port" />
                <TextField fx:id="ip" layoutX="192.0" layoutY="90.0" prefHeight="25.0" prefWidth="109.0" promptText="IP address" />
                <TextField fx:id="port" layoutX="192.0" layoutY="115.0" prefHeight="25.0" prefWidth="109.0" promptText="port" />
-               <Button fx:id="confirmIpButton" layoutX="147.0" layoutY="147.0" mnemonicParsing="false" onAction="#handleConfirmIp" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
+               <Button fx:id="confirmIpButton" layoutX="147.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleConfirmIp" prefWidth="200.0" styleClass="greenButton" stylesheets="@css/Buttons.css" text="Confirm" />
             </children>
          </Pane>
       </children>
@@ -90,6 +82,5 @@
          <Button fx:id="decreaseButton" layoutX="67.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleDecrease" styleClass="arrowLeftButton" stylesheets="@css/Buttons.css" text="Button" />
          <Button fx:id="increaseButton" layoutX="243.0" layoutY="89.0" mnemonicParsing="false" onAction="#handleIncrease" styleClass="arrowRightButton" stylesheets="@css/Buttons.css" text="Button" />
       </children></Pane>
-   <Button fx:id="backButton" layoutX="500.0" layoutY="572.0" mnemonicParsing="false" onAction="#handleBackClicked" styleClass="redButton" stylesheets="@css/Buttons.css" text="Back to Menu" />
 
 </AnchorPane>

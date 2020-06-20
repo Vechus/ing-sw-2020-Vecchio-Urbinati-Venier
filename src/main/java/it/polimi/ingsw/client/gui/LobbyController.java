@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.gui;
 
-import it.polimi.ingsw.client.events.ChangeSceneEvent;
 import it.polimi.ingsw.client.events.PlayerIpPortEvent;
 import it.polimi.ingsw.client.events.PlayerNameChangeEvent;
 import it.polimi.ingsw.client.events.PlayerNumberChangeEvent;
@@ -14,13 +13,7 @@ import javafx.util.Pair;
 
 public class LobbyController {
     @FXML
-    private Button backButton;
-    @FXML
     private Label firstPlayer;
-    @FXML
-    private Label secondPlayer;
-    @FXML
-    private Label thirdPlayer;
     @FXML
     private Pane lobbyPane;
     @FXML
@@ -55,12 +48,6 @@ public class LobbyController {
     private Button decreaseButton;
 
     @FXML
-    public void handleBackClicked() {
-        backButton.fireEvent(new ChangeSceneEvent("menu"));
-        initLobbyScene();
-    }
-
-    @FXML
     public void handleConfirmClicked() {
         String name = textField.getText();
         if(name.length() == 0) {
@@ -71,7 +58,7 @@ public class LobbyController {
             errorLabel.setVisible(false);
             errorLabel.setVisible(false);
             insertPane.setVisible(false);
-            firstPlayer.setText(name);
+            firstPlayer.setText("You're in, " + name + "!");
             lobbyPane.setVisible(true);
             insertPane.fireEvent(new PlayerNameChangeEvent(name));
         }
