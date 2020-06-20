@@ -10,11 +10,13 @@ import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.ConsoleColor;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -139,6 +141,14 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
                 gameScene.unselectAll();
                 playerAction = action;
                 sync = true;
+            }
+        });
+
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
             }
         });
 
