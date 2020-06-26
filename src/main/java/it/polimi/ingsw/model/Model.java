@@ -33,7 +33,6 @@ public class Model {
      *
      * @param listener the listener to add
      */
-
     public void addListener(ModelChangeListener listener){ listeners.add(listener); }
 
     /**
@@ -56,7 +55,7 @@ public class Model {
     }
 
     /**
-     * Check players lose condition.
+     * Check the player's lose condition.
      */
     public void checkPlayersLoseCondition() {
         for (Player p : this.players) {
@@ -68,9 +67,9 @@ public class Model {
     }
 
     /**
-     * Check game over boolean.
+     * Checks if the game is over.
      *
-     * @return the boolean
+     * @return  boolean
      */
     public boolean checkGameOver() {
         this.checkPlayersLoseCondition();
@@ -83,8 +82,8 @@ public class Model {
     /**
      * Execute action.
      *
-     * @param playerIndex the player index
-     * @param action      the action
+     * @param playerIndex : the player index of the action
+     * @param action :  the action made by the player
      *
      * @return was the action executed successfully
      */
@@ -93,9 +92,9 @@ public class Model {
     }
 
     /**
-     * Begin a new turn.
+     * Begins a new turn.
      *
-     * @param pid the player's pid
+     * @param pid : the player's pid
      */
     public void beginNewTurn(int pid) {
         players.get(pid).beginNewTurn();
@@ -112,9 +111,9 @@ public class Model {
     }
 
     /**
-     * Gets player.
+     * Getter of player
      *
-     * @param index the index
+     * @param index : the index of the player
      * @return the player
      */
     public Player getPlayer(int index) {
@@ -131,7 +130,7 @@ public class Model {
     }
 
     /**
-     * Gets board.
+     * Getter of board.
      *
      * @return the board
      */
@@ -139,9 +138,17 @@ public class Model {
         return board;
     }
 
+    /**
+     * Gets the current Player
+     * @return int : the index of the current player
+     */
     public int getCurPlayer() {
         return this.curPlayer;
     }
+
+    /**
+     *
+     */
 
     public void incrementCurPlayer(){
         int orig = curPlayer;
@@ -150,10 +157,21 @@ public class Model {
         } while(players.get(curPlayer).isSpectator() && curPlayer != orig);
     }
 
+    /**
+     *
+     * @param playerId
+     * @return
+     */
     public boolean isPlayersTurn(int playerId){
         return playerId == this.curPlayer;
     }
 
+    /**
+     * Places the worker on the board
+     * @param pid : the number used to identify the  worker
+     * @param initPos The position where the worker is placed
+     * @return
+     */
     public boolean placeWorker(int pid, Vector2 initPos) {
         if(board.getWorker(initPos) != null) return false;
         Worker worker = new Worker(players.get(pid));
@@ -162,6 +180,9 @@ public class Model {
         return true;
     }
 
+    /**
+     * Sends the new status to the clients, every time an Action is completed successfully
+     */
     public void updateClientModel() {
         System.out.println("[MODEL] Notifying listeners of board update");
         for(ModelChangeListener listener : listeners)

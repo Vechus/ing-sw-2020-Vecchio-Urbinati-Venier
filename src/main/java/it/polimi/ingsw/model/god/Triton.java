@@ -9,6 +9,12 @@ import it.polimi.ingsw.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Advanced god: Your Build: Your Worker may
+ * build one additional time, but this
+ * cannot be on a perimeter space.
+ *
+ */
 public class Triton extends God {
     public Triton(Board board, Player player) {
         super(board, player);
@@ -32,6 +38,11 @@ public class Triton extends God {
         actionGraph.addTransition(movedState, movedState, ActionType.MOVE);
     }
 
+    /**
+     *
+     * @param actionBoardPair board and action chosen
+     * @return true if it's not the first time he moves and the cell he wants to go to is on the perimeter
+     */
     public boolean isMoveOnPerimeter(Pair<Action, Board> actionBoardPair) {
         Action action = actionBoardPair.first();
         return moveCtr == 0 || (action.getWorkerPos().getY() == 4 || action.getWorkerPos().getX() == 4 || action.getWorkerPos().getX() == 0 || action.getWorkerPos().getY() == 0);

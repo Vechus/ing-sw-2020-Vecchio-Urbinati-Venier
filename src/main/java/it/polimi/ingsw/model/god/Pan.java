@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.util.ActionType;
 
+/**
+ * Simple god: Win Condition: You also win if
+ * your Worker moves down two or
+ * more levels.
+ */
 public class Pan extends God {
 
     public Pan(Board board, Player player) {

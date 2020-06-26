@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.god;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 
+/**
+ * Creates the god and assigns it to the player and board
+ */
 public class GodFactory {
     public static God createGod(String godName, Player player, Board board) {
         switch (godName) {

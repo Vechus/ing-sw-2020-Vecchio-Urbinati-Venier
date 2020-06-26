@@ -9,6 +9,12 @@ import it.polimi.ingsw.util.Vector2;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ *Simple god: Your Worker may
+ * move into an opponent Worker’s
+ * space by forcing their Worker to
+ * the space yours just vacated.
+ */
 public class Apollo extends God {
 
     public Apollo(Board board, Player player) {

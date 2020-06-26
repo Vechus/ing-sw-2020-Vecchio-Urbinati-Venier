@@ -21,32 +21,37 @@ public class God {
      * The name of the god, to be displayed to the user
      */
     String name;
-    /**
-     * The Board.
-     */
+
     protected Board board;
-    /**
-     * The Player.
-     */
+
     protected Player player;
-    /**
-     * Has the player moved.
-     */
+
     protected boolean hasMoved= false;
+
 
     protected boolean hasBuilt=false;
 
+    /**
+     * Getter of hasMoved
+     * @return true if the player has moved
+     */
     public boolean getHasMoved(){return hasMoved;  }
+
+    /**
+     *Getter of hasBuilt
+     * @return true if the player has moved
+     */
     public boolean getHasBuilt(){ return hasBuilt; }
-    /**
-     * Has the player finished turn.
-     */
+
     protected boolean hasFinishedTurn=false;
-    /**
-     * The Chosen worker.
-     */
+
+     //The chosen worker by the player in that turn. Only that worker can be used after the initial action.
     protected Worker chosenWorker= null;
+
+
     protected Vector2 initPos = null, buildPos = null;
+
+    //count how many moves and builds the player has done in that turn
     protected int moveCtr = 0, buildCtr = 0;
 
     protected int turnState;
@@ -111,12 +116,14 @@ public class God {
 
     /**
      * Get has finished turn boolean.
-     *
      * @return the boolean.
      */
     public boolean getHasFinishedTurn(){return hasFinishedTurn;}
 
 
+    /**
+     *It creates the path of actions that a player can make.
+     */
     protected void createActionGraph(){
         int movedState = actionGraph.addState();
         int builtState = actionGraph.addState();
@@ -130,7 +137,7 @@ public class God {
      * Choose action. Given an Action this class calls the right function to execute.
      *
      * @param action the action
-     * @return the boolean.
+     * @return the result of the call of the action. True if it succeeded, otherwise false.
      */
     public boolean chooseAction (Action action){
         int nextState = actionGraph.getNextState(turnState, action.getType());
@@ -160,8 +167,8 @@ public class God {
     /**
      * Move a Worker. Returns True if the action has been correctly performed.
      *
-     * @param action the action
-     * @return the boolean.
+     * @param action the action chosen.
+     * @return true if it succeeded.
      */
     public boolean move(Action action) {
         if(!this.isMoveValid(action)) {
@@ -175,20 +182,18 @@ public class God {
     }
 
     /**
-     * Is workers move valid boolean.
+     * Is workers move valid.
      *
-     * @param action the action
-     * @return the boolean.
-     */
+     * @param action the action chosen.
+     * @return true is the move is valid.
+     * */
     public boolean isMoveValid (Action action){
         return checkConditions(moveValidationFunctions, action);
     }
 
     /**
-     * Build. Returns True if the action has been correctly performed.
-     *
-     * @param action the action
-     * @return the boolean.
+     * @param action the action chosen
+     * @return True if the action has been correctly performed.
      */
     public boolean buildBlock (Action action){
         if(isBuildBlockValid(action)) {
@@ -206,7 +211,7 @@ public class God {
      * Is build valid boolean.
      *
      * @param action the action
-     * @return the boolean.
+     * @return true if the building the block is valid
      */
     public boolean isBuildBlockValid(Action action){
         return checkConditions(buildBlockValidationFunctions, action);
@@ -214,10 +219,9 @@ public class God {
 
 
     /**
-     * Build a dome. Returns True if the action has been correctly performed.
      *
      * @param action the action
-     * @return the boolean.
+     * @return Returns True if the action has been correctly performed.
      */
     public boolean buildDome(Action action){
         if (!isBuildDomeValid(action)){
@@ -231,10 +235,8 @@ public class God {
     }
 
     /**
-     * Is build dome valid boolean.
-     *
      * @param action the action
-     * @return the boolean.
+     * @return true if building a  dome is valid
      */
     public boolean isBuildDomeValid(Action action){
         return checkConditions(buildDomeValidationFunctions, action);
@@ -267,6 +269,12 @@ public class God {
         chosenWorker = null;
     }
 
+    /**
+     *
+     * @param list of the constraint
+     * @param action
+     * @return false if a condition is not met.
+     */
     protected boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){
         Pair<Action, Board> arg = new Pair<>(action, this.board);
         for(Function<Pair<Action, Board>, Boolean> check : list){
@@ -276,6 +284,10 @@ public class God {
         return true;
     }
 
+    /**
+     *
+     * @return the action that the player can perform in that situation
+     */
     public List<ActionType> getAllowedActions() {
         return actionGraph.allowedActions(turnState);
     }

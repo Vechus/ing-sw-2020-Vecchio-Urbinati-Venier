@@ -9,6 +9,11 @@ import it.polimi.ingsw.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Simple god: Your Build: Your Worker may
+ * build one additional time, but not
+ * on the same space.
+ */
 public class Demeter extends God {
     public Demeter(Board board, Player player) {
         super(board, player);

@@ -28,10 +28,10 @@ public class Board {
     }
 
     /**
-     * Get height int.
+     * Getter of height.
      *
-     * @param pos the pos
-     * @return the int.
+     * @param pos : the position of building
+     * @return int : the height of the building
      */
     public int getHeight(Vector2 pos){
         if(pos.getX() < 0 || pos.getY() < 0) return -1;
@@ -39,31 +39,30 @@ public class Board {
     }
 
     /**
-     * Set height.
+     * Setter of height.
      *
-     * @param pos    the position
-     * @param height the height.
+     * @param pos : the position of the building
+     * @param height : the height you wanna give to the building
      */
     public void setHeight(Vector2 pos, int height){
         state[pos.getX()][pos.getY()].setHeight(height);
     }
 
     /**
-     * Is a complete building boolean. Returns true if the
-     * is complete.
+     * Returns true if the building is complete.
      *
-     * @param pos the pos
-     * @return the boolean.
+     * @param pos: the position of the building
+     * @return boolean
      */
     public boolean isComplete(Vector2 pos){
         return state[pos.getX()][pos.getY()].isComplete();
     }
 
     /**
-     * Set complete.
+     * Setter of complete.
      *
-     * @param pos      the pos
-     * @param complete the complete.
+     * @param pos : the position of the building
+     * @param complete : complete is true if the building has a dome.
      */
     public void setComplete(Vector2 pos, boolean complete){
         state[pos.getX()][pos.getY()].setComplete(complete);
@@ -72,8 +71,8 @@ public class Board {
     /**
      * Place worker on a specified position.
      *
-     * @param w   the w
-     * @param pos the pos.
+     * @param w  : worker to be placed
+     * @param pos : the position where the the worker is placed
      */
     public boolean placeWorker(Worker w, Vector2 pos){
         if(pos.getX() < 0 || pos.getX() > 4 || pos.getY() < 0 || pos.getY() > 4) return false;
@@ -83,19 +82,19 @@ public class Board {
     }
 
     /**
-     * Get worker worker.
+     * Getter of worker.
      *
-     * @param pos the pos
-     * @return the worker.
+     * @param pos : the position from which you wanna take the worker from
+     * @return Worker.
      */
     public Worker getWorker(Vector2 pos){
         return workers[pos.getX()][pos.getY()];
     }
 
     /**
-     * Move worker.
+     * Moves the worker.
      *
-     * @param action the action.
+     * @param action : the action containing the move
      */
     public void moveWorker(Action action){
         workers[action.getWorkerPos().getX()][action.getWorkerPos().getY()] = null;
@@ -104,18 +103,18 @@ public class Board {
     }
 
     /**
-     * Add effect to the game.
+     * Adds effect to the game.
      *
-     * @param e the effect to add.
+     * @param e : the effect to add.
      */
     public void addEffect(OpponentEffect e){
         effects.add(e);
     }
 
     /**
-     * Set effect active.
+     * Sets effect active.
      *
-     * @param p      the p
+     * @param p : the player to which the effect belong
      * @param active boolean to set an effect to.
      */
     public void setEffectActive(Player p, boolean active){
@@ -124,9 +123,9 @@ public class Board {
     }
 
     /**
-     * Is the player's effect active?
-     * @param p player whose effect we're checking
-     * @return if the effect is active
+     * Checks if the player's effect is active
+     * @param p : player whose effect we're checking
+     * @return true if the effect is active
      */
     public boolean isEffectActive(Player p){
         for(OpponentEffect e : this.effects)
@@ -135,10 +134,10 @@ public class Board {
     }
 
     /**
-     * Is action permitted by effects boolean.
+     * Checks if the action is permitted by effects.
      *
-     * @param a the a
-     * @return the boolean.
+     * @param a : the action checked
+     * @return boolean
      */
     public boolean isActionPermittedByEffects(Action a){
         Player p = a.getWorker().getOwner();
@@ -148,10 +147,10 @@ public class Board {
     }
 
     /**
-     * Is win permitted by effects boolean.
+     * Checks if win is permitted by effects.
      *
-     * @param a the a
-     * @return the boolean.
+     * @param a the action checked.
+     * @return boolean
      */
     public boolean isWinPermittedByEffects(Action a){
         Player p = a.getWorker().getOwner();

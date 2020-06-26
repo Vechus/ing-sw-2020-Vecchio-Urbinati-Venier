@@ -6,6 +6,12 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.god.effect.AthenaEffect;
 import it.polimi.ingsw.util.Vector2;
 
+/**
+ * Simple god: Opponent’s Turn: If one of your
+ * Workers moved up on your last
+ * turn, opponent Workers cannot
+ * move up this turn.
+ */
 public class Athena extends God {
 
     public Athena(Board board, Player player){

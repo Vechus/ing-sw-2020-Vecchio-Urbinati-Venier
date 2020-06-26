@@ -9,6 +9,11 @@ import it.polimi.ingsw.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Advanced god: Your Build: Your Worker may
+ * build one additional time, but this
+ * cannot be on a perimeter space.
+ */
 public class Hestia extends God {
     public Hestia(Board board, Player player) {
         super(board, player);
@@ -48,6 +53,11 @@ public class Hestia extends God {
     }
 
 
+    /**
+     *
+     * @param actionBoardPair board and action chosen
+     * @return true if it is the second build and the chosen cell is not on the perimeter.
+     */
     public boolean isBuildOffThePerimeter(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
         return buildCtr != 1 || (action.getTargetPos().getY() != 4 && action.getTargetPos().getX() != 4 && action.getTargetPos().getY() != 0 && action.getTargetPos().getX() != 0);

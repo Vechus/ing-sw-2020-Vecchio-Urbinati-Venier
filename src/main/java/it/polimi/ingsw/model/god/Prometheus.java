@@ -9,6 +9,11 @@ import it.polimi.ingsw.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Simple god: Your Turn: If your Worker does
+ * not move up, it may build both
+ * before and after moving.
+ */
 public class Prometheus extends God {
 
     public Prometheus(Board board, Player player) {

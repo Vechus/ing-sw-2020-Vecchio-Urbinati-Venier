@@ -9,6 +9,11 @@ import it.polimi.ingsw.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Simple god: Your Build: Your Worker may
+ * build one additional block (not
+ * dome) on top of your first block.
+ */
 public class Hephaestus extends God {
     public Hephaestus(Board board, Player player) {
         super(board, player);

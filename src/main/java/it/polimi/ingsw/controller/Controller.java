@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.listeners.PlayerActionListener;
 
+/**
+ *
+ */
 public class Controller implements PlayerActionListener {
     GameStageController currentStage;
     Model model;

@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
+/**
+ *
+ */
 public class MatchController extends GameStageController {
     public MatchController(Model model) {
         super(model);

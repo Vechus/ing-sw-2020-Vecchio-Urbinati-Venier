@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.util.Vector2;
 
+/**
+ * Advanced god: Win Condition: You also win
+ * when there are at least five
+ * Complete Towers on the board.
+ */
 public class Cronus extends God {
     public Cronus(Board board, Player player) {
         super(board, player);

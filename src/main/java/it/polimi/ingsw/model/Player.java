@@ -56,8 +56,16 @@ public class Player {
         this.workers = new ArrayList<>();
     }
 
+    /**
+     * Setter of playerId
+     * @param id
+     */
     public void setPlayerId(int id){ this.playerId = id; }
 
+    /**
+     * Getter of playerId
+     * @return
+     */
     public int getPlayerId(){ return this.playerId; }
 
     /**

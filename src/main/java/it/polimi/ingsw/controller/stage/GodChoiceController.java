@@ -4,6 +4,9 @@ import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.god.God;
 
+/**
+ *
+ */
 public class GodChoiceController extends GameStageController {
     public GodChoiceController(Model model) {
         super(model);

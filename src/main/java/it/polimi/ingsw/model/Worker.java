@@ -7,7 +7,7 @@ public class Worker {
     private Player owner;
 
     /**
-     * Create a Worker object, to be places on the board afterwards. Its position is initialised to (-1,-1)
+     * Creates a Worker object, to be placed on the board afterwards. Its position is initialised to (-1,-1)
      * @param owner Player who owns the Worker
      */
     public Worker(Player owner){
@@ -16,7 +16,7 @@ public class Worker {
     }
 
     /**
-     * Create a Worker object, with given position
+     * Creates a Worker object, with given position
      * @param position Vector2 position, the position to set the Worker to
      * @param owner Player who owns the Worker
      */

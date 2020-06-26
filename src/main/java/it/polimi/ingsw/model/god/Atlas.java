@@ -6,6 +6,10 @@ import it.polimi.ingsw.model.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Simple god: Your Build: Your Worker may
+ * build a dome at any level.
+ */
 public class Atlas extends God {
     public Atlas(Board board, Player player) {
         super(board, player);

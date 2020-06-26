@@ -4,6 +4,9 @@ import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.util.ActionType;
 
+/**
+ *
+ */
 public class SetupController extends GameStageController {
     public SetupController(Model model) {
         super(model);

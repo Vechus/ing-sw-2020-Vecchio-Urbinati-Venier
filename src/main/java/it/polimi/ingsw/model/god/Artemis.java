@@ -8,6 +8,11 @@ import it.polimi.ingsw.util.Pair;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Simple god: Your Move: Your Worker may
+ * move one additional time, but not
+ * back to its initial space.
+ */
 public class Artemis extends God {
     public Artemis(Board board, Player player) {
         super(board, player);

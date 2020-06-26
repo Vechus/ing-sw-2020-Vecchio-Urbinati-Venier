@@ -13,6 +13,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * Simple god: Your Move: Your Worker may
+ * move into an opponent Worker’s
+ * space, if their Worker can be
+ * forced one space straight backwards to an
+ * unoccupied space at any level.
+ */
 public class Minotaur extends God {
 
     List<Function<Pair<Action, Board>, Boolean>> pushValidationFunctions;
