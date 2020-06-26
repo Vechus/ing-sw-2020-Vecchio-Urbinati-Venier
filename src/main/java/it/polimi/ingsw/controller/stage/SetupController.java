@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.util.ActionType;
 
 /**
- *
+ *Specific controller of the part of the game where the players set up the their workers before the beginning of the match.
  */
 public class SetupController extends GameStageController {
     public SetupController(Model model) {

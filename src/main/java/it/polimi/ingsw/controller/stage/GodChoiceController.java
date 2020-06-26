@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.god.God;
 
 /**
- *
+ *Specific controller of the part of the game where the players choose the gods
  */
 public class GodChoiceController extends GameStageController {
     public GodChoiceController(Model model) {

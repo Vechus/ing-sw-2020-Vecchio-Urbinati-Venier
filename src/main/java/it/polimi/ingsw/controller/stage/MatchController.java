@@ -7,7 +7,7 @@ import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
 /**
- *
+ *Specific controller of the part of the game where the players face each other
  */
 public class MatchController extends GameStageController {
     public MatchController(Model model) {

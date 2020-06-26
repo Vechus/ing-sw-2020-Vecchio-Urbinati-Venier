@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Model;
 import it.polimi.ingsw.model.god.God;
 
 /**
- *
+ *Controller of the various stages of the game, which are: Setup, GodChoice, Match and Finished.
  */
 public abstract class GameStageController {
     protected Model model;
@@ -16,43 +16,38 @@ public abstract class GameStageController {
         this.model = model;
     }
 
-    /**
-     *
-     * @return
-     */
+
     public boolean isStageDone(){ return this.stageDone; }
 
-    /**
-     *
-     * @return
-     */
+
+
     public GameStage getGameStage(){ return this.stage; }
 
     /**
-     *
-     * @param playerId
-     * @param godName
-     * @param name
+     *Creates the player with his name, id and god.
+     * @param playerId Id of the player
+     * @param godName Name of the chosen god
+     * @param name Name of the player
      * @return
      */
     public boolean createPlayer(int playerId, String godName, String name){ return false; }
 
     /**
-     *
-     * @param playerId
-     * @param a
-     * @return
+     *Given the action from the client it handles what the model should do
+     * @param playerId Id of the player that performs the action
+     * @param a chosen action
+     * @return true if the action is completed successfully
      */
     public abstract boolean performAction(int playerId, Action a);
 
     /**
-     *
-     * @return
+     *Makes the game move to the next stage.
+     * @return the next stage
      */
     public abstract GameStageController advance();
 
     /**
-     *
+     * Sets the stage as done when the game must move to another stage
      * @param done
      */
     public void setStageDone(boolean done){ stageDone = done; }

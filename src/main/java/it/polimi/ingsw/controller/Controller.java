@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.god.God;
 import it.polimi.ingsw.util.listeners.PlayerActionListener;
 
 /**
- *
+ *Controller in the MVC model. Listens to players action and processes them.
  */
 public class Controller implements PlayerActionListener {
     GameStageController currentStage;
