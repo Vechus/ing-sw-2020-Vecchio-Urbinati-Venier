@@ -60,6 +60,7 @@ public class Model {
     public void checkPlayersLoseCondition() {
         for (Player p : this.players) {
             if (p.checkLoseCondition()) {
+                System.out.println(p.getPlayerName()+" lost!");
                 // player lost the game
                 p.setSpectator(true);
             }
@@ -67,7 +68,7 @@ public class Model {
     }
 
     /**
-     * Checks if the game is over.
+     * Checks if everybody is stalled. If true is returned, game ends as a tie.
      *
      * @return  boolean
      */
@@ -75,8 +76,8 @@ public class Model {
         this.checkPlayersLoseCondition();
         int activePlayers = 0;
         for(Player p : this.players)
-            if(!p.isSpectator()) activePlayers++;
-        return activePlayers <= 1;
+            if(p.isSpectator()) activePlayers++;
+        return activePlayers == 0;
     }
 
     /**
