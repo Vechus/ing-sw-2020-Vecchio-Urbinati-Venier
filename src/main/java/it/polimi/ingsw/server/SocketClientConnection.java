@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Handles the connection between the client and the server
+ */
 public class SocketClientConnection implements ClientConnection, Runnable {
 
     private Socket socket;
@@ -21,7 +24,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     private boolean active = true;
 
     /**
-     * Create a new SocketClientConnection
+     * Creates a new SocketClientConnection
      *
      * @param socket the socket the connection is using
      * @param server the server that manages the game
@@ -31,17 +34,11 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         this.server = server;
     }
 
-    /**
-     * getter of param active
-     */
+
     private synchronized boolean isActive(){
         return active;
     }
 
-
-    /**
-     * setter of param litener
-     */
     @Override
     public void addListener(ConnectionListener listener) {
         this.listener=listener;
@@ -49,7 +46,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
 
 
     /**
-     * Method that sends the object message.
+     * Sends the object message.
      * This method is blocking.
      *
      * @param message the object to send
@@ -64,9 +61,7 @@ public class SocketClientConnection implements ClientConnection, Runnable {
         }
     }
 
-    /**
-     * methods that calls closeConnection and eliminates the connection frm the server
-     */
+
     private void close() {
         closeConnection();
         System.out.println("[CONNECTION] Deregistering client...");
@@ -86,19 +81,12 @@ public class SocketClientConnection implements ClientConnection, Runnable {
     }
 
 
-    /**
-     * Sends the message to the client asynchronously
-     *
-     * @param message the object to send
-     */
+
     @Override
     public void asyncSend(final Object message){
         new Thread(() -> send(message)).start();
     }
 
-    /**
-     *method that reads the handshake
-     */
     @Override
     public void run() {
         ObjectInputStream in;

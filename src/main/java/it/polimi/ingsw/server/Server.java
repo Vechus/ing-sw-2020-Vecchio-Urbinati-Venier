@@ -14,6 +14,10 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ *Handles all incoming connections and game setup.
+ * Keeps track of active games and handles deregistration of the clients.
+ */
 public class Server {
 
     private static final int PORT = 27000;
@@ -57,7 +61,7 @@ public class Server {
 
 
     /**
-     * method to  eliminate a connection with a client when it is no loneger needed
+     * Eliminates a connection with a client when it is no longer needed
      * @param c stands for the connection that we want to eliminate
      */
     public synchronized void deregisterConnection(ClientConnection c) {
@@ -89,6 +93,9 @@ public class Server {
         }
     }
 
+    /**
+     * Sends the gods that are left to be chosen.
+     */
     private void sendAvailableGods(){
         AvailableGodsMessage availableGodsMessage = new AvailableGodsMessage();
         for(String god : availableGods)
@@ -101,6 +108,11 @@ public class Server {
             waitingConnection.get(name).asyncSend(availableGodsMessage);
     }
 
+    /**
+     *Handles the connection between server and client during the stage of selection fo the gods.
+     * @param name name of the player
+     * @param godName
+     */
     public void selectGod(String name, String godName){
         waitingPlayersGods.put(name, godName);
         godSelectionQueue.remove(name);
@@ -111,6 +123,9 @@ public class Server {
             sendAvailableGods();
     }
 
+    /**
+     *Handles the connection between server and client during the stage of setup
+     */
     public void setupGame(){
         System.out.println("[SERVER] Creating game...");
         List<String> keys = new ArrayList<>(waitingConnection.keySet());

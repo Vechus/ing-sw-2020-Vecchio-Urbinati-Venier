@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
+/**
+ * Represents an action from the player
+ */
 public class Action {
     private Worker worker;
     private Vector2 workerPos;

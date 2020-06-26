@@ -17,6 +17,9 @@ import it.polimi.ingsw.util.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *View that connects the client with the model over  a socket connection.
+ */
 public class RemoteView extends View {
     public RemoteView(Server server, Model model, ClientConnection clientConnection, int playerId) {
         super(server, model, clientConnection, playerId);

@@ -12,6 +12,9 @@ import it.polimi.ingsw.util.listeners.PlayerActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *Represents the model and allows the client to interact with the MVC.
+ */
 public abstract class View implements ModelChangeListener, ConnectionListener {
     private PlayerActionListener listener;
     int playerId;
@@ -26,16 +29,31 @@ public abstract class View implements ModelChangeListener, ConnectionListener {
         this.playerId = playerId;
     }
 
+
     public void addListener(PlayerActionListener listener){ this.listener = listener; }
 
+    /**
+     *Notifies the controller that a new player is created
+     * @param godName
+     * @param name name of the player
+     */
     public void processPlayerCreation(String godName, String name){
         listener.onPlayerCreate(playerId, godName, name);
     }
 
+    /**
+     *Notifies the controller that an action has been made.
+     * @param action
+     * @return
+     */
     public boolean processAction(Action action){
         return listener.onPlayerAction(playerId, action);
     }
 
+    /**
+     *Shows a representation of the model to the client.
+     * @param model
+     */
     public abstract void showModel(Model model);
 
     @Override

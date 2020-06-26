@@ -3,6 +3,9 @@ package it.polimi.ingsw.util;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Handles elements that should behave like a single object.
+ */
 public class Vector2 implements Cloneable, Serializable {
     private int x;
     private int y;
