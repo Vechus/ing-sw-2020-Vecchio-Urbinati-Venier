@@ -3,6 +3,9 @@ package it.polimi.ingsw.connection;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *A specific type of message that gives the player the remaining gods that can bo chosen.
+ */
 public class AvailableGodsMessage extends Message {
     List<String> gods;
     String curPlayer;
