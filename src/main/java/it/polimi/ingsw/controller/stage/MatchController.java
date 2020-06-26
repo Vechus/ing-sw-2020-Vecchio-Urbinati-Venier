@@ -23,12 +23,13 @@ public class MatchController extends GameStageController {
         if(!model.executeAction(playerId, a)) return false;
         System.out.println("[CONTROLLER] Action "+a.getType()+" done successfully");
         // reset counter at the end of turn
-        if (model.getPlayer(model.getCurPlayer()).isFinished())
+        boolean turnDone = model.getPlayer(model.getCurPlayer()).isFinished();
+        if (turnDone)
             model.beginNewTurn(model.getCurPlayer());
         // is everyone immobilized?
         boolean tie = model.checkGameOver();
         // update current player
-        if (model.getPlayer(model.getCurPlayer()).isFinished() || model.getPlayer(model.getCurPlayer()).isSpectator()) {
+        if (turnDone || model.getPlayer(model.getCurPlayer()).isSpectator()) {
             System.out.println("Passing turn...");
             model.incrementCurPlayer();
             System.out.println("Current player is "+model.getPlayer(model.getCurPlayer()).getPlayerName());

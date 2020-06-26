@@ -26,22 +26,17 @@ public class God {
 
     protected Player player;
 
-    protected boolean hasMoved= false;
-
-
-    protected boolean hasBuilt=false;
+    /**
+     * Getter of moveCtr
+     * @return how many times the player moved this turn
+     */
+    public int getMoveCount(){return moveCtr;  }
 
     /**
-     * Getter of hasMoved
-     * @return true if the player has moved
+     *Getter of buildCtr
+     * @return how many times the player built this turn
      */
-    public boolean getHasMoved(){return hasMoved;  }
-
-    /**
-     *Getter of hasBuilt
-     * @return true if the player has moved
-     */
-    public boolean getHasBuilt(){ return hasBuilt; }
+    public int getBuildCount(){ return buildCtr; }
 
     protected boolean hasFinishedTurn=false;
 

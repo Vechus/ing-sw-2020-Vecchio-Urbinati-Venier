@@ -7,9 +7,7 @@ import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GodTest {
 
@@ -161,8 +159,8 @@ public class GodTest {
     @Test
     void testBeginNewTurnNotValid(){
         god.beginNewTurn();
-        assertFalse(god.getHasMoved());
-        assertFalse(god.getHasBuilt());
+        assertEquals(god.getMoveCount(), 0);
+        assertEquals(god.getBuildCount(), 0);
         assertFalse(god.getHasFinishedTurn());
     }
 

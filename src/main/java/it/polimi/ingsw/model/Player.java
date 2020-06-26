@@ -86,20 +86,30 @@ public class Player {
 
     /**
      * For each Worker of this player, check if any move is possible: if none is possible than the Player loses the game
-     * @return hasPlayerLost boolean: 1 if Player has lost, 0 else
+     * @return hasPlayerLost boolean: true if Player has lost, false if not
      */
     public boolean checkLoseCondition() {
-        Vector2 posDelta;
-        if(this.workers.size() == 0) return false;
-        for(Worker w : this.workers) {
-            // iterate around the worker
-            for(int x = -1; x <= 1; x++) {
-                for(int y = -1; y <= 1; y++) {
-                    posDelta = w.getPosition().add(new Vector2(x, y));
-                    if(posDelta.getX() < 0 || posDelta.getY() < 0) continue;
-                    if(this.getPlayerGod().isMoveValid(new Action(w, posDelta, ActionType.MOVE))) return false;
+        for(ActionType type : playerGod.getAllowedActions()) {
+            if(type == ActionType.END_TURN || type == ActionType.PLACE_WORKER) return false;
+            Vector2 posDelta;
+            for (Worker w : this.workers) {
+                // iterate around the worker
+                for (int x = -1; x <= 1; x++) {
+                    for (int y = -1; y <= 1; y++) {
+                        posDelta = w.getPosition().add(new Vector2(x, y));
+                        if (type == ActionType.MOVE
+                            && this.getPlayerGod().isMoveValid(new Action(w, posDelta, type)))
+                            return false;
+                        else if (type == ActionType.BUILD
+                            && this.getPlayerGod().isBuildBlockValid(new Action(w, posDelta, type)))
+                            return false;
+                        else if (type == ActionType.BUILD_DOME
+                                && this.getPlayerGod().isBuildDomeValid(new Action(w, posDelta, type)))
+                            return false;
+                    }
                 }
             }
+            System.out.println("No "+type+" action valid");
         }
         return true;
     }

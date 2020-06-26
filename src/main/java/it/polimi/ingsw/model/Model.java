@@ -76,7 +76,7 @@ public class Model {
         this.checkPlayersLoseCondition();
         int activePlayers = 0;
         for(Player p : this.players)
-            if(p.isSpectator()) activePlayers++;
+            if(!p.isSpectator()) activePlayers++;
         return activePlayers == 0;
     }
 
