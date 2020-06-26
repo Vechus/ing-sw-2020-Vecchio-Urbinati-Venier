@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.effect.OpponentEffect;
 import it.polimi.ingsw.util.Action;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 
 import java.util.ArrayList;
@@ -153,6 +154,7 @@ public class Board {
      * @return boolean
      */
     public boolean isWinPermittedByEffects(Action a){
+        if(a.getType() == ActionType.END_TURN) return true;
         Player p = a.getWorker().getOwner();
         for(OpponentEffect e : this.effects)
             if(!e.checkOwner(p) && e.isActive() && !e.checkOpponentWinCondition(a)) return false;

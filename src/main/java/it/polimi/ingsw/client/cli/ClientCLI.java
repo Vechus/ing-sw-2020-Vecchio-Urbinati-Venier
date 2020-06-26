@@ -11,6 +11,9 @@ import it.polimi.ingsw.util.Vector2;
 
 import java.util.*;
 
+/**
+ * Handles the client on the command-line interface.
+ */
 public class ClientCLI implements ClientUserInterface, Runnable {
     private final Scanner stdin = new Scanner(System.in);
     private String playerName;
@@ -105,6 +108,11 @@ public class ClientCLI implements ClientUserInterface, Runnable {
             System.out.println("("+(i+1)+") "+list.get(i));
     }
 
+    /**
+     *
+     * @param max
+     * @return
+     */
     int chooseInRange(int max){
         int id;
         do id = stdin.nextInt() - 1;

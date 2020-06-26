@@ -20,6 +20,12 @@ public class MatchController extends GameStageController {
         if(!model.isPlayersTurn(playerId)) return false;
         if(!model.executeAction(playerId, a)) return false;
         System.out.println("[CONTROLLER] Action "+a.getType()+" done successfully");
+        if (model.getPlayer(model.getCurPlayer()).isFinished()) {
+            System.out.println("Passing turn...");
+            model.incrementCurPlayer();
+            model.beginNewTurn(model.getCurPlayer());
+        }
+        model.updateClientModel();
         if(model.checkGameOver()){
             System.out.println("Nobody won!");
             model.sendGameOver(-1);
@@ -36,14 +42,6 @@ public class MatchController extends GameStageController {
                 break;
             }
         }
-        if(!stageDone) {
-            if (model.getPlayer(model.getCurPlayer()).isFinished()) {
-                System.out.println("Passing turn...");
-                model.incrementCurPlayer();
-                model.beginNewTurn(model.getCurPlayer());
-            }
-        }
-        model.updateClientModel();
         return true;
     }
 
