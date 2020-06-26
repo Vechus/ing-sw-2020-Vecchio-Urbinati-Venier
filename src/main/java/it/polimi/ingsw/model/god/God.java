@@ -250,7 +250,8 @@ public class God {
      * @return the boolean.
      */
     public boolean checkWinCondition(Action action){
-        return action.getType() == ActionType.MOVE
+        return board.isWinPermittedByEffects(action)
+                && action.getType() == ActionType.MOVE
                 && this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) > 0
                 && this.board.getHeight(action.getTargetPos()) == 3;
     }
@@ -281,7 +282,7 @@ public class God {
             if(!check.apply(arg))
                 return false;
         }
-        return true;
+        return board.isActionPermittedByEffects(action);
     }
 
     /**
