@@ -35,9 +35,13 @@ class ModelTest {
     @Test
     void checkGameOver() {
         int pid1 = model.addNewPlayer("", "");
-        assertTrue(model.checkGameOver());
-        int pid2 = model.addNewPlayer("", "");
+        model.placeWorker(pid1, new Vector2(0, 0));
         assertFalse(model.checkGameOver());
+        Board board = model.getBoard();
+        board.setComplete(new Vector2(0, 1), true);
+        board.setComplete(new Vector2(1, 0), true);
+        board.setComplete(new Vector2(1, 1), true);
+        assertTrue(model.checkGameOver());
     }
 
     @Test
