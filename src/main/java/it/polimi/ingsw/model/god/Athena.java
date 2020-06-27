@@ -22,18 +22,12 @@ public class Athena extends God {
     }
 
     @Override
-    public void beginNewTurn() {
-        super.beginNewTurn();
-        this.board.setEffectActive(this.player, false);
-    }
-
-    @Override
     public boolean move(Action action){
         Vector2 currPos= action.getWorker().getPosition();
         boolean res = super.move(action);
+        if(!res) return false;
         int heightDiff = this.board.getHeight(action.getTargetPos())-this.board.getHeight(currPos);
-        if(res && heightDiff > 0)
-            this.board.setEffectActive(this.player, true);
-        return res;
+        this.board.setEffectActive(this.player, heightDiff > 0);
+        return true;
     }
 }

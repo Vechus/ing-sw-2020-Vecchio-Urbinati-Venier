@@ -30,6 +30,6 @@ public class OpponentEffect {
     }
 
     public boolean checkOwner(Player p) {
-        return p == this.owner;
+        return p.equals(this.owner);
     }
 }
