@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Handles the connection between the client and the server
+ * Handles server side the connection between the client and the server
  */
 public class SocketClientConnection implements ClientConnection, Runnable {
 

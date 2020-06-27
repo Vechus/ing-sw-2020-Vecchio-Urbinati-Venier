@@ -5,6 +5,9 @@ import it.polimi.ingsw.util.Vector2;
 
 import java.io.Serializable;
 
+/**
+ * Is the representation of the action sent by the client.
+ */
 public class ClientAction implements Serializable {
     private Vector2 from, to;
     private ActionType type;

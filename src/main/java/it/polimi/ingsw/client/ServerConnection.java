@@ -10,6 +10,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Queue;
 
+/**
+ * Handles client side the connection between the client and the server.
+ */
 public class ServerConnection implements ClientServerInterface {
     String ip;
     int port;
@@ -57,7 +60,7 @@ public class ServerConnection implements ClientServerInterface {
     }
 
     /**
-     * creates a new thread to send a messagge in order to not block the rest of the server while sent
+     * creates a new thread to send a message in order to not block the rest of the server while sent
      * @param message
      */
     @Override
