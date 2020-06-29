@@ -5,7 +5,6 @@ import javafx.scene.shape.TriangleMesh;
 import javafx.scene.shape.VertexFormat;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -130,13 +129,14 @@ public abstract class Loader{
      * @param msg The message to be displayed as a result.
      **/
     private static void warning(String mthd, String msg){
+        /*
         System.out.println(
                 System.currentTimeMillis() +
                         " [??] Loader->" +
                         mthd +
                         "() " +
                         msg
-        );
+        ); */
     }
 
     /**
