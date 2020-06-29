@@ -6,6 +6,9 @@ import javafx.util.Pair;
 
 import java.util.List;
 
+/**
+ *
+ */
 public abstract class CustomEventHandler implements EventHandler<CustomEvent> {
     public abstract void onSceneChange(String sceneName);
     public abstract void onPlayerNameChange(String playerName);

@@ -5,6 +5,10 @@ import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
 
+/**
+ * Launches either or one of the clients depending on the command line arguments.
+ *
+ */
 public class SantoriniLauncher {
     public static void main(String[] args) {
         if(args.length > 1){

@@ -98,8 +98,8 @@ public class ClientCLI implements ClientUserInterface, Runnable {
     }
 
     /**
-     * 
-     * @param list
+     * Displays list of strings.
+     * @param list List of strings to be displayed.
      */
     void displaySelectionList(List<String> list){
         for(int i=0;i<list.size();i++)
@@ -107,9 +107,9 @@ public class ClientCLI implements ClientUserInterface, Runnable {
     }
 
     /**
-     *
+     *Waits for a integer until it is within range.
      * @param max
-     * @return
+     * @return the integer that is within range.
      */
     int chooseInRange(int max){
         int id;

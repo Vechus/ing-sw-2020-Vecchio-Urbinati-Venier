@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Is the representation of the board sent to the clients.
+ */
 public class ClientBoard implements Serializable {
     int[][] height;
     boolean[][] dome;

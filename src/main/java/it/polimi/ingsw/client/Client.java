@@ -11,12 +11,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The type RemoteClient.
+ * Handles all outgoing connection and requests to the server.
  */
 public class Client {
-    /**
-     * The enum clientStateEnum describes the client as a Finite State Machine.
-     */
+
     private String ip;
     private int port;
     private int gameID;
@@ -26,16 +24,13 @@ public class Client {
     private ClientServerInterface connection;
     private boolean useCli;
 
-    /**
-     * Instantiates a new Client.
-     *
-     */
+
     public Client(boolean useCli) {
         this.useCli = useCli;
     }
 
     /**
-     * Run.
+     * Handles client side the connection with the server, from the setup of the client adding to the game, to the end of the match.
      */
     public void run() {
         if (useCli) ui = new ClientCLI();
@@ -148,6 +143,10 @@ public class Client {
         }
     }
 
+    /**
+     *Takes the actions from the input and the proceeds to create and send them to the server.
+     * @param allowedActions the list of the allowed action.
+     */
     void makeAction(List<ActionType> allowedActions){
         ClientAction action = ui.getPlayerMove(allowedActions);
         ActionMessage actionMessage = new ActionMessage();
