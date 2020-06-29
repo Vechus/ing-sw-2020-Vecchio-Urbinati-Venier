@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.gui.game;
 
 import it.polimi.ingsw.client.ClientBoard;
-import it.polimi.ingsw.client.events.ChangeSceneEvent;
 import it.polimi.ingsw.client.events.GameEvent;
 import it.polimi.ingsw.client.events.GameEventHandler;
 import it.polimi.ingsw.client.events.SelectOnGridEvent;
@@ -12,23 +11,16 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.MeshView;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -41,20 +33,15 @@ public class GameScene {
     public enum ClientGameStage3D {PLACE_FIRST_WORKER, PLACE_SECOND_WORKER, ACTION, WAIT};
     private ClientGameStage3D clientGameStage3D = ClientGameStage3D.PLACE_FIRST_WORKER;
     private int cameraAngle = 0;
-    private Label bottomMessage = new Label();
+    private final Label bottomMessage = new Label();
     private final Board3D board3D;
     private final Group group;
-    private Group cameraGroup;
     private Camera camera;
-    private SubScene subScene3D;
     private final BorderPane pane = new BorderPane();
     private final Scene scene;
     private Rotate cameraRotate;
-    private final Stage primaryStage;
     private Vector2 selected;
-    private FXMLLoader loader;
-    private Parent panel2d = null;
-    private Panel2dController panel2dController;
+    private final Panel2dController panel2dController;
     private int playerID;
 
 
@@ -62,7 +49,8 @@ public class GameScene {
         this.group = new Group();
         this.board3D = new Board3D(group);
         this.scene = new Scene(pane);
-        loader = new FXMLLoader(getClass().getResource("/scenes/Panel2d.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/Panel2d.fxml"));
+        Parent panel2d = null;
         try{
             panel2d = loader.load();
         } catch (IOException e) {
@@ -71,7 +59,6 @@ public class GameScene {
         panel2dController = loader.getController();
         panel2dController.init();
 
-        this.primaryStage = stage;
         scene.setFill(Color.STEELBLUE);
         initCamera();
         initSubScene(panel2d);
@@ -96,7 +83,7 @@ public class GameScene {
     }
 
     private void initCamera() {
-        cameraGroup = new Group();
+        Group cameraGroup = new Group();
         camera = new PerspectiveCamera(true);
         camera.setNearClip(1);
         camera.setFarClip(200);
@@ -118,7 +105,7 @@ public class GameScene {
         pane.setRight(panel2d);
 
         pane.setStyle("-fx-background-color: transparent");
-        subScene3D = new SubScene(this.group, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
+        SubScene subScene3D = new SubScene(this.group, WIDTH, HEIGHT, true, SceneAntialiasing.BALANCED);
         subScene3D.setFill(Color.LIGHTSKYBLUE);
         subScene3D.setCamera(this.camera);
         pane.setCenter(subScene3D);
@@ -127,11 +114,9 @@ public class GameScene {
             switch (keyEvent.getCode()) {
                 case A -> cameraRotationAnimation(45);
                 case D -> cameraRotationAnimation(-45);
-                case ESCAPE -> displayPauseMenu();
             }
         });
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            //System.out.println("DEBUG: mouse click " + mouseEvent.getTarget());
             if (mouseEvent.getTarget() instanceof BuildingCollider) {
                 BuildingCollider target = ((BuildingCollider) mouseEvent.getTarget());
                 handleSelected(target);
@@ -165,43 +150,6 @@ public class GameScene {
 
     private void cleanBottom() {
         pane.setBottom(null);
-    }
-
-    private void displayPauseMenu() {
-        pane.setEffect(new GaussianBlur());
-
-        VBox pauseRoot = new VBox(5);
-        pauseRoot.setAlignment(Pos.CENTER);
-        pauseRoot.setStyle("-fx-background-color: rgba(46, 62, 180, 0.5);");
-        pauseRoot.setPadding(new Insets(20));
-        Label pauseLabel = new Label("Paused");
-        pauseLabel.getStylesheets().add(getClass().getResource("/scenes/css/MainMenuStyle.css").toExternalForm());
-        pauseRoot.getChildren().add(pauseLabel);
-        Button resumeButton = new Button("Resume");
-        Button quitButton = new Button("Quit Game");
-        resumeButton.getStylesheets().add(getClass().getResource("/scenes/css/Buttons.css").toExternalForm());
-        quitButton.getStylesheets().add(getClass().getResource("/scenes/css/Buttons.css").toExternalForm());
-        resumeButton.getStyleClass().add("greenButton");
-        quitButton.getStyleClass().add("redButton");
-        pauseRoot.getChildren().add(resumeButton);
-        pauseRoot.getChildren().add(quitButton);
-
-        Stage popupStage = new Stage(StageStyle.TRANSPARENT);
-        popupStage.initOwner(primaryStage);
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setScene(new Scene(pauseRoot, Color.TRANSPARENT));
-
-        resumeButton.setOnAction(actionEvent -> {
-            pane.setEffect(null);
-            popupStage.hide();
-        });
-
-        quitButton.setOnAction(actionEvent -> {
-            pane.setEffect(null);
-            popupStage.hide();
-            pane.fireEvent(new ChangeSceneEvent("gameToMenu"));
-        });
-        popupStage.show();
     }
 
     private void cameraRotationAnimation(int degrees) {
