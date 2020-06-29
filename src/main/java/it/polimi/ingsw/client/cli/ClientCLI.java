@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.cli;
 
+import it.polimi.ingsw.client.ClientAction;
 import it.polimi.ingsw.client.ClientBoard;
 import it.polimi.ingsw.client.interfaces.ClientUserInterface;
-import it.polimi.ingsw.client.ClientAction;
-import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.ConsoleColor;
 import it.polimi.ingsw.util.Vector2;
@@ -233,6 +231,14 @@ public class ClientCLI implements ClientUserInterface, Runnable {
     @Override
     public void showError(String message) {
         System.out.println(ConsoleColor.RED_BOLD + message + ConsoleColor.RESET);
+    }
+
+    @Override
+    public void showFatalError(String message) {
+        System.out.println(ConsoleColor.RED_BOLD + message + ConsoleColor.RESET);
+        System.out.println("Press enter to exit the game...");
+        stdin.next();
+        System.exit(0);
     }
 
     @Override

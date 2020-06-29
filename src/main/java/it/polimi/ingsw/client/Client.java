@@ -70,8 +70,12 @@ public class Client {
                 return;
             }
             if (resp.getStatus() == Message.Status.ERROR) {
-                ui.showError("Error while starting/joining game: ");
-                ui.showError("[" + resp.getErrorType() + "] " + resp.getPayload());
+                if(resp.getErrorType() == Message.ErrorType.LOBBY_ERROR)
+                    ui.showFatalError("A game is being created. Please wait.");
+                else if(resp.getErrorType() == Message.ErrorType.NAME_TAKEN_ERROR)
+                    ui.showFatalError("Your username was already taken.\nPlease choose another one.");
+                else
+                    ui.showError("Error while starting/joining game: \n" + "[" + resp.getErrorType() + "] " + resp.getPayload());
                 return;
             } else if (resp.getMessageType() == Message.MessageType.SETUP_REQ) {
                 int num = ui.getPlayerNumber();
@@ -106,10 +110,9 @@ public class Client {
             try {
                 serverMessage = connection.receiveMessage();
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                ui.showFatalError("The game has closed due to disconnection from server.\nThe game will now quit.");
                 return;
             }
-
             // Game is over, pack it up!
             if(serverMessage.getMessageType() == Message.MessageType.GAME_END){
                 String winnerName = serverMessage.getPayload();

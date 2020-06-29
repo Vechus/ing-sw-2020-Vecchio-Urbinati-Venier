@@ -9,14 +9,13 @@ import it.polimi.ingsw.client.interfaces.ClientUserInterface;
 import it.polimi.ingsw.util.ActionType;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -59,6 +58,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
     private static GameScene gameScene;
     private static Stage mainStage;
     private static Scene menuScene;
+    private boolean isLobby;
 
     public ClientGUI() {
         initParameters();
@@ -100,28 +100,28 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
             public void onPlayerIpPortChange(Pair<String, Integer> input) {
                 ip = input.getKey();
                 port = input.getValue();
-                System.out.println(ip + ":" + port);
+                System.out.println("Connecting to" + ip + ":" + port);
                 sync = true;
             }
 
             @Override
             public void onPlayerNumberChange(int num) {
                 playerNumber = num;
-                System.out.println(num);
+                System.out.println(num + " players selected.");
                 sync = true;
             }
 
             @Override
             public void onPlayerNameChange(String playerName) {
                 setPlayerName(playerName);
-                System.out.println(playerName);
+                System.out.println("You entered username: " + playerName);
                 sync = true;
             }
 
             @Override
             public void onPlayerGodChange(String god) {
                 playerGod = god;
-                System.out.println(god);
+                System.out.println("You selected god: " + god);
                 menuScene.setRoot(lobby);
                 sync = true;
             }
@@ -129,6 +129,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
             @Override
             public void onHostSelectGods(List<String> gods) {
                 hostSelected = gods;
+                System.out.println("You are the host. You are selecting the gods:");
                 gods.forEach(System.out::println);
                 menuScene.setRoot(lobby);
                 sync = true;
@@ -144,12 +145,9 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
             }
         });
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-                Platform.exit();
-                System.exit(0);
-            }
+        stage.setOnCloseRequest(t -> {
+            Platform.exit();
+            System.exit(0);
         });
 
         stage.setTitle("Santorini - GC18");
@@ -163,6 +161,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
         port = 0;
         playerNumber = 0;
         playerAction = null;
+        isLobby = true;
     }
 
     @Override
@@ -260,6 +259,7 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
     public void showGameState(ClientBoard gameState) {
         Platform.runLater(() -> {
             if(gameScene == null) {
+                isLobby = false;
                 gameScene = new GameScene(mainStage);
                 gameScene.setPlayerGod(playerGod);
                 gameScene.setPlayerName(playerName);
@@ -278,6 +278,23 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
             alert.setContentText(message);
 
             alert.showAndWait();
+        });
+    }
+
+    @Override
+    public void showFatalError(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error dialog");
+            alert.setHeaderText("Fatal error!");
+            alert.setContentText(message);
+
+            alert.showAndWait()
+                    .filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> {
+                        Platform.exit();
+                        System.exit(0);
+                    });;
         });
     }
 

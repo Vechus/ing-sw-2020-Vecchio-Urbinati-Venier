@@ -66,6 +66,11 @@ public interface ClientUserInterface {
     void showError(String message);
 
     /**
+     * Method that signals a fatal error, due to connection problems or disconnection caused by other clients.
+     */
+    void showFatalError(String message);
+
+    /**
      * Method that sends a message to the user.
      */
     void showMessage(String s);
