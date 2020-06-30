@@ -1,0 +1,17 @@
+it.polimi.ingsw
+it.polimi.ingsw.client
+it.polimi.ingsw.client.cli
+it.polimi.ingsw.client.events
+it.polimi.ingsw.client.gui
+it.polimi.ingsw.client.gui.game
+it.polimi.ingsw.client.interfaces
+it.polimi.ingsw.connection
+it.polimi.ingsw.controller
+it.polimi.ingsw.controller.stage
+it.polimi.ingsw.model
+it.polimi.ingsw.model.god
+it.polimi.ingsw.model.god.effect
+it.polimi.ingsw.server
+it.polimi.ingsw.util
+it.polimi.ingsw.util.listeners
+it.polimi.ingsw.view
