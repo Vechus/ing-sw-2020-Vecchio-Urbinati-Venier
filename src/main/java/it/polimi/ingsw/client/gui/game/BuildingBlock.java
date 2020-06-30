@@ -8,9 +8,20 @@ import javafx.scene.shape.MeshView;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 
+/**
+ * The type Building block.
+ */
 public class BuildingBlock extends MeshView {
     private static final double BOARD_HEIGHT = -3;
-    private Vector2 pos;
+    private final Vector2 pos;
+
+    /**
+     * Instantiates a new Building block.
+     *
+     * @param coordX the x coordinate relative to the board
+     * @param coordY the y coordinate relative to the board
+     * @param height the height of this block
+     */
     public BuildingBlock(int coordX, int coordY, int height) {
         this.pos = new Vector2(coordX, coordY);
 
@@ -34,6 +45,11 @@ public class BuildingBlock extends MeshView {
         getTransforms().add(new Scale(0.4, 0.4, 0.4));
     }
 
+    /**
+     * Gets position (in the board).
+     *
+     * @return the position
+     */
     public Vector2 getPos() {
         return pos;
     }

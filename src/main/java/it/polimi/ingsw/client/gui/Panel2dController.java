@@ -17,6 +17,9 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+/**
+ * The Panel2d sub-scene controller.
+ */
 public class Panel2dController {
     @FXML
     private AnchorPane anchorPane;
@@ -29,6 +32,9 @@ public class Panel2dController {
     private Vector2 selected = null;
     private Vector2 pos = null;
 
+    /**
+     * Initialises parameters.
+     */
     public void init() {
         anchorPane.addEventHandler(GameEvent.GAME_EVENT_TYPE, new GameEventHandler() {
             @Override
@@ -41,6 +47,11 @@ public class Panel2dController {
         });
     }
 
+    /**
+     * Adds actions buttons and binds their respective events.
+     *
+     * @param actions the actions
+     */
     public void addButtons(List<ActionType> actions) {
         for(ActionType action : actions) {
             Button button = new Button();
@@ -104,30 +115,59 @@ public class Panel2dController {
             }
             buttonBox.getChildren().add(button);
         }
-        //Button button = new Button("Testodentro");
     }
 
+    /**
+     * Sets player name label content.
+     *
+     * @param playerName the player name
+     */
     public void setPlayerNameLabel(String playerName) {
         this.playerNameLabel.setText(playerName);
     }
 
+    /**
+     * Sets player god image content.
+     *
+     * @param god the god
+     */
     public void setPlayerGodImage(String god) {
         ClientGuiGod guiGod = new ClientGuiGod(god);
         this.playerGodImage.setImage(guiGod.getImage());
     }
 
+    /**
+     * Sets selected position.
+     *
+     * @param selected the selected
+     */
     public void setSelected(Vector2 selected) {
         this.selected = selected;
     }
 
+    /**
+     * Sets pos parameter.
+     *
+     * @param pos the position to set
+     */
     public void setPos(Vector2 pos) {
         this.pos = pos;
     }
 
+    /**
+     * Gets selected position.
+     *
+     * @return the selected
+     */
     public Vector2 getSelected() {
         return selected;
     }
 
+    /**
+     * Gets pos parameter.
+     *
+     * @return the pos parameter
+     */
     public Vector2 getPos() {
         return pos;
     }

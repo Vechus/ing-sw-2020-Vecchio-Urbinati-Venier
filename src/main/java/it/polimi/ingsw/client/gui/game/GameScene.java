@@ -26,11 +26,22 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Game scene.
+ */
 public class GameScene {
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 700;
     private static final double CAMERA_RAY = 50;
-    public enum ClientGameStage3D {PLACE_FIRST_WORKER, PLACE_SECOND_WORKER, ACTION, WAIT};
+
+    /**
+     * The enum Client game stage 3d. It is used to keep track of the available actions to the user regardless of the game state.
+     */
+    public enum ClientGameStage3D {
+        PLACE_FIRST_WORKER,
+        PLACE_SECOND_WORKER,
+        ACTION,
+        WAIT};
     private ClientGameStage3D clientGameStage3D = ClientGameStage3D.PLACE_FIRST_WORKER;
     private int cameraAngle = 0;
     private final Label bottomMessage = new Label();
@@ -45,6 +56,11 @@ public class GameScene {
     private int playerID;
 
 
+    /**
+     * Instantiates a new Game scene and initialises all graphical elements.
+     *
+     * @param stage the stage
+     */
     public GameScene(Stage stage) {
         this.group = new Group();
         this.board3D = new Board3D(group);
@@ -70,14 +86,29 @@ public class GameScene {
         //pane.setBottom(bottomMessage);
     }
 
+    /**
+     * Gets the game board.
+     *
+     * @return the game board
+     */
     public Board3D getBoard3D() {
         return board3D;
     }
 
+    /**
+     * Gets main group.
+     *
+     * @return the group
+     */
     public Group getGroup() {
         return group;
     }
 
+    /**
+     * Update board. It is used when the server sends the board to the client.
+     *
+     * @param clientBoard the ClientBoard object sent from the server
+     */
     public void updateBoard(ClientBoard clientBoard) {
         board3D.fromClientBoard(clientBoard);
     }
@@ -166,10 +197,21 @@ public class GameScene {
         cameraAngle += degrees;
         rotPosAnimation.play();
     }
+
+    /**
+     * Gets main scene.
+     *
+     * @return the scene
+     */
     public Scene getScene() {
         return scene;
     }
 
+    /**
+     * Gets allowed actions.
+     *
+     * @param allowedActions the allowed actions
+     */
     public void getAllowedActions(List<ActionType> allowedActions) {
         panel2dController.addButtons(allowedActions);
         unselectAll();
@@ -185,27 +227,56 @@ public class GameScene {
             clientGameStage3D = ClientGameStage3D.ACTION;
     }
 
+    /**
+     * Sets player god name.
+     *
+     * @param god the god name
+     */
     public void setPlayerGod(String god) {
         panel2dController.setPlayerGodImage(god);
     }
 
+    /**
+     * Sets player name.
+     *
+     * @param playerName the player name
+     */
     public void setPlayerName(String playerName) {
         panel2dController.setPlayerNameLabel(playerName);
     }
 
+    /**
+     * Sets client game stage.
+     *
+     * @param clientGameStage3D the client game stage
+     */
     public void setClientGameStage3D(ClientGameStage3D clientGameStage3D) {
         this.clientGameStage3D = clientGameStage3D;
     }
 
+    /**
+     * Gets client game stage.
+     *
+     * @return the client game stage
+     */
     public ClientGameStage3D getClientGameStage3D() {
         return clientGameStage3D;
     }
 
+    /**
+     * Display bottom message.
+     *
+     * @param message the message
+     * @param color   the color of the message
+     */
     public void displayBottomMessage(String message, Color color) {
         bottomMessage.setText(message);
         bottomMessage.setTextFill(color);
     }
 
+    /**
+     * Unselect all buildings.
+     */
     public void unselectAll() {
         selected = null;
         board3D.unselectBuildings();

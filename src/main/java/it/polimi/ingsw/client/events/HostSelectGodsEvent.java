@@ -4,6 +4,10 @@ import javafx.event.EventType;
 
 import java.util.List;
 
+
+/**
+ * The Host select gods event concrete definition.
+ */
 public class HostSelectGodsEvent extends CustomEvent {
     public static final EventType<CustomEvent> HOST_SELECT_EVENT_TYPE = new EventType<>(CUSTOM_EVENT_TYPE, "HostSelectGods");
     private final List<String> gods;

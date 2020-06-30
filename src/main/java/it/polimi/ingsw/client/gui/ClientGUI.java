@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Client gui singleton.
+ */
 public class ClientGUI extends Application implements ClientUserInterface, Runnable {
     private static final List<String> allGods = new ArrayList<>() {{
         add("Apollo");
@@ -60,6 +63,9 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
     private static Scene menuScene;
     private boolean isLobby;
 
+    /**
+     * Instantiates a new Client gui.
+     */
     public ClientGUI() {
         initParameters();
     }
@@ -155,6 +161,9 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
         stage.show();
     }
 
+    /**
+     * Initialises all parameters.
+     */
     public void initParameters() {
         playerName = null;
         ip = null;
@@ -169,6 +178,9 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
 
     }
 
+    /**
+     * Loop wait. Used for synchronising threads.
+     */
     void loopWait(){
         try {
             Thread.sleep(500);
@@ -325,22 +337,47 @@ public class ClientGUI extends Application implements ClientUserInterface, Runna
         }
     }
 
+    /**
+     * Sets player name.
+     *
+     * @param playerName the player name
+     */
     public void setPlayerName(String playerName) {
         ClientGUI.playerName = playerName;
     }
 
+    /**
+     * Gets main menu Parent object.
+     *
+     * @return the main menu
+     */
     public Parent getMainMenu() {
         return mainMenu;
     }
 
+    /**
+     * Gets credits Parent object.
+     *
+     * @return the credits
+     */
     public Parent getCredits() {
         return credits;
     }
 
+    /**
+     * Gets lobby Parent object.
+     *
+     * @return the lobby
+     */
     public Parent getLobby() {
         return lobby;
     }
 
+    /**
+     * Gets game scene object.
+     *
+     * @return the game scene
+     */
     public GameScene getGameScene() {
         return gameScene;
     }

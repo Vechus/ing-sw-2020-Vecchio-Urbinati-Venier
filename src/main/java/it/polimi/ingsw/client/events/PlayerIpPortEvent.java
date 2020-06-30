@@ -3,6 +3,9 @@ package it.polimi.ingsw.client.events;
 import javafx.event.EventType;
 import javafx.util.Pair;
 
+/**
+ * The Player ip port event concrete definition.
+ */
 public class PlayerIpPortEvent extends CustomEvent {
     public static final EventType<CustomEvent> PLAYER_INPUT_EVENT_TYPE = new EventType<>(CUSTOM_EVENT_TYPE, "PlayerInput");
 

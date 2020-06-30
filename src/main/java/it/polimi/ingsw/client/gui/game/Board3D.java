@@ -13,11 +13,19 @@ import javafx.scene.transform.Rotate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Board3D.
+ */
 public class Board3D {
     private final Group group;
     private final Building3D[][] board = new Building3D[5][5];
     private final List<Worker3D> playerWorkers = new ArrayList<>();
 
+    /**
+     * Instantiates a new Board 3D.
+     *
+     * @param group the group to which append the board to.
+     */
     public Board3D(Group group) {
         this.group = group;
         prepareModel("Cliff", group, 0, 0, 0);
@@ -34,6 +42,11 @@ public class Board3D {
         sun.translateZProperty().set(0);
     }
 
+    /**
+     * Increases the height of a building. If the building reaches level 4 it builds a dome instead.
+     *
+     * @param v the position to build onto.
+     */
     public void build(Vector2 v) {
         Building3D building3D = getBuilding(v);
         if(!building3D.hasDome())
@@ -42,6 +55,12 @@ public class Board3D {
             System.out.println("You can't build there, there is already a dome!");
     }
 
+    /**
+     * Gets the building at a specified position.
+     *
+     * @param v the position of the building
+     * @return the building at position v
+     */
     public Building3D getBuilding(Vector2 v) {
         int x = v.getX();
         int y = v.getY();
@@ -52,6 +71,9 @@ public class Board3D {
         }
     }
 
+    /**
+     * Unselect buildings. This method hides all building colliders.
+     */
     public void unselectBuildings() {
         for (Building3D[] building3DS : board) {
             for (Building3D building3D: building3DS) {
@@ -60,6 +82,9 @@ public class Board3D {
         }
     }
 
+    /**
+     * Unselect not red buildings. This method hides all building colliders that are not colored red.
+     */
     public void unselectNotRedBuildings() {
         for (Building3D[] building3DS : board) {
             for (Building3D building3D: building3DS) {
@@ -68,10 +93,12 @@ public class Board3D {
         }
     }
 
+    /**
+     * Converts a ClientBoard object into a Board3D object.
+     *
+     * @param board the ClientBoard object
+     */
     public void fromClientBoard(ClientBoard board) {
-        // fixme review this function
-        Vector2 diff = null;
-        boolean hasDiff = false;
         for(int i = 0; i < 5; i ++) {
             for(int j = 0; j < 5; j ++) {
                 Vector2 v = new Vector2(i, j);
@@ -97,11 +124,23 @@ public class Board3D {
         }
     }
 
+    /**
+     * Remove worker at a specified position.
+     *
+     * @param pos the position.
+     */
     public void removeWorker(Vector2 pos) {
         group.getChildren().remove(getWorkerAt(pos));
         playerWorkers.remove(getWorkerAt(pos));
     }
 
+    /**
+     * Add worker at a specified position, with specified id.
+     *
+     * @param pos     the position
+     * @param id      the id of the worker
+     * @param isWoman flag that sets which model to load, if female or male
+     */
     public void addWorker(Vector2 pos, int id, boolean isWoman) {
         Worker3D worker3D = new Worker3D(id, isWoman);
         worker3D.setPosition(pos, getBuilding(pos).getHeight());
@@ -109,6 +148,12 @@ public class Board3D {
         group.getChildren().add(worker3D);
     }
 
+    /**
+     * Gets worker at a specified position.
+     *
+     * @param pos the position
+     * @return the worker at pos
+     */
     public Worker3D getWorkerAt(Vector2 pos) {
         for(Worker3D worker3D: playerWorkers) {
             if(worker3D.getPosition().equals(pos)) {
@@ -118,9 +163,15 @@ public class Board3D {
         return null;
     }
 
+    /**
+     * Gets the number of player workers on the board.
+     *
+     * @return the number of player workers on the board
+     */
     public int getPlayerWorkersSize() {
         return playerWorkers.size();
     }
+
 
     private int countWorkers(ClientBoard board) {
         int count = 0;

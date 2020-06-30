@@ -2,6 +2,9 @@ package it.polimi.ingsw.client.events;
 
 import javafx.event.EventType;
 
+/**
+ * The Player god change event concrete definition.
+ */
 public class PlayerGodChangeEvent extends CustomEvent {
     public static final EventType<CustomEvent> GOD_CHANGE_EVENT_TYPE = new EventType<>(CUSTOM_EVENT_TYPE, "PlayerGodChange");
     private final String param;
