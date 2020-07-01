@@ -24,6 +24,13 @@ public class GodFactory {
         return actionGraph;
     }
 
+    /**
+     *Class that given the name creates the chosen god.
+     * @param godName
+     * @param board
+     * @param player
+     * @return
+     */
     public static God createGod(String godName, Board board, Player player) {
         God god = new God(board, player);
         TurnActionGraph actionGraph = createDefaultGraph();

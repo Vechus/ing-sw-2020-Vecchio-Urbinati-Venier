@@ -8,8 +8,16 @@ import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Pair;
 import it.polimi.ingsw.util.Vector2;
 
+/**
+ * Class that defines all the possible types of moves which can differ depending on the special power of the god.
+ */
 public class GodMoveMethods {
 
+    /**
+     * Normal move where you go from one cell to another.
+     * @param actionBoardPair
+     * @return true if the move ends well
+     */
     static boolean defaultMove(Pair<Action, Board> actionBoardPair) {
         Action action = actionBoardPair.first();
         Board board = actionBoardPair.second();
@@ -17,6 +25,11 @@ public class GodMoveMethods {
         return true;
     }
 
+    /**
+     * Move that changes the positions of two workers.
+     * @param actionBoardPair
+     * @return true if the swap ends well
+     */
     static boolean swapMove(Pair<Action, Board> actionBoardPair) {
         Action action = actionBoardPair.first();
         Board board = actionBoardPair.second();
@@ -31,6 +44,11 @@ public class GodMoveMethods {
         return true;
     }
 
+    /**
+     * Move that pushes away from the target cell the worker that's there.
+     * @param actionBoardPair
+     * @return true if the action ends well
+     */
     static boolean pushMove(Pair<Action, Board> actionBoardPair) {
         Action action = actionBoardPair.first();
         Board board = actionBoardPair.second();
@@ -45,6 +63,11 @@ public class GodMoveMethods {
         return defaultMove(actionBoardPair);
     }
 
+    /**
+     * Activates the power when a worker moves one lever above.
+     * @param actionBoardPair
+     * @return true if the action ends well
+     */
     static boolean activateEffectOnRiseMove(Pair<Action, Board> actionBoardPair) {
         Action action = actionBoardPair.first();
         Board board = actionBoardPair.second();

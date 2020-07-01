@@ -16,12 +16,22 @@ public class GodWinMethods {
                 && board.getHeight(action.getTargetPos()) == 3;
     }
 
+    /**
+     * Checks, given the action, if the winning condition is possible in this turn.
+     * @param actionBoardPair
+     * @return true if the player can win
+     */
     static boolean isWinPermittedByEffects(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
         Board board = actionBoardPair.second();
         return board.isWinPermittedByEffects(action);
     }
 
+    /**
+     * Special win condition that tells if Cronus can win
+     * @param actionBoardPair
+     * @return return true if the there are 5 buildings completed
+     */
     static boolean cronusWinCondition(Pair<Action, Board> actionBoardPair){
         if(defaultWinCondition(actionBoardPair))
             return true;
@@ -37,6 +47,11 @@ public class GodWinMethods {
         return counterBuildings >= 5;
     }
 
+    /**
+     * Special win condition that tells if Pan can win
+     * @param actionBoardPair
+     * @return true if pan gets down of two or more levels
+     */
     static boolean panWinCondition(Pair<Action, Board> actionBoardPair){
         if(defaultWinCondition(actionBoardPair))
             return true;

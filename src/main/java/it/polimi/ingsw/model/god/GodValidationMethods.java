@@ -184,12 +184,22 @@ public class GodValidationMethods {
     // COMMON METHODS FOR BUILD BLOCK AND DOME
 
 
+    /**
+     * Checks, given the action, if the building is on a different cell.
+     * @param actionBoardPair
+     * @return
+     */
     static boolean isCellDifferentWhenBuilding(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
         God god = action.getWorker().getOwner().getPlayerGod();
         return god.getBuildCount() != 1 || !action.getTargetPos().equals(god.getBuildPos());
     }
 
+    /**
+     * Checks, given the action, if the building is on the same cell.
+     * @param actionBoardPair
+     * @return
+     */
     static boolean isCellSameWhenBuilding(Pair<Action, Board> actionBoardPair){
         Action action = actionBoardPair.first();
         God god = action.getWorker().getOwner().getPlayerGod();
