@@ -15,6 +15,9 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The After lobby scene controller.
+ */
 public class AfterLobbyController {
     @FXML
     private AnchorPane anchor;
@@ -23,6 +26,11 @@ public class AfterLobbyController {
     private List<String> selected;
     private GridPane grid;
 
+    /**
+     * Display gods.
+     *
+     * @param gods the gods
+     */
     public void displayGods(List<String> gods) {
         grid = new GridPane();
         selected = new ArrayList<>();
@@ -68,6 +76,11 @@ public class AfterLobbyController {
         return pane;
     }
 
+    /**
+     * Sets number of selectable cards.
+     *
+     * @param number the number of selectable cards
+     */
     public void setNumber(int number) {
         this.playerNumber = number;
     }

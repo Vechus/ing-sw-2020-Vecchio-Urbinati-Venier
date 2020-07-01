@@ -3,6 +3,9 @@ package it.polimi.ingsw.client.events;
 import it.polimi.ingsw.util.Vector2;
 import javafx.event.EventType;
 
+/**
+ * The Select on grid event concrete definition.
+ */
 public class SelectOnGridEvent extends GameEvent {
     public static final EventType<GameEvent> SELECT_ON_GRID_EVENT = new EventType<>(GAME_EVENT_TYPE, "SelectOnGridEvent");
 

@@ -3,6 +3,9 @@ package it.polimi.ingsw.client.events;
 import it.polimi.ingsw.util.Vector2;
 import javafx.event.EventType;
 
+/**
+ * The Place worker event concrete definition.
+ */
 public class PlaceWorkerEvent extends GameEvent {
     public static final EventType<GameEvent> PLACE_WORKER_EVENT = new EventType<>(GAME_EVENT_TYPE, "PlaceWorkerEvent");
 

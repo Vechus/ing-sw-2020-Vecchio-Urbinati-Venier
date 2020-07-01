@@ -11,6 +11,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
+/**
+ * The Lobby scene controller.
+ */
 public class LobbyController {
     @FXML
     private Label firstPlayer;
@@ -47,6 +50,9 @@ public class LobbyController {
     @FXML
     private Button decreaseButton;
 
+    /**
+     * Handle confirm button clicked event.
+     */
     @FXML
     public void handleConfirmClicked() {
         String name = textField.getText();
@@ -74,6 +80,9 @@ public class LobbyController {
         errorImage.setVisible(false);
     }
 
+    /**
+     * Handle confirm ip button click event.
+     */
     @FXML
     public void handleConfirmIp() {
         String i = ip.getText();
@@ -91,16 +100,25 @@ public class LobbyController {
         }
     }
 
+    /**
+     * Show host pane.
+     */
     public void showHostPane() {
         hostPane.setVisible(true);
     }
 
+    /**
+     * Handle confirm players button click event.
+     */
     @FXML
     public void handleConfirmPlayers() {
         hostPane.setVisible(false);
         hostPane.fireEvent(new PlayerNumberChangeEvent(Integer.parseInt(playersNumberLabel.getText())));
     }
 
+    /**
+     * Handle decrease button click event.
+     */
     @FXML
     public void handleDecrease() {
         if (Integer.parseInt(playersNumberLabel.getText()) == 3) {
@@ -108,6 +126,9 @@ public class LobbyController {
         }
     }
 
+    /**
+     * Handle increase button click event.
+     */
     @FXML
     public void handleIncrease() {
         if (Integer.parseInt(playersNumberLabel.getText()) == 2) {

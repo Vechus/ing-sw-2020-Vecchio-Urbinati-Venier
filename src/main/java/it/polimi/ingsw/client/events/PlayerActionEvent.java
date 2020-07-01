@@ -3,6 +3,9 @@ package it.polimi.ingsw.client.events;
 import it.polimi.ingsw.client.ClientAction;
 import javafx.event.EventType;
 
+/**
+ * The Player action event concrete definition.
+ */
 public class PlayerActionEvent extends CustomEvent{
     public static final EventType<CustomEvent> PLAYER_ACTION_EVENT_TYPE = new EventType<>(CUSTOM_EVENT_TYPE, "PlayerAction");
 
