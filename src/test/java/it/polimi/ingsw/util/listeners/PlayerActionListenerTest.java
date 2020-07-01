@@ -27,7 +27,7 @@ public class PlayerActionListenerTest {
     void testGodSelection(){
         listener.onPlayerCreate(0, "", "");
         assertEquals(model.getNumberOfPlayers(), 1);
-        God god = GodFactory.createGod("", model.getPlayer(0), model.getBoard());
+        God god = GodFactory.createGod("", model.getBoard(), model.getPlayer(0));
         assertEquals(model.getPlayer(0).getPlayerGod().getPlayer(), god.getPlayer());
     }
 

@@ -20,11 +20,11 @@ public class God {
     /**
      * The name of the god, to be displayed to the user
      */
-    String name;
+    private String name = "God";
 
-    protected Board board;
+    private Board board;
 
-    protected Player player;
+    private Player player;
 
     /**
      * Getter of moveCtr
@@ -38,21 +38,22 @@ public class God {
      */
     public int getBuildCount(){ return buildCtr; }
 
-    protected boolean hasFinishedTurn=false;
+    private boolean hasFinishedTurn=false;
 
      //The chosen worker by the player in that turn. Only that worker can be used after the initial action.
-    protected Worker chosenWorker= null;
+    private Worker chosenWorker= null;
 
 
-    protected Vector2 initPos = null, buildPos = null;
+    private Vector2 initPos = null, buildPos = null;
 
     //count how many moves and builds the player has done in that turn
-    protected int moveCtr = 0, buildCtr = 0;
+    private int moveCtr = 0, buildCtr = 0;
 
-    protected int turnState;
+    private int turnState;
 
-    List<Function<Pair<Action, Board>, Boolean>> moveValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+    private List<Function<Pair<Action, Board>, Boolean>> moveValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isActionPermittedByEffects,
+                    GodValidationMethods::isTargetPosWithinBoard,
                     GodValidationMethods::isCellWorkersFree,
                     GodValidationMethods::isTargetPosOnDifferentCell,
                     GodValidationMethods::isTargetPosDomesFree,
@@ -60,8 +61,9 @@ public class God {
                     GodValidationMethods::isMoveHeightLessThanOne
             ));
 
-    List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+    private List<Function<Pair<Action, Board>, Boolean>> buildBlockValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isActionPermittedByEffects,
+                    GodValidationMethods::isTargetPosWithinBoard,
                     GodValidationMethods::isCellWorkersFree,
                     GodValidationMethods::isTargetPosOnDifferentCell,
                     GodValidationMethods::isTargetPosDomesFree,
@@ -69,14 +71,22 @@ public class God {
                     GodValidationMethods::isBuildingHeightLessThanThree
             ));
 
-    List<Function<Pair<Action, Board>, Boolean>> buildDomeValidationFunctions = new ArrayList<>(
-            Arrays.asList(GodValidationMethods::isTargetPosWithinBoard,
+    private List<Function<Pair<Action, Board>, Boolean>> buildDomeValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodValidationMethods::isActionPermittedByEffects,
+                    GodValidationMethods::isTargetPosWithinBoard,
                     GodValidationMethods::isCellWorkersFree,
                     GodValidationMethods::isTargetPosOnDifferentCell,
                     GodValidationMethods::isTargetPosDomesFree,
                     GodValidationMethods::isTargetPosAdjacent,
                     GodValidationMethods::isBuildingHeightThree
             ));
+
+    private List<Function<Pair<Action, Board>, Boolean>> winValidationFunctions = new ArrayList<>(
+            Arrays.asList(GodWinMethods::isWinPermittedByEffects,
+                    GodWinMethods::defaultWinCondition
+            ));
+
+    private Function<Pair<Action, Board>, Boolean> moveFunction = GodMoveMethods::defaultMove;
 
     TurnActionGraph actionGraph = new TurnActionGraph();
 
@@ -89,9 +99,49 @@ public class God {
     public God(Board board, Player player){
         this.player=player;
         this.board = board;
+        player.setPlayerGod(this);
         name = "God";
         turnState = actionGraph.INITIAL_STATE_IDX;
-        createActionGraph();
+    }
+
+    /**
+     * Set the move validation functions
+     *
+     * @param funcs the functions to apply when validating a move
+     */
+    public void setMoveValidationMethods(List<Function<Pair<Action, Board>, Boolean>> funcs){
+        this.moveValidationFunctions = funcs;
+    }
+
+    /**
+     * Set the block build validation functions
+     *
+     * @param funcs the functions to apply when validating a block build
+     */
+    public void setBuildBlockValidationMethods(List<Function<Pair<Action, Board>, Boolean>> funcs){
+        this.buildBlockValidationFunctions = funcs;
+    }
+
+    /**
+     * Set the dome build validation functions
+     *
+     * @param funcs the functions to apply when validating a dome build
+     */
+    public void setBuildDomeValidationMethods(List<Function<Pair<Action, Board>, Boolean>> funcs){
+        this.buildDomeValidationFunctions = funcs;
+    }
+
+    /**
+     * Set the win validation functions
+     *
+     * @param funcs the functions to apply when checking if a player won
+     */
+    public void setWinValidationFunctions(List<Function<Pair<Action, Board>, Boolean>> funcs){
+        this.winValidationFunctions = funcs;
+    }
+
+    public void setMoveMethod(Function<Pair<Action, Board>, Boolean> func){
+        this.moveFunction = func;
     }
 
     /**
@@ -114,19 +164,6 @@ public class God {
      * @return the boolean.
      */
     public boolean getHasFinishedTurn(){return hasFinishedTurn;}
-
-
-    /**
-     *It creates the path of actions that a player can make.
-     */
-    protected void createActionGraph(){
-        int movedState = actionGraph.addState();
-        int builtState = actionGraph.addState();
-        actionGraph.addTransition(actionGraph.INITIAL_STATE_IDX, movedState, ActionType.MOVE);
-        actionGraph.addTransition(movedState, builtState, ActionType.BUILD);
-        actionGraph.addTransition(movedState, builtState, ActionType.BUILD_DOME);
-        actionGraph.addTransition(builtState, actionGraph.FINAL_STATE_IDX, ActionType.END_TURN);
-    }
 
     /**
      * Choose action. Given an Action this class calls the right function to execute.
@@ -166,14 +203,13 @@ public class God {
      * @return true if it succeeded.
      */
     public boolean move(Action action) {
-        if(!this.isMoveValid(action)) {
+        if(!this.isMoveValid(action))
             return false;
-        }
+
         if(initPos == null) initPos = action.getWorkerPos();
         moveCtr++;
-        this.board.moveWorker(action);
 
-        return true;
+        return moveFunction.apply(new Pair<>(action, board));
     }
 
     /**
@@ -183,7 +219,7 @@ public class God {
      * @return true is the move is valid.
      * */
     public boolean isMoveValid (Action action){
-        return checkConditions(moveValidationFunctions, action);
+        return checkConditions(moveValidationFunctions, action, board);
     }
 
     /**
@@ -209,7 +245,7 @@ public class God {
      * @return true if the building the block is valid
      */
     public boolean isBuildBlockValid(Action action){
-        return checkConditions(buildBlockValidationFunctions, action);
+        return checkConditions(buildBlockValidationFunctions, action, board);
     }
 
 
@@ -234,7 +270,7 @@ public class God {
      * @return true if building a  dome is valid
      */
     public boolean isBuildDomeValid(Action action){
-        return checkConditions(buildDomeValidationFunctions, action);
+        return checkConditions(buildDomeValidationFunctions, action, board);
     }
 
 
@@ -245,10 +281,7 @@ public class God {
      * @return the boolean.
      */
     public boolean checkWinCondition(Action action){
-        return board.isWinPermittedByEffects(action)
-                && action.getType() == ActionType.MOVE
-                && this.board.getHeight(action.getTargetPos()) - this.board.getHeight(action.getWorkerPos()) > 0
-                && this.board.getHeight(action.getTargetPos()) == 3;
+        return checkConditions(winValidationFunctions, action, board);
     }
 
 
@@ -271,13 +304,13 @@ public class God {
      * @param action
      * @return false if a condition is not met.
      */
-    protected boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action){
-        Pair<Action, Board> arg = new Pair<>(action, this.board);
+    public static boolean checkConditions(List<Function<Pair<Action, Board>, Boolean>> list, Action action, Board board){
+        Pair<Action, Board> arg = new Pair<>(action, board);
         for(Function<Pair<Action, Board>, Boolean> check : list){
             if(!check.apply(arg))
                 return false;
         }
-        return board.isActionPermittedByEffects(action);
+        return true;
     }
 
     /**
@@ -288,9 +321,29 @@ public class God {
         return actionGraph.allowedActions(turnState);
     }
 
-    @Override
-    public String toString() {
-        return name;
+    //@Override
+    //public String toString() {
+   //     return getName();
+    //}
+
+    public void setName(String godName) {
+        this.name = godName;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public Vector2 getInitPos(){
+        return this.initPos;
+    }
+
+    public Vector2 getBuildPos(){
+        return this.buildPos;
+    }
+
+    public void setActionGraph(TurnActionGraph graph){
+        this.actionGraph = graph;
     }
 }
 

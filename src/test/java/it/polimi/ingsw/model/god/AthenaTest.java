@@ -15,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AthenaTest {
     Board board;
     Player player, opponent;
-    Athena athena;
-    God oppGod;
+    God athena, oppGod;
     Vector2 highPos = new Vector2(0, 0);
     Vector2 lowPos = new Vector2(1, 1);
     Vector2 pInitPos = new Vector2(1, 0);
@@ -28,8 +27,8 @@ public class AthenaTest {
         board = new Board();
         player = new Player(board);
         opponent = new Player(board);
-        athena = new Athena(board, player);
-        oppGod = new God(board, opponent);
+        athena = GodFactory.createGod("Athena", board, player);
+        oppGod = GodFactory.createGod("", board, opponent);
         player.setPlayerGod(athena);
         opponent.setPlayerGod(oppGod);
         playerWorker = new Worker(player);

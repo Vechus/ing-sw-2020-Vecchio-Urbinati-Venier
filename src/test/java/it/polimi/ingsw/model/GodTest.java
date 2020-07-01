@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.model.god.GodFactory;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
@@ -24,7 +25,7 @@ public class GodTest {
     void setup(){
         board= new Board();
         player=new Player();
-        god= new God(board, player);
+        god = GodFactory.createGod("", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos,0);
         board.setHeight(midPos,1);

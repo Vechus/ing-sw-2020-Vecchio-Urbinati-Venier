@@ -45,7 +45,7 @@ public class Model {
     public int addNewPlayer(String godName, String name) {
         Player player = new Player(board);
         player.setPlayerName(name);
-        God god = GodFactory.createGod(godName, player, board);
+        God god = GodFactory.createGod(godName, board, player);
         god.setPlayer(player);
         player.setPlayerGod(god);
         this.players.add(player);

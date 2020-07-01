@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.god.effect;
 
+import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.model.god.GodFactory;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.god.Hera;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class HeraEffectTest {
     Board board;
     Player player, opponent;
-    Hera hera;
+    God hera;
     Vector2 borderPos = new Vector2(1, 0);
     Vector2 centerPos = new Vector2(1, 2);
     Vector2 oppInitPos = new Vector2(1, 1);
@@ -27,7 +28,7 @@ public class HeraEffectTest {
     void setup(){
         board = new Board();
         player = new Player(board);
-        hera = new Hera(board, player);
+        hera = GodFactory.createGod("Hera", board, player);
         player.setPlayerGod(hera);
         opponent = new Player(board);
         oppWorker = new Worker(opponent);

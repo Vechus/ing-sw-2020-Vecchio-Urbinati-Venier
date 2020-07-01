@@ -24,7 +24,7 @@ public class DemeterTest {
     void setup() {
         board = new Board();
         player = new Player();
-        god= new Demeter(board, player);
+        god = GodFactory.createGod("Demeter", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);

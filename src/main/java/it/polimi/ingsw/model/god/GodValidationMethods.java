@@ -1,15 +1,29 @@
 package it.polimi.ingsw.model.god;
+import it.polimi.ingsw.model.Worker;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Pair;
+import it.polimi.ingsw.util.Vector2;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * Contains all the checks necessary on the actions performed
  */
 public class GodValidationMethods {
 
+    static boolean isActionPermittedByEffects(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        Board board = actionBoardPair.second();
+        return board.isActionPermittedByEffects(action);
+    }
 
-    //5 METHODS FOR ALL ACTIONS
+
+    // METHODS FOR ALL ACTIONS
 
     /**
      * @param actionBoardPair the action chosen by the player
@@ -62,8 +76,19 @@ public class GodValidationMethods {
         return Math.abs(action.getTargetPos().getX() - action.getWorkerPos().getX()) <= 1 && Math.abs(action.getTargetPos().getY() - action.getWorkerPos().getY()) <= 1;
     }
 
+    /**
+     *
+     * @param actionBoardPair
+     * @return
+     */
+    public static boolean isCellDifferentFromInitialSpace(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        God god = action.getWorker().getOwner().getPlayerGod();
+        return god.getMoveCount() != 1 || !action.getTargetPos().equals(god.getInitPos());
+    }
 
-    //ONE METHOD FOR MOVE
+
+    // METHODS FOR MOVE
 
     /**
      *
@@ -76,7 +101,50 @@ public class GodValidationMethods {
         return board.getHeight(action.getTargetPos()) - board.getHeight(action.getWorkerPos()) <= 1;
     }
 
-    //ONE METHOD FOR BUILD_BLOCK
+    static boolean noUpIfPrebuilt(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        Board board = actionBoardPair.second();
+        God god = action.getWorker().getOwner().getPlayerGod();
+        return god.getBuildCount() == 0 || board.getHeight(action.getTargetPos()) - board.getHeight(action.getWorkerPos()) <= 0;
+    }
+
+    /**
+     *
+     * @param actionBoardPair board and action chosen
+     * @return true if it's not the first time he moves and the cell he wants to go to is on the perimeter
+     */
+    static boolean isMoveOnPerimeter(Pair<Action, Board> actionBoardPair) {
+        Action action = actionBoardPair.first();
+        God god = action.getWorker().getOwner().getPlayerGod();
+        return god.getMoveCount() == 0 || (action.getWorkerPos().getY() == 4 || action.getWorkerPos().getX() == 4 || action.getWorkerPos().getX() == 0 || action.getWorkerPos().getY() == 0);
+    }
+
+    /**
+     * Checks if it's possible to push the worker occupying the target cell in the same direction as the move.
+     * If the target cell is free, then true by default.
+     * @param actionBoardPair bundled action and board
+     * @return true if the target cell is empty or its worker can be pushed away in the same direction
+     */
+    static boolean isPushPossible(Pair<Action, Board> actionBoardPair){
+        if(GodValidationMethods.isCellWorkersFree(actionBoardPair)) return true;
+        Action action = actionBoardPair.first();
+        Board board = actionBoardPair.second();
+        Worker otherWorker = board.getWorker(action.getTargetPos());
+        Vector2 delta = action.getTargetPos().sub(action.getWorkerPos());
+        Vector2 movedPos = action.getTargetPos().add(delta);
+        Action movedAction = new Action(otherWorker, movedPos, ActionType.MOVE);
+        List<Function<Pair<Action, Board>, Boolean>> pushValidationFunctions = new ArrayList<>(
+                Arrays.asList(GodValidationMethods::isActionPermittedByEffects,
+                        GodValidationMethods::isTargetPosWithinBoard,
+                        GodValidationMethods::isCellWorkersFree,
+                        GodValidationMethods::isTargetPosOnDifferentCell,
+                        GodValidationMethods::isTargetPosDomesFree,
+                        GodValidationMethods::isTargetPosAdjacent
+                ));
+        return God.checkConditions(pushValidationFunctions, movedAction, board);
+    }
+
+    // METHODS FOR BUILD_BLOCK
 
     /**
      *
@@ -89,7 +157,18 @@ public class GodValidationMethods {
         return board.getHeight(action.getTargetPos()) != 3;
     }
 
-    //ONE METHOD FOR BUILD_DOME
+    /**
+     * checks if the cells different from the one he is in, are without workers
+     * @param actionBoardPair board and action chosen
+     * @return true if the are no workers if the other cells
+     */
+    static boolean isDifferentCellFree(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        Board board = actionBoardPair.second();
+        return board.getWorker(action.getTargetPos()) == null || action.getTargetPos().equals(action.getWorker().getPosition());
+    }
+
+    // METHODS FOR BUILD_DOME
 
     /**
      *
@@ -102,4 +181,29 @@ public class GodValidationMethods {
         return board.getHeight(action.getTargetPos()) == 3;
     }
 
+    // COMMON METHODS FOR BUILD BLOCK AND DOME
+
+
+    static boolean isCellDifferentWhenBuilding(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        God god = action.getWorker().getOwner().getPlayerGod();
+        return god.getBuildCount() != 1 || !action.getTargetPos().equals(god.getBuildPos());
+    }
+
+    static boolean isCellSameWhenBuilding(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        God god = action.getWorker().getOwner().getPlayerGod();
+        return god.getBuildCount() != 1 || action.getTargetPos().equals(god.getBuildPos());
+    }
+
+    /**
+     *
+     * @param actionBoardPair board and action chosen
+     * @return true if it is the second build and the chosen cell is not on the perimeter.
+     */
+    static boolean isBuildOffThePerimeter(Pair<Action, Board> actionBoardPair){
+        Action action = actionBoardPair.first();
+        God god = action.getWorker().getOwner().getPlayerGod();
+        return god.getBuildCount() != 1 || (action.getTargetPos().getY() != 4 && action.getTargetPos().getX() != 4 && action.getTargetPos().getY() != 0 && action.getTargetPos().getX() != 0);
+    }
 }

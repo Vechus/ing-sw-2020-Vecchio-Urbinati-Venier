@@ -24,7 +24,7 @@ public class HestiaTest {
     void setup() {
         board = new Board();
         player = new Player();
-        god= new Hestia(board, player);
+        god = GodFactory.createGod("Hestia", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);

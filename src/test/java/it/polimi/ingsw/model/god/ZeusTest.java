@@ -24,7 +24,7 @@ public class ZeusTest {
     void setup() {
         board = new Board();
         player = new Player();
-        god= new Zeus(board, player);
+        god = GodFactory.createGod("Zeus", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);

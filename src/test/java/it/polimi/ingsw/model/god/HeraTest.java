@@ -17,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class HeraTest {
     Board board;
     Player player, opponent;
-    Hera hera;
-    God oppGod;
+    God hera, oppGod;
     Vector2 pos1 = new Vector2(0, 0), pos2 = new Vector2(0, 1), pos3 = new Vector2(1, 1);
     Worker work;
 
@@ -26,11 +25,11 @@ public class HeraTest {
     void setup(){
         board = new Board();
         player = new Player(board);
-        hera = new Hera(board, player);
+        hera = GodFactory.createGod("Hera", board, player);
         player.setPlayerGod(hera);
 
         opponent = new Player(board);
-        oppGod = new God(board, opponent);
+        oppGod = GodFactory.createGod("", board, opponent);
         opponent.setPlayerGod(oppGod);
         work = new Worker(opponent);
         board.placeWorker(work, pos1);

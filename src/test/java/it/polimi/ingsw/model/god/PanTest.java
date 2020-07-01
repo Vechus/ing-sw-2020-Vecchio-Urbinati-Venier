@@ -25,7 +25,7 @@ public class PanTest {
     void setup() {
         board = new Board();
         player = new Player();
-        god= new Pan(board, player);
+        god= GodFactory.createGod("Pan", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);

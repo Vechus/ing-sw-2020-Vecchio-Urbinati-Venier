@@ -15,8 +15,7 @@ class ApolloTest {
     Board board;
     Player p1;
     Player p2;
-    God god;
-    Apollo apollo;
+    God god, apollo;
     Worker w1, w2;
     Vector2 p1Pos = new Vector2(2,2);
     Vector2 p2Pos = new Vector2(2,3);
@@ -32,8 +31,8 @@ class ApolloTest {
         board = new Board();
         p1 = new Player(board);
         p2 = new Player(board);
-        god = new God(board, p2);
-        apollo = new Apollo(board, p1);
+        god = GodFactory.createGod("", board, p2);
+        apollo = GodFactory.createGod("Apollo", board, p1);
         p1.setPlayerGod(apollo);
         p2.setPlayerGod(god);
         w1 = new Worker(p1);

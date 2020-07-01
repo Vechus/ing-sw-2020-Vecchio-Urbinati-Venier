@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MinotaurTest {
     Board board;
     Player player;
-    Minotaur minotaur;
+    God minotaur;
     Vector2 pos1 = new Vector2(0, 0), pos2 = new Vector2(0, 1), pos3 = new Vector2(0, 2);
     Worker playerWorker, other1, other2;
 
@@ -23,7 +23,7 @@ public class MinotaurTest {
     void setup(){
         board = new Board();
         player = new Player(board);
-        minotaur = new Minotaur(board, player);
+        minotaur = GodFactory.createGod("Minotaur", board, player);
         player.setPlayerGod(minotaur);
         playerWorker = new Worker(player);
         other1 = new Worker(player);

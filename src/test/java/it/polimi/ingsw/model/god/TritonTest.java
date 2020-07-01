@@ -27,7 +27,7 @@ public class TritonTest {
     void setup() {
         board = new Board();
         player = new Player();
-        god= new Triton(board, player);
+        god = GodFactory.createGod("Triton", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);

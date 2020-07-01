@@ -24,7 +24,7 @@ public class HephaestusTest {
     void setup() {
         board = new Board();
         player = new Player();
-        god= new Hephaestus(board, player);
+        god = GodFactory.createGod("Hephaestus", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos, 0);
         board.setHeight(midPos, 1);

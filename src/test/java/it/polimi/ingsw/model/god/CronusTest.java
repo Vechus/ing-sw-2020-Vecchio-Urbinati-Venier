@@ -15,14 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CronusTest {
     Board board;
     Player player;
-    Cronus chronus;
+    God cronus;
     Worker playerWorker;
 
     @BeforeEach
     void setup(){
         board = new Board();
         player = new Player();
-        chronus = new Cronus(board, player);
+        cronus = GodFactory.createGod("Cronus", board, player);
         playerWorker = new Worker(player);
         board.placeWorker(playerWorker, new Vector2(0, 0));
 
@@ -37,12 +37,12 @@ public class CronusTest {
     void testWinTrue(){
         board.setComplete(new Vector2(1, 0), true);
         Action action = new Action(null, null, ActionType.END_TURN);
-        assertTrue(chronus.checkWinCondition(action));
+        assertTrue(cronus.checkWinCondition(action));
     }
 
     @Test
     void testWinFalse(){
         Action action = new Action(null, null, ActionType.END_TURN);
-        assertFalse(chronus.checkWinCondition(action));
+        assertFalse(cronus.checkWinCondition(action));
     }
 }

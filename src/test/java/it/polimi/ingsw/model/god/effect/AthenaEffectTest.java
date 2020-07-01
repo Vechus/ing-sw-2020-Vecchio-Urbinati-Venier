@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.god.effect;
 
+import it.polimi.ingsw.model.god.God;
+import it.polimi.ingsw.model.god.GodFactory;
 import it.polimi.ingsw.util.Action;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Worker;
-import it.polimi.ingsw.model.god.Athena;
 import it.polimi.ingsw.util.ActionType;
 import it.polimi.ingsw.util.Vector2;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AthenaEffectTest {
     Board board;
     Player player, opponent;
-    Athena athena;
+    God athena;
     Vector2 highPos = new Vector2(0, 0);
     Vector2 lowPos = new Vector2(1, 1);
     Vector2 oppInitPos = new Vector2(0, 1);
@@ -27,7 +28,7 @@ public class AthenaEffectTest {
     void setup(){
         board = new Board();
         player = new Player(board);
-        athena = new Athena(board, player);
+        athena = GodFactory.createGod("Athena", board, player);
         player.setPlayerGod(athena);
         opponent = new Player(board);
         oppWorker = new Worker(opponent);

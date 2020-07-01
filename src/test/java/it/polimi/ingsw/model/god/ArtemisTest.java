@@ -24,7 +24,7 @@ public class ArtemisTest {
     void setup(){
         board= new Board();
         player=new Player();
-        god= new Artemis(board, player);
+        god = GodFactory.createGod("Artemis", board, player);
         board.setHeight(highPos, 2);
         board.setHeight(lowPos,0);
         board.setHeight(midPos,1);
