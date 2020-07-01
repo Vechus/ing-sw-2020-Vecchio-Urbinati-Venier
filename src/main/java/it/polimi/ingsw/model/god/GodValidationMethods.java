@@ -207,7 +207,6 @@ public class GodValidationMethods {
     }
 
     /**
-     *
      * @param actionBoardPair board and action chosen
      * @return true if it is the second build and the chosen cell is not on the perimeter.
      */
