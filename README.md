@@ -56,6 +56,11 @@ To run the client in terminal mode, use the following arguments
 java -jar [jarname] --cli
 ```
 
+**Important:** if you want to run the game with an integrated graphic card or in a VM use the following command
+```
+java -jar [jarname] [other options] -Dprism.forceGPU=true
+```
+
 
 # Coverage
 
