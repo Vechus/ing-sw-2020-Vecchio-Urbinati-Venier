@@ -59,4 +59,4 @@ java -jar [jarname] --cli
 
 # Coverage
 
-![Coverage report](https://github.com/Vechus/ing-sw-2020-Vecchio-Urbinati-Venier/blob/master/photo_2020-07-02_17-20-04.jpg?raw=true)
+![Coverage report](https://github.com/Vechus/ing-sw-2020-Vecchio-Urbinati-Venier/blob/master/coverage_report.jpg?raw=true)
