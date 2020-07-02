@@ -55,3 +55,7 @@ To run the client in terminal mode, use the following arguments
 ```
 java -jar [jarname] --cli
 ```
+
+# Test coverage 
+
+
