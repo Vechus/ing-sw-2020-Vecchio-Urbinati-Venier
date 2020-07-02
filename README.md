@@ -24,13 +24,34 @@
 [![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
 -->
 
+# Building instructions
+The project can be built using the following Maven command
+```
+mvn clean package
+```
+The resulting jar executable can be found in the target folder as `GC18-1.0-SNAPSHOT-jar-with-dependencies.jar`
+This jar contains both the clients and the server.
+
 # Execution instructions
-## Executables folder
+Java 14 is required to run.
 
 ## Running the Server
-
-### Configuration
-
+To start the server, run the jar the following arguments
+```
+java -jar [jarname] --server
+```
 
 ## Running the Client
+The client can be run in two modes: CLI and GUI.
+In both modes, you will be asked for information such as the server ip&port, your username etc.
 
+To run the client in GUI mode, no command line argument is needed.
+```
+java -jar [jarname]
+```
+Alternatively, it can be run with a double click on the jar.
+
+To run the client in terminal mode, use the following arguments
+```
+java -jar [jarname] --cli
+```
