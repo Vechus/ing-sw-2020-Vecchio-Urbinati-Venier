@@ -24,6 +24,10 @@
 [![GREEN](https://placehold.it/15/44bb44/44bb44)](#)
 -->
 
+# Coverage
+
+![Coverage report](https://github.com/Vechus/ing-sw-2020-Vecchio-Urbinati-Venier/blob/master/photo_2020-07-02_17-20-04.jpg?raw=true)
+
 # Building instructions
 The project can be built using the following Maven command
 ```
